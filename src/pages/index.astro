@@ -1,0 +1,157 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Meridian — Systematic SEO Infrastructure" description="Automated SEO pipeline with bespoke strategy. Daily technical audits, AI-assisted content, weekly reports — all tailored to your business.">
+
+  <!-- Hero -->
+  <section class="relative min-h-screen flex items-center bg-gradient-to-b from-dark to-dark-card">
+    <div class="mx-auto max-w-7xl px-6 pt-24 pb-32">
+      <p class="text-xs font-medium uppercase tracking-[0.2em] text-accent mb-6">SEO Infrastructure for Growing Businesses</p>
+      <h1 class="text-5xl md:text-7xl font-extrabold text-hero-text leading-[1.05] tracking-tight max-w-4xl">
+        Systematic SEO.<br />Built around<br />your business.
+      </h1>
+      <p class="mt-6 text-lg text-body-muted max-w-2xl leading-relaxed">
+        Most agencies give you a monthly report and a content calendar. We built an automated pipeline that monitors your site daily, identifies opportunities in real time, and creates content continuously — all tailored specifically to your business.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-4">
+        <a href="/process" class="inline-flex items-center px-6 py-3 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg transition-colors">
+          See the process &rarr;
+        </a>
+        <a href="/services" class="inline-flex items-center px-6 py-3 border border-dark-border text-body-muted hover:text-white hover:border-white/20 text-sm font-medium rounded-lg transition-colors">
+          View services
+        </a>
+      </div>
+    </div>
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-body-muted">
+      <span class="block w-px h-8 bg-dark-border"></span>
+      <span class="text-sm">&darr;</span>
+    </div>
+  </section>
+
+  <!-- Differentiators -->
+  <section class="bg-white py-24 md:py-32">
+    <div class="mx-auto max-w-7xl px-6">
+      <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight text-center">Not a retainer. An infrastructure.</h2>
+      <div class="mt-16 grid md:grid-cols-3 gap-12 md:gap-16">
+        <!-- Daily Monitoring -->
+        <div>
+          <div class="w-12 h-12 flex items-center justify-center rounded-lg bg-accent/10 mb-5">
+            <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-dark mb-2">Daily Monitoring</h3>
+          <p class="text-light-text leading-relaxed">Your site is audited every morning. Rank changes, technical issues, and CTR opportunities surface before you've had coffee.</p>
+        </div>
+        <!-- Intelligence-Led Content -->
+        <div>
+          <div class="w-12 h-12 flex items-center justify-center rounded-lg bg-accent/10 mb-5">
+            <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-dark mb-2">Intelligence-Led Content</h3>
+          <p class="text-light-text leading-relaxed">We track trending topics across your industry every week — news, Reddit, trade publications — and use that signal to inform every piece of content we create.</p>
+        </div>
+        <!-- Transparent by Design -->
+        <div>
+          <div class="w-12 h-12 flex items-center justify-center rounded-lg bg-accent/10 mb-5">
+            <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-dark mb-2">Transparent by Design</h3>
+          <p class="text-light-text leading-relaxed">Every Friday, you get a plain-English performance report. Every deliverable has a clear path to publish. No black boxes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="bg-hero-text py-24 md:py-32">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">A system that runs. A strategy that's yours.</h2>
+        <p class="mt-4 text-light-text text-lg">The process is engineered. The strategy is bespoke.</p>
+      </div>
+      <div class="relative grid md:grid-cols-4 gap-8 md:gap-6">
+        <!-- Connecting line (desktop) -->
+        <div class="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-px bg-dark-border"></div>
+        {[
+          { step: '01', title: 'Audit', desc: 'We pull live data from Google Search Console, rank trackers, and your actual page HTML to understand exactly where you stand.' },
+          { step: '02', title: 'Identify', desc: 'Technical issues, CTR opportunities, content gaps, and trending topics in your industry are surfaced and prioritized daily.' },
+          { step: '03', title: 'Create', desc: 'Drafts are written for your site — your voice, your keywords, your industry — and handed off ready to publish.' },
+          { step: '04', title: 'Report', desc: 'Weekly performance numbers, Friday client emails, monthly strategy reviews. You always know what\'s happening and why.' },
+        ].map(item => (
+          <div class="relative text-center md:text-left">
+            <div class="relative z-10 w-16 h-16 mx-auto md:mx-0 flex items-center justify-center rounded-full bg-accent text-white font-bold text-sm mb-4">{item.step}</div>
+            <h3 class="text-lg font-semibold text-dark mb-2">{item.title}</h3>
+            <p class="text-light-text leading-relaxed text-[15px]">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Preview -->
+  <section class="bg-white py-24 md:py-32">
+    <div class="mx-auto max-w-7xl px-6">
+      <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight text-center mb-16">Choose your level of coverage</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Foundation -->
+        <div class="border border-gray-200 rounded-2xl p-8">
+          <h3 class="text-xl font-bold text-dark">Foundation</h3>
+          <p class="text-sm text-light-text mt-1 mb-6">Starting at — let's talk</p>
+          <ul class="space-y-3 text-[15px] text-light-text">
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Daily technical audits</li>
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> GSC + rank tracking for up to 20 keywords</li>
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Weekly performance report</li>
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Monthly strategy review</li>
+          </ul>
+        </div>
+        <!-- Growth -->
+        <div class="relative border-2 border-accent rounded-2xl p-8">
+          <span class="absolute -top-3 left-8 bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">Most Popular</span>
+          <h3 class="text-xl font-bold text-dark">Growth</h3>
+          <p class="text-sm text-light-text mt-1 mb-6">Starting at — let's talk</p>
+          <ul class="space-y-3 text-[15px] text-light-text">
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Everything in Foundation</li>
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> 2 SEO content drafts per week</li>
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Friday client email draft</li>
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Content intelligence (weekly trending topics)</li>
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Up to 30 keywords tracked</li>
+          </ul>
+        </div>
+        <!-- Authority -->
+        <div class="border border-gray-200 rounded-2xl p-8">
+          <h3 class="text-xl font-bold text-dark">Authority</h3>
+          <p class="text-sm text-light-text mt-1 mb-6">Starting at — let's talk</p>
+          <ul class="space-y-3 text-[15px] text-light-text">
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Everything in Growth</li>
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Competitor gap analysis</li>
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Monthly strategy deck</li>
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Unlimited keywords</li>
+            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Priority support</li>
+          </ul>
+        </div>
+      </div>
+      <p class="text-center mt-12 text-light-text">
+        Not sure which fits? <a href="/contact" class="text-accent hover:text-accent-hover font-medium transition-colors">Let's talk.</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <section class="bg-gradient-to-br from-dark to-dark-card py-24 md:py-32">
+    <div class="mx-auto max-w-3xl px-6 text-center">
+      <h2 class="text-3xl md:text-[44px] font-semibold text-hero-text leading-tight">Your competitors are publishing content. Are you?</h2>
+      <p class="mt-6 text-body-muted text-lg max-w-xl mx-auto leading-relaxed">Most SEO agencies do a site audit in month one and coast. We're running your pipeline every single day.</p>
+      <a href="/contact" class="mt-10 inline-flex items-center px-8 py-4 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors">
+        Book an intro call
+      </a>
+    </div>
+  </section>
+
+</Layout>

@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About — Meridian" description="Meridian was built by a data engineer who got frustrated watching clients pay for monthly reports that didn't move the needle.">
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-b from-dark to-dark-card pt-32 pb-20 md:pb-28">
+    <div class="mx-auto max-w-7xl px-6">
+      <h1 class="text-5xl md:text-7xl font-extrabold text-hero-text leading-[1.05] tracking-tight max-w-4xl">
+        Built by someone who measures everything.
+      </h1>
+      <p class="mt-6 text-lg text-body-muted max-w-2xl leading-relaxed">
+        Meridian started as internal tooling. It became a service.
+      </p>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="bg-white py-24 md:py-32">
+    <div class="mx-auto max-w-3xl px-6">
+      <div class="prose prose-lg max-w-none text-light-text leading-relaxed space-y-6">
+        <p>Most SEO agencies treat organic search as a creative problem. We treat it as a data engineering problem.</p>
+        <p>Meridian was built by a data engineer who got frustrated watching clients pay for monthly reports that didn't move the needle. So we built the infrastructure first — automated audits, rank tracking, content pipelines, performance snapshots — and let the data drive the strategy.</p>
+        <p>The result is an SEO operation that runs continuously, surfaces real opportunities, and creates content that's actually informed by what people are searching for this week — not what ranked two years ago.</p>
+        <p>We work with a small number of clients by design. You get direct access to the person running your account, not an account manager passing notes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="bg-hero-text py-24 md:py-32">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="grid md:grid-cols-3 gap-12 md:gap-16">
+        <div>
+          <h3 class="text-xl font-bold text-dark mb-3">Show your work</h3>
+          <p class="text-light-text leading-relaxed">Every recommendation comes with the data behind it. We don't ask you to trust us. We show you the numbers.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-dark mb-3">Continuous beats periodic</h3>
+          <p class="text-light-text leading-relaxed">Monthly reporting is a relic. Your site is getting crawled every day. Your monitoring should match that pace.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-dark mb-3">Small by choice</h3>
+          <p class="text-light-text leading-relaxed">We limit client count deliberately. Not because we can't scale, but because bespoke work requires actual attention.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-gradient-to-br from-dark to-dark-card py-24 md:py-32">
+    <div class="mx-auto max-w-3xl px-6 text-center">
+      <h2 class="text-3xl md:text-[44px] font-semibold text-hero-text leading-tight">Want to see how we'd approach your site?</h2>
+      <p class="mt-6 text-body-muted text-lg">No pitch deck. Just observations.</p>
+      <a href="/contact" class="mt-10 inline-flex items-center px-8 py-4 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors">
+        Get in touch
+      </a>
+    </div>
+  </section>
+
+</Layout>

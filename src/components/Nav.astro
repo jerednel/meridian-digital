@@ -1,0 +1,93 @@
+---
+const currentPath = Astro.url.pathname;
+const links = [
+  { href: '/process', label: 'Process' },
+  { href: '/services', label: 'Services' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+
+<nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300">
+  <div class="mx-auto max-w-7xl px-6 flex items-center justify-between h-16">
+    <a href="/" class="font-heading text-xl font-bold text-white tracking-tight">Meridian</a>
+
+    <!-- Desktop links -->
+    <div class="hidden md:flex items-center gap-8">
+      {links.map(link => (
+        <a
+          href={link.href}
+          class:list={[
+            'text-sm font-medium transition-colors',
+            currentPath === link.href || currentPath === link.href + '/'
+              ? 'text-accent'
+              : 'text-body-muted hover:text-white',
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button
+      id="menu-toggle"
+      class="md:hidden flex flex-col gap-1.5 p-2 -mr-2"
+      aria-label="Toggle menu"
+    >
+      <span class="block w-5 h-0.5 bg-white transition-transform origin-center" id="bar1"></span>
+      <span class="block w-5 h-0.5 bg-white transition-opacity" id="bar2"></span>
+      <span class="block w-5 h-0.5 bg-white transition-transform origin-center" id="bar3"></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="md:hidden hidden bg-dark border-t border-dark-border">
+    <div class="px-6 py-4 flex flex-col gap-4">
+      {links.map(link => (
+        <a
+          href={link.href}
+          class:list={[
+            'text-sm font-medium transition-colors',
+            currentPath === link.href || currentPath === link.href + '/'
+              ? 'text-accent'
+              : 'text-body-muted hover:text-white',
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</nav>
+
+<script>
+  const nav = document.getElementById('main-nav')!;
+  const toggle = document.getElementById('menu-toggle')!;
+  const mobileMenu = document.getElementById('mobile-menu')!;
+  const bar1 = document.getElementById('bar1')!;
+  const bar2 = document.getElementById('bar2')!;
+  const bar3 = document.getElementById('bar3')!;
+
+  // Scroll-based bg
+  function updateNav() {
+    if (window.scrollY > 20) {
+      nav.classList.add('bg-dark');
+    } else {
+      nav.classList.remove('bg-dark');
+    }
+  }
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+
+  // Mobile toggle
+  let open = false;
+  toggle.addEventListener('click', () => {
+    open = !open;
+    mobileMenu.classList.toggle('hidden', !open);
+    bar1.style.transform = open ? 'rotate(45deg) translate(2.5px, 2.5px)' : '';
+    bar2.style.opacity = open ? '0' : '1';
+    bar3.style.transform = open ? 'rotate(-45deg) translate(2.5px, -2.5px)' : '';
+    if (open) nav.classList.add('bg-dark');
+  });
+</script>
