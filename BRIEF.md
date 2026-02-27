@@ -46,7 +46,7 @@ Nav:
 - On mobile: hamburger
 
 Footer:
-- Simple. "© 2026 Meridian Digital Media LLC · meridian.digital"
+- Simple. "© 2026 Meridian Digital Media LLC · bymeridian.com"
 - Two links: Privacy · Contact
 
 ---
