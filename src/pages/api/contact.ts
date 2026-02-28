@@ -29,7 +29,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const { error } = await resend.emails.send({
     from: 'Meridian Contact <noreply@bymeridian.com>',
-    to: ['hello@bymeridian.com'],
+    to: ['jeremy@bymeridian.com'],
     replyTo: email,
     subject: `New inquiry from ${name}`,
     html: `
