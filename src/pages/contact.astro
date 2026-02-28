@@ -19,7 +19,20 @@ import Layout from '../layouts/Layout.astro';
   <!-- Form -->
   <section class="bg-white py-24 md:py-32">
     <div class="mx-auto max-w-2xl px-6">
-      <form action="#" method="POST" class="space-y-6">
+
+      <!-- Success state -->
+      <div id="form-success" class="hidden text-center py-16">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-50 mb-6">
+          <svg class="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <h2 class="text-2xl font-bold text-dark mb-3">We got it.</h2>
+        <p class="text-light-text">We'll take a look at your site and come back with honest observations within 1 business day.</p>
+      </div>
+
+      <!-- Error banner -->
+      <div id="form-error" class="hidden mb-6 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm"></div>
+
+      <form id="contact-form" class="space-y-6">
         <div>
           <label for="name" class="block text-sm font-medium text-dark mb-2">Name <span class="text-accent">*</span></label>
           <input
@@ -74,14 +87,56 @@ import Layout from '../layouts/Layout.astro';
           />
         </div>
         <button
+          id="submit-btn"
           type="submit"
-          class="w-full md:w-auto inline-flex items-center justify-center px-8 py-3.5 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors"
+          class="w-full md:w-auto inline-flex items-center justify-center px-8 py-3.5 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Send it &rarr;
+          <span id="btn-label">Send it &rarr;</span>
+          <span id="btn-loading" class="hidden ml-2">
+            <svg class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>
+          </span>
         </button>
       </form>
-      <p class="mt-8 text-sm text-light-text">We respond within 1 business day. If you'd prefer to talk directly: hello@bymeridian.com</p>
+      <p class="mt-8 text-sm text-light-text">We respond within 1 business day. If you'd prefer to talk directly: <a href="mailto:hello@bymeridian.com" class="text-accent">hello@bymeridian.com</a></p>
     </div>
   </section>
+
+  <script>
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const successEl = document.getElementById('form-success')!;
+    const errorEl = document.getElementById('form-error')!;
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+    const btnLabel = document.getElementById('btn-label')!;
+    const btnLoading = document.getElementById('btn-loading')!;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.classList.add('hidden');
+      submitBtn.disabled = true;
+      btnLabel.textContent = 'Sending...';
+      btnLoading.classList.remove('hidden');
+
+      try {
+        const formData = new FormData(form);
+        const res = await fetch('/api/contact', { method: 'POST', body: formData });
+        const json = await res.json();
+
+        if (res.ok && json.success) {
+          form.classList.add('hidden');
+          successEl.classList.remove('hidden');
+        } else {
+          errorEl.textContent = json.error || 'Something went wrong. Please try again.';
+          errorEl.classList.remove('hidden');
+        }
+      } catch {
+        errorEl.textContent = 'Network error. Please try again.';
+        errorEl.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        btnLabel.textContent = 'Send it →';
+        btnLoading.classList.add('hidden');
+      }
+    });
+  </script>
 
 </Layout>
