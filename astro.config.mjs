@@ -8,6 +8,9 @@ export default defineConfig({
   site: 'https://bymeridian.com',
   output: 'server',
   adapter: vercel(),
+  security: {
+    checkOrigin: false,
+  },
   vite: {
     plugins: [tailwindcss()]
   }
