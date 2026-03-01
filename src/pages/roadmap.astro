@@ -1,0 +1,139 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Roadmap — Meridian" description="Every SEO capability is a feature we built and maintain. See what's live, what's in progress, and what's on the backlog.">
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-b from-dark to-dark-card pt-32 pb-20 md:pb-28">
+    <div class="mx-auto max-w-7xl px-6">
+      <p class="text-xs font-medium uppercase tracking-[0.2em] text-accent mb-6">The Meridian Platform</p>
+      <h1 class="text-5xl md:text-7xl font-extrabold text-hero-text leading-[1.05] tracking-tight max-w-4xl">
+        SEO, treated like an<br />engineering problem.
+      </h1>
+      <p class="mt-6 text-lg text-body-muted max-w-2xl leading-relaxed">
+        Every capability we deliver is a feature we built and maintain. Here's what's live, what's in progress, and what's on the backlog.
+      </p>
+    </div>
+  </section>
+
+  <!-- Shipped -->
+  <section class="bg-white py-24 md:py-32">
+    <div class="mx-auto max-w-4xl px-6">
+      <div class="flex items-center justify-between mb-12">
+        <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">Shipped</h2>
+        <span class="inline-flex items-center gap-2 text-sm font-medium text-dark bg-green-50 border border-green-200 px-3 py-1 rounded-full">
+          <span class="w-2 h-2 rounded-full bg-green-500"></span>
+          Live
+        </span>
+      </div>
+
+      <div class="relative">
+        <!-- Timeline line -->
+        <div class="absolute left-[3.25rem] top-0 bottom-0 w-px bg-gray-200 hidden md:block"></div>
+
+        <div class="space-y-10">
+          {[
+            { version: 'v1.0', name: 'Daily Technical Audit', desc: 'Pulls live page metadata (title, H1, meta, canonical, indexability) and GSC data every weekday morning. Rank drops and CTR gaps surface before the client\'s day starts.' },
+            { version: 'v1.1', name: 'Competitor Rank Tracking', desc: 'Tracks client keywords against named competitors side by side. Shows share-of-SERP movement, not just absolute position.' },
+            { version: 'v1.2', name: 'GA4 Organic Funnel', desc: 'Joins GSC click data with GA4 organic sessions and conversions. Shows where traffic is leaking between impression and conversion — filtered to organic search only.' },
+            { version: 'v1.3', name: 'Conversion Decay Monitoring', desc: 'Compares rolling 30-day organic CVR to 90-day baseline per page. Flags pages where conversion rate is degrading before it shows up in revenue.' },
+            { version: 'v1.4', name: 'Weekly HTML Performance Report', desc: 'Auto-generated report with Chart.js visualizations: KPI cards with WoW delta, top pages, top queries, competitor rank snapshot, quick-win opportunities. Delivered every Friday.' },
+            { version: 'v1.5', name: 'Content Intelligence Pipeline', desc: 'Scans Google News, Reddit, and industry publications weekly. Surfaces trending topics and signals that inform content briefs for the coming week.' },
+            { version: 'v1.6', name: 'AI-Assisted Content Drafts', desc: 'Produces SEO content drafts informed by keyword strategy, brand voice, and the week\'s intelligence brief. Draft status is tracked — nothing gets recreated if a draft already exists.' },
+            { version: 'v1.7', name: 'Content ROI Tracker', desc: 'Registers publish events with a timestamp and tracks GSC + GA4 performance at 30, 60, and 90-day milestones. Quantifies the return on each piece of content over time.' },
+            { version: 'v1.8', name: 'Link Prospecting Engine', desc: 'Runs three SERP-based prospecting strategies per client weekly: unlinked mentions, resource page opportunities, and content trigger targets. Prospects are AI-filtered for quality and relevance.' },
+            { version: 'v1.9', name: 'Outreach Email Generation', desc: 'Generates a personalized outreach email for each qualified link prospect — specific to the page content, the prospect\'s context, and the client\'s value proposition. Ready to send, no editing required.' },
+            { version: 'v1.10', name: 'Action Log', desc: 'Logs every change made to a client\'s site or strategy with timestamps. The Friday client email leads with "here\'s what we did this week" before showing what moved. Proof of work, not just reporting.' },
+            { version: 'v1.11', name: 'Monthly Strategy Report', desc: 'Full month-over-month HTML report: organic funnel, content ROI milestones, competitor rank changes, page quality scores, technical issues, and next-month priorities.' },
+          ].map(item => (
+            <div class="flex gap-6 items-start relative">
+              <!-- Version label + dot -->
+              <div class="flex-shrink-0 w-[4.5rem] text-right relative">
+                <span class="font-mono text-sm text-[#6366f1]">{item.version}</span>
+                <span class="hidden md:block absolute right-[-1.1rem] top-[0.45rem] w-2.5 h-2.5 rounded-full bg-[#6366f1] border-2 border-white z-10"></span>
+              </div>
+              <!-- Content -->
+              <div class="flex-1 pb-2">
+                <h3 class="text-lg font-semibold text-dark">{item.name}</h3>
+                <p class="mt-1 text-light-text leading-relaxed">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- In Progress -->
+  <section class="bg-hero-text py-24 md:py-32">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="flex items-center justify-between mb-12">
+        <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">Building Now</h2>
+        <span class="inline-flex items-center gap-2 text-sm font-medium text-dark bg-yellow-50 border border-yellow-200 px-3 py-1 rounded-full">
+          <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+          In Progress
+        </span>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white rounded-2xl p-8 border border-gray-200">
+          <h3 class="text-lg font-semibold text-dark mb-2">Backlink Monitor</h3>
+          <span class="inline-block text-xs font-medium text-yellow-700 bg-yellow-50 border border-yellow-200 px-2.5 py-0.5 rounded-full mb-4">Integration pending</span>
+          <p class="text-light-text leading-relaxed">Tracks live backlink profile: new links, lost links, domain authority distribution. Alerts when high-value links drop.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-8 border border-gray-200">
+          <h3 class="text-lg font-semibold text-dark mb-2">SERP Feature Detection</h3>
+          <span class="inline-block text-xs font-medium text-yellow-700 bg-yellow-50 border border-yellow-200 px-2.5 py-0.5 rounded-full mb-4">Building</span>
+          <p class="text-light-text leading-relaxed">Identifies when client pages appear in featured snippets, People Also Ask boxes, or knowledge panels — and flags when competitors capture those positions.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-8 border border-gray-200">
+          <h3 class="text-lg font-semibold text-dark mb-2">Automated Report Delivery</h3>
+          <span class="inline-block text-xs font-medium text-yellow-700 bg-yellow-50 border border-yellow-200 px-2.5 py-0.5 rounded-full mb-4">Building</span>
+          <p class="text-light-text leading-relaxed">Sends weekly and monthly reports directly to client email with no manual step. Currently requires one-click export.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Planned -->
+  <section class="bg-white py-24 md:py-32">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="flex items-center justify-between mb-12">
+        <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">On the Backlog</h2>
+        <span class="inline-flex items-center gap-2 text-sm font-medium text-dark bg-blue-50 border border-blue-200 px-3 py-1 rounded-full">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          Planned
+        </span>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        {[
+          { name: 'Brand Mention Monitor', desc: 'Scans the web weekly for unlinked brand mentions and routes them into the link prospecting queue automatically.' },
+          { name: 'Schema Markup Auditing', desc: 'Checks structured data implementation across key page types and flags missing or malformed markup.' },
+          { name: 'Core Web Vitals Integration', desc: 'Pulls CWV data from Google PageSpeed Insights and surfaces performance regressions alongside technical SEO findings.' },
+          { name: 'Keyword Cannibalization Detection', desc: 'Identifies pages competing for the same queries and recommends consolidation or differentiation.' },
+          { name: 'Topical Authority Mapping', desc: 'Visualizes content coverage across topic clusters and surfaces gaps that competitors are filling.' },
+          { name: 'Automated Internal Linking', desc: 'Analyzes new content and recommends internal link opportunities from existing high-authority pages.' },
+        ].map(item => (
+          <div class="border border-gray-200 rounded-xl p-6">
+            <h3 class="text-base font-semibold text-dark mb-1">{item.name}</h3>
+            <p class="text-sm text-light-text leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <section class="bg-gradient-to-br from-dark to-dark-card py-24 md:py-32">
+    <div class="mx-auto max-w-3xl px-6 text-center">
+      <h2 class="text-3xl md:text-[44px] font-semibold text-hero-text leading-tight">The pipeline runs every day. The backlog gets shorter every week.</h2>
+      <p class="mt-6 text-body-muted text-lg">If there's a capability you need that's not on this list, we want to know about it.</p>
+      <a href="/contact" class="mt-10 inline-flex items-center px-8 py-4 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors">
+        Talk to us &rarr;
+      </a>
+    </div>
+  </section>
+
+</Layout>
