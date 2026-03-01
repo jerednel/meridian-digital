@@ -1,0 +1,58 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getEntry, render } from 'astro:content';
+
+const { slug } = Astro.params;
+const post = await getEntry('blog', slug!);
+
+if (!post) {
+  return Astro.redirect('/blog');
+}
+
+const { Content } = await render(post);
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+---
+
+<Layout title={`${post.data.title} — Meridian`} description={post.data.description}>
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-b from-dark to-dark-card pt-32 pb-20 md:pb-28">
+    <div class="mx-auto max-w-3xl px-6">
+      <a href="/blog" class="inline-flex items-center text-sm text-body-muted hover:text-white transition-colors mb-8">
+        &larr; Back to writing
+      </a>
+      <div class="flex flex-wrap gap-2 mb-6">
+        {post.data.tags.map((tag: string) => (
+          <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-white/10 text-white/80">{tag}</span>
+        ))}
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-hero-text leading-[1.1] tracking-tight">
+        {post.data.title}
+      </h1>
+      <p class="mt-4 text-lg text-body-muted leading-relaxed">
+        {post.data.description}
+      </p>
+      <p class="mt-6 text-sm text-body-muted">
+        By {post.data.author} &middot; {formatDate(post.data.pubDate)}
+      </p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="bg-white py-16 md:py-24">
+    <div class="mx-auto max-w-3xl px-6">
+      <article class="prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-dark prose-p:text-light-text prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover prose-strong:text-dark prose-li:text-light-text prose-hr:border-gray-200">
+        <Content />
+      </article>
+      <div class="mt-16 pt-8 border-t border-gray-200">
+        <a href="/blog" class="text-sm font-medium text-accent hover:text-accent-hover transition-colors">
+          &larr; Back to writing
+        </a>
+      </div>
+    </div>
+  </section>
+
+</Layout>

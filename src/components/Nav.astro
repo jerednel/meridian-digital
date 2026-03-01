@@ -3,6 +3,7 @@ const currentPath = Astro.url.pathname;
 const links = [
   { href: '/process', label: 'Process' },
   { href: '/services', label: 'Services' },
+  { href: '/blog', label: 'Writing' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -26,7 +27,7 @@ const links = [
           href={link.href}
           class:list={[
             'text-sm font-medium transition-colors',
-            currentPath === link.href || currentPath === link.href + '/'
+            currentPath === link.href || currentPath === link.href + '/' || currentPath.startsWith(link.href + '/')
               ? 'text-accent'
               : 'text-body-muted hover:text-white',
           ]}
@@ -56,7 +57,7 @@ const links = [
           href={link.href}
           class:list={[
             'text-sm font-medium transition-colors',
-            currentPath === link.href || currentPath === link.href + '/'
+            currentPath === link.href || currentPath === link.href + '/' || currentPath.startsWith(link.href + '/')
               ? 'text-accent'
               : 'text-body-muted hover:text-white',
           ]}
