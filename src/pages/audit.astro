@@ -1,0 +1,69 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Free SEO Audit — Meridian" description="Get a free SEO audit for your website. See your top keywords, technical issues, and quick wins in under 2 minutes.">
+
+  <section class="relative min-h-screen flex items-center bg-gradient-to-b from-dark to-dark-card">
+    <div class="mx-auto max-w-2xl px-6 pt-24 pb-32">
+      <p class="text-xs font-medium uppercase tracking-[0.2em] text-accent mb-6">Free SEO Audit</p>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-hero-text leading-[1.1] tracking-tight">
+        See where your site stands in search.
+      </h1>
+      <p class="mt-6 text-lg text-body-muted leading-relaxed">
+        Enter your domain and we'll pull your top keywords, technical issues, and performance scores. Report delivered to your inbox in about 2 minutes.
+      </p>
+
+      <form id="audit-form" action="https://platform.bymeridian.com/request-audit" method="POST" class="mt-10 space-y-4">
+        <div>
+          <input
+            type="text"
+            name="domain"
+            placeholder="yourcompany.com"
+            required
+            class="w-full px-4 py-3 bg-dark-card border border-dark-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-accent transition-colors"
+          />
+        </div>
+        <div>
+          <input
+            type="email"
+            name="email"
+            placeholder="you@company.com"
+            required
+            class="w-full px-4 py-3 bg-dark-card border border-dark-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-accent transition-colors"
+          />
+        </div>
+        <button
+          type="submit"
+          class="w-full px-6 py-3 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors text-sm"
+        >
+          Get my free SEO audit
+        </button>
+      </form>
+
+      <div id="error-msg" class="mt-4 text-red-400 text-sm hidden"></div>
+
+      <p class="mt-8 text-sm text-body-muted">
+        No account needed. No credit card. We'll email you a link to your report.
+      </p>
+    </div>
+  </section>
+
+</Layout>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const error = params.get('error');
+  if (error) {
+    const msg = document.getElementById('error-msg');
+    if (msg) {
+      const messages: Record<string, string> = {
+        invalid_domain: 'Please enter a valid domain (e.g. yourcompany.com).',
+        invalid_email: 'Please enter a valid email address.',
+        rate_limit: "You've hit the daily limit. Try again tomorrow.",
+      };
+      msg.textContent = messages[error] || 'Something went wrong. Please try again.';
+      msg.classList.remove('hidden');
+    }
+  }
+</script>
