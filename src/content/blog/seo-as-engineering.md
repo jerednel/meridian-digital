@@ -44,3 +44,23 @@ This doesn't mean there's no human judgment involved. Strategy is still bespoke.
 But the underlying infrastructure that surfaces the data, identifies the opportunities, and tracks the outcomes? That should be engineered. Built once, improved continuously, running every single day.
 
 That's what we built Meridian to be. Not an agency with a good process. A platform with an SEO team on top of it.
+
+## Side by side
+
+Here's what the two models look like in practice:
+
+| Traditional agency | Meridian |
+|---|---|
+| Monthly audit, then nothing | Site audited every morning — issues surface the day they appear |
+| Recommendations doc | Copy-paste ready fixes, written against your actual page content |
+| Keyword list made once a quarter | Content intelligence pipeline reads what's trending in your industry this week |
+| "Traffic is trending up" report | Conversion decay monitoring — flagged the morning it starts, not after revenue dips |
+| Find out about rank drops in the monthly report | Rank tracking flags drops the day they happen |
+| 30–90 day onboarding before anything ships | Technical fixes in the first week |
+| We'll fix it if you flag it | 30-day post-fix monitoring to confirm improvements stuck |
+| 6–12 month contract | Month to month |
+| Account manager as the single point of failure | Automated pipeline runs whether anyone's on vacation or not |
+
+None of these are philosophical differences. They're structural ones. The outcome of building SEO as infrastructure rather than a service is that the work happens consistently, the data is always current, and there's no lag between when something changes and when someone knows about it.
+
+The retainer model isn't bad because agencies are lazy. It's bad because it's the wrong abstraction for what SEO actually requires.
