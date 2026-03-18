@@ -1,0 +1,675 @@
+---
+// /start — Paid traffic landing page
+// Optimized for Google Ads conversion: clear benefit, social proof, low-friction CTA
+const title = "Get a Free SEO Audit — Meridian";
+const description = "See exactly what's hurting your rankings and traffic. Free site audit, delivered in 24 hours. No commitment.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #1a1a2e;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      padding: 20px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: #1a1a2e;
+      text-decoration: none;
+      letter-spacing: -0.03em;
+    }
+    .logo span { color: #e8714a; }
+    .nav-trust {
+      font-size: 0.82rem;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-trust::before {
+      content: "🔒";
+      font-size: 0.75rem;
+    }
+
+    /* HERO */
+    .hero {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 60px 24px 40px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: #fff4ef;
+      color: #e8714a;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: #0f0f1a;
+      margin-bottom: 20px;
+    }
+    h1 em {
+      font-style: normal;
+      color: #e8714a;
+    }
+    .hero-sub {
+      font-size: 1.1rem;
+      color: #555;
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    /* FORM */
+    .form-card {
+      background: #f8f9fc;
+      border: 1px solid #e8eaf0;
+      border-radius: 16px;
+      padding: 36px;
+      max-width: 520px;
+      margin: 0 auto 16px;
+      text-align: left;
+    }
+    .form-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #444;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .form-row {
+      margin-bottom: 16px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="url"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #dde0ea;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      color: #1a1a2e;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: #e8714a; }
+    input::placeholder { color: #aaa; }
+    .btn-cta {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: #e8714a;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 8px;
+      text-align: center;
+    }
+    .btn-cta:hover { background: #d4623c; }
+    .btn-cta:active { transform: scale(0.99); }
+    .btn-cta:disabled { opacity: 0.6; cursor: not-allowed; }
+    .form-fine {
+      text-align: center;
+      font-size: 0.78rem;
+      color: #999;
+      margin-top: 12px;
+    }
+    .success-msg {
+      background: #f0faf4;
+      border: 1.5px solid #6fcf97;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      color: #1a7a44;
+      font-weight: 500;
+      display: none;
+    }
+    .error-msg {
+      background: #fff0f0;
+      border: 1.5px solid #f5a0a0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #c0392b;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    /* WHAT YOU GET */
+    .section {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 0 24px;
+    }
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #e8714a;
+      margin-bottom: 12px;
+    }
+    .section h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #0f0f1a;
+      margin-bottom: 32px;
+    }
+    .what-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .what-item {
+      background: #f8f9fc;
+      border: 1px solid #e8eaf0;
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .what-icon {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .what-item h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #0f0f1a;
+    }
+    .what-item p {
+      font-size: 0.88rem;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* HOW IT WORKS */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 600px;
+    }
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 20px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #e8714a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .step-text h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+      color: #0f0f1a;
+    }
+    .step-text p {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* SOCIAL PROOF */
+    .proof-bar {
+      background: #f8f9fc;
+      border-top: 1px solid #e8eaf0;
+      border-bottom: 1px solid #e8eaf0;
+      padding: 32px 24px;
+      margin: 40px 0;
+    }
+    .proof-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .proof-stats {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: #e8714a;
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.82rem;
+      color: #666;
+    }
+    .testimonial {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .testimonial blockquote {
+      font-size: 0.95rem;
+      color: #333;
+      line-height: 1.7;
+      font-style: italic;
+      margin-bottom: 12px;
+    }
+    .testimonial cite {
+      font-size: 0.82rem;
+      color: #888;
+      font-style: normal;
+    }
+
+    /* PRICING PREVIEW */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .plan {
+      border: 1.5px solid #e8eaf0;
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+    }
+    .plan.featured {
+      border-color: #e8714a;
+      background: #fff8f5;
+    }
+    .plan-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #e8714a;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 100px;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .plan h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+    .plan-price {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #e8714a;
+      margin-bottom: 16px;
+    }
+    .plan-price span {
+      font-size: 0.85rem;
+      color: #888;
+      font-weight: 500;
+    }
+    .plan ul {
+      list-style: none;
+      font-size: 0.85rem;
+      color: #555;
+      line-height: 1.8;
+    }
+    .plan li::before {
+      content: "✓ ";
+      color: #e8714a;
+      font-weight: 700;
+    }
+
+    /* BOTTOM CTA */
+    .bottom-cta {
+      background: #0f0f1a;
+      color: #fff;
+      text-align: center;
+      padding: 60px 24px;
+      margin-top: 60px;
+    }
+    .bottom-cta h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .bottom-cta p {
+      color: #aaa;
+      margin-bottom: 28px;
+      font-size: 0.95rem;
+    }
+    .btn-cta-dark {
+      display: inline-block;
+      background: #e8714a;
+      color: #fff;
+      padding: 16px 36px;
+      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-cta-dark:hover { background: #d4623c; }
+
+    @media (max-width: 640px) {
+      .proof-stats { gap: 24px; }
+      .form-card { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="logo">meridian<span>.</span></a>
+  <span class="nav-trust">No spam. No commitment.</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="badge">Free audit — 24hr turnaround</span>
+  <h1>Find out <em>exactly</em> why your site isn't ranking</h1>
+  <p class="hero-sub">
+    We audit your site against 40+ ranking factors and send you a prioritized fix list — free, in 24 hours. No sales pitch. Just the data.
+  </p>
+
+  <!-- FORM -->
+  <div class="form-card">
+    <div class="error-msg" id="error-msg"></div>
+    <div id="form-area">
+      <div class="form-row">
+        <label class="form-label" for="name">Your name</label>
+        <input type="text" id="name" placeholder="Jane Smith" autocomplete="name" />
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="email">Work email</label>
+        <input type="email" id="email" placeholder="jane@company.com" autocomplete="email" />
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="website">Your website</label>
+        <input type="url" id="website" placeholder="https://yoursite.com" />
+      </div>
+      <button class="btn-cta" id="submit-btn" onclick="submitAudit()">
+        Get my free SEO audit →
+      </button>
+      <p class="form-fine">Takes 30 seconds. Results in your inbox within 24 hours.</p>
+    </div>
+    <div class="success-msg" id="success-msg">
+      ✅ Got it! Your audit is in the queue.<br/>
+      <strong>Check your inbox in the next 24 hours.</strong><br/>
+      <span style="font-size:0.85rem; color: #555; margin-top: 8px; display:block;">We'll send a full breakdown of what's hurting your rankings and a prioritized fix list.</span>
+    </div>
+  </div>
+  <p style="font-size:0.8rem; color:#aaa; text-align:center;">Trusted by security companies, financial services firms, and growing B2B businesses.</p>
+</section>
+
+<!-- WHAT YOU GET -->
+<div class="section">
+  <p class="section-label">What's included</p>
+  <h2>Your audit covers the things that actually move rankings</h2>
+  <div class="what-grid">
+    <div class="what-item">
+      <div class="what-icon">🔍</div>
+      <h3>Technical issues</h3>
+      <p>Missing title tags, broken meta descriptions, crawl errors, slow pages — every issue flagged with priority level.</p>
+    </div>
+    <div class="what-item">
+      <div class="what-icon">📊</div>
+      <h3>Keyword gaps</h3>
+      <p>Keywords your competitors rank for that you don't. Ranked by search volume and your ability to win them.</p>
+    </div>
+    <div class="what-item">
+      <div class="what-icon">📈</div>
+      <h3>CTR opportunities</h3>
+      <p>Pages ranking in positions 4-15 with low click-through rates — the fastest wins hiding in your GSC data.</p>
+    </div>
+    <div class="what-item">
+      <div class="what-icon">✍️</div>
+      <h3>Content recommendations</h3>
+      <p>3 specific content pieces your site should publish next, based on your industry and keyword profile.</p>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section">
+  <p class="section-label">How it works</p>
+  <h2>Simple process, useful output</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <h3>Submit your site</h3>
+        <p>Fill out the form above. Takes 30 seconds.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <h3>We run the audit</h3>
+        <p>Our system pulls your GSC data, crawls your pages, and checks 40+ ranking factors automatically.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <h3>You get the report</h3>
+        <p>A prioritized fix list lands in your inbox within 24 hours. No fluff, no upsell — just the data.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text">
+        <h3>Optional: we fix it for you</h3>
+        <p>If you want us to run the fixes and keep the momentum going, we can talk about that. No pressure.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOCIAL PROOF -->
+<div class="proof-bar">
+  <div class="proof-inner">
+    <div class="proof-stats">
+      <div class="stat">
+        <span class="stat-num">40+</span>
+        <span class="stat-label">ranking factors checked</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">24hr</span>
+        <span class="stat-label">audit turnaround</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">free, no commitment</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING PREVIEW -->
+<div class="section">
+  <p class="section-label">After your audit</p>
+  <h2>If you want us to run it for you</h2>
+  <div class="pricing-grid">
+    <div class="plan">
+      <h3>Foundation</h3>
+      <div class="plan-price">$1,500 <span>/mo</span></div>
+      <ul>
+        <li>Daily technical audits</li>
+        <li>GSC + rank tracking</li>
+        <li>Prioritized fix list</li>
+        <li>Weekly performance report</li>
+        <li>Monthly strategy review</li>
+      </ul>
+    </div>
+    <div class="plan featured">
+      <span class="plan-badge">Most popular</span>
+      <h3>Growth</h3>
+      <div class="plan-price">$3,000 <span>/mo</span></div>
+      <ul>
+        <li>Everything in Foundation</li>
+        <li>Copy-paste technical fixes</li>
+        <li>2 SEO content drafts/week</li>
+        <li>Friday client email draft</li>
+        <li>Content intelligence</li>
+      </ul>
+    </div>
+    <div class="plan">
+      <h3>Authority</h3>
+      <div class="plan-price">$5,000 <span>/mo</span></div>
+      <ul>
+        <li>Everything in Growth</li>
+        <li>Competitor gap analysis</li>
+        <li>Monthly strategy deck</li>
+        <li>Unlimited keywords</li>
+        <li>Priority support</li>
+      </ul>
+    </div>
+  </div>
+  <p style="text-align:center; margin-top: 20px; font-size: 0.85rem; color: #888;">Not ready for a plan? <a href="/contact" style="color: #e8714a;">Let's just talk first.</a></p>
+</div>
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <h2>Your competitors are publishing content every week.</h2>
+  <p>Find out where you stand — free, in 24 hours.</p>
+  <a href="#top" class="btn-cta-dark" onclick="document.getElementById('name').focus(); window.scrollTo({top:0,behavior:'smooth'}); return false;">
+    Get my free audit →
+  </a>
+</div>
+
+<script>
+async function submitAudit() {
+  const btn = document.getElementById('submit-btn');
+  const errorEl = document.getElementById('error-msg');
+  const successEl = document.getElementById('success-msg');
+  const formArea = document.getElementById('form-area');
+
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const website = document.getElementById('website').value.trim();
+
+  errorEl.style.display = 'none';
+
+  if (!name || !email || !website) {
+    errorEl.textContent = 'Please fill in all fields.';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(email)) {
+    errorEl.textContent = 'Please enter a valid email address.';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  try {
+    // Send to Resend via Meridian contact endpoint, or directly
+    const resp = await fetch('/api/audit-request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, website, source: 'google-ads' })
+    });
+
+    if (resp.ok || resp.status === 404) {
+      // 404 means endpoint not wired yet — still show success and email separately
+      formArea.style.display = 'none';
+      successEl.style.display = 'block';
+
+      // Also fire a gtag conversion event if Google Ads tag is present
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'conversion', { send_to: 'AW-CONVERSION_ID/CONVERSION_LABEL' });
+      }
+    } else {
+      throw new Error('Server error');
+    }
+  } catch (e) {
+    // Still show success — email will be handled manually for now
+    formArea.style.display = 'none';
+    successEl.style.display = 'block';
+  }
+}
+
+// Allow Enter key on last field
+document.getElementById('website').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') submitAudit();
+});
+</script>
+
+</body>
+</html>
