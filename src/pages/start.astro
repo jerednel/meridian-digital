@@ -592,7 +592,7 @@ const description = "See exactly what's hurting your rankings and traffic. Free 
         <label class="form-label" for="website">Your website</label>
         <input type="url" id="website" placeholder="https://yoursite.com" />
       </div>
-      <button class="btn-cta" id="submit-btn" onclick="submitAudit()">
+      <button class="btn-cta" id="submit-btn" type="button">
         Get my free SEO audit →
       </button>
       <p class="form-fine">Takes 30 seconds. Results in your inbox within 24 hours.</p>
@@ -832,6 +832,13 @@ const description = "See exactly what's hurting your rankings and traffic. Free 
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('submit-btn').addEventListener('click', submitAudit);
+  document.getElementById('website').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') submitAudit();
+  });
+});
+
 async function submitAudit() {
   const btn = document.getElementById('submit-btn');
   const errorEl = document.getElementById('error-msg');
@@ -887,10 +894,7 @@ async function submitAudit() {
   }
 }
 
-// Allow Enter key on last field
-document.getElementById('website').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') submitAudit();
-});
+
 </script>
 
 </body>
