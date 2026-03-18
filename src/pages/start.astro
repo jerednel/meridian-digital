@@ -421,9 +421,142 @@ const description = "See exactly what's hurting your rankings and traffic. Free 
     }
     .btn-cta-dark:hover { background: #d4623c; }
 
+    /* SAMPLE AUDIT */
+    .sample-wrapper {
+      border: 1.5px solid #e8eaf0;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .sample-banner {
+      background: #fff8f0;
+      border-bottom: 1.5px solid #fde8d4;
+      padding: 10px 20px;
+      font-size: 0.82rem;
+      color: #b85c28;
+      font-weight: 500;
+      text-align: center;
+    }
+    .sample-audit {
+      padding: 28px;
+      background: #fff;
+    }
+    .sample-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .sample-site {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #0f0f1a;
+    }
+    .sample-date { font-size: 0.8rem; color: #999; margin-top: 2px; }
+    .sample-score-wrap { text-align: center; }
+    .sample-score {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #e8714a;
+      line-height: 1;
+    }
+    .sample-score-label { font-size: 0.75rem; color: #999; margin-top: 2px; }
+    .sample-section-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #444;
+      margin: 20px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .issue-list { display: flex; flex-direction: column; gap: 10px; }
+    .issue {
+      border: 1px solid #e8eaf0;
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .issue.high { border-left: 3px solid #ef4444; }
+    .issue.medium { border-left: 3px solid #f59e0b; }
+    .issue-meta {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .issue-priority {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+    .high-p { background: #fef2f2; color: #ef4444; }
+    .med-p { background: #fffbeb; color: #d97706; }
+    .issue-cat {
+      font-size: 0.72rem;
+      color: #999;
+      padding: 2px 8px;
+      background: #f5f5f5;
+      border-radius: 4px;
+    }
+    .issue-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #0f0f1a;
+      margin-bottom: 6px;
+    }
+    .issue-detail {
+      font-size: 0.82rem;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+    .issue-urls {
+      font-size: 0.75rem;
+      color: #999;
+      font-family: monospace;
+    }
+    .content-recs { display: flex; flex-direction: column; gap: 10px; }
+    .rec {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 12px 14px;
+      background: #f8f9fc;
+      border-radius: 8px;
+    }
+    .rec-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #e8714a;
+      flex-shrink: 0;
+      width: 28px;
+    }
+    .rec-title {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: #0f0f1a;
+      margin-bottom: 3px;
+    }
+    .rec-why { font-size: 0.78rem; color: #777; }
+    .sample-footer {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #f0f0f0;
+      font-size: 0.78rem;
+      color: #999;
+      line-height: 1.6;
+      text-align: center;
+    }
+
     @media (max-width: 640px) {
       .proof-stats { gap: 24px; }
       .form-card { padding: 24px; }
+      .sample-audit { padding: 16px; }
+      .sample-header { flex-direction: column; gap: 12px; align-items: flex-start; }
     }
   </style>
 </head>
@@ -497,6 +630,95 @@ const description = "See exactly what's hurting your rankings and traffic. Free 
       <div class="what-icon">✍️</div>
       <h3>Content recommendations</h3>
       <p>3 specific content pieces your site should publish next, based on your industry and keyword profile.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SAMPLE AUDIT -->
+<div class="section">
+  <p class="section-label">Sample output</p>
+  <h2>Here's what your audit looks like</h2>
+  <div class="sample-wrapper">
+    <div class="sample-banner">
+      📋 Illustrative example — your actual audit will reflect your site's real data
+    </div>
+    <div class="sample-audit">
+
+      <div class="sample-header">
+        <div>
+          <div class="sample-site">acmeplumbing.com</div>
+          <div class="sample-date">Audit run: March 18, 2026</div>
+        </div>
+        <div class="sample-score-wrap">
+          <div class="sample-score">62</div>
+          <div class="sample-score-label">SEO score</div>
+        </div>
+      </div>
+
+      <div class="sample-section-title">🔴 Critical issues (fix first)</div>
+      <div class="issue-list">
+        <div class="issue high">
+          <div class="issue-meta">
+            <span class="issue-priority high-p">High</span>
+            <span class="issue-cat">On-Page</span>
+          </div>
+          <div class="issue-title">Missing meta description on 8 pages</div>
+          <div class="issue-detail">Pages including /services, /contact, /about have no meta description. Google writes its own — usually poorly. Fix: add a 140–160 char description to each. <strong>Impact: CTR +15–30% on affected pages.</strong></div>
+          <div class="issue-urls">Affected: /services · /about · /contact · +5 more</div>
+        </div>
+        <div class="issue high">
+          <div class="issue-meta">
+            <span class="issue-priority high-p">High</span>
+            <span class="issue-cat">On-Page</span>
+          </div>
+          <div class="issue-title">Multiple H1 tags on homepage</div>
+          <div class="issue-detail">Your homepage has 3 H1 tags. Google uses H1 to understand your primary topic — multiple H1s dilute that signal. Fix: keep one H1, convert others to H2.</div>
+          <div class="issue-urls">Affected: / (homepage)</div>
+        </div>
+      </div>
+
+      <div class="sample-section-title">🟡 CTR opportunities</div>
+      <div class="issue-list">
+        <div class="issue medium">
+          <div class="issue-meta">
+            <span class="issue-priority med-p">Opportunity</span>
+            <span class="issue-cat">Rankings</span>
+          </div>
+          <div class="issue-title">3 pages ranking #6–12 with below-average CTR</div>
+          <div class="issue-detail">"emergency plumber chicago" ranks #9 with 2.1% CTR (avg for position 9 is 3.8%). Title tag doesn't include "24/7" or "emergency" — searchers skip it. A title tag update could double clicks without moving rankings.</div>
+          <div class="issue-urls">emergency plumber chicago · drain cleaning service · pipe repair cost</div>
+        </div>
+      </div>
+
+      <div class="sample-section-title">📝 Content recommendations</div>
+      <div class="content-recs">
+        <div class="rec">
+          <span class="rec-num">01</span>
+          <div>
+            <div class="rec-title">"How much does it cost to replace a water heater in Chicago?"</div>
+            <div class="rec-why">1,900 searches/mo · low competition · no page on your site targets this</div>
+          </div>
+        </div>
+        <div class="rec">
+          <span class="rec-num">02</span>
+          <div>
+            <div class="rec-title">"Signs your sewer line needs replacing"</div>
+            <div class="rec-why">2,400 searches/mo · informational intent → high-value service conversion</div>
+          </div>
+        </div>
+        <div class="rec">
+          <span class="rec-num">03</span>
+          <div>
+            <div class="rec-title">"Chicago plumbing codes: what homeowners need to know"</div>
+            <div class="rec-why">Local authority signal · competitors don't have this · good for backlinks</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sample-footer">
+        This is an illustrative example. Your audit will include your site's actual pages, real keyword data, and specific fix instructions — not generic advice.
+        Every tier includes the full audit report.
+      </div>
     </div>
   </div>
 </div>
