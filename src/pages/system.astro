@@ -1,0 +1,926 @@
+---
+// /system — Landing page variant: SEO as infrastructure / agentic workflow angle
+// Targets technical founders, marketing ops, growth-minded operators
+const title = "SEO That Runs Itself — Meridian";
+const description = "An agentic SEO system that monitors your site, surfaces opportunities, and ships content — every single day. No account manager. No lag. Just a system running in the background.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #060d1a;
+      --surface: #0d1624;
+      --border: #1a2540;
+      --border-bright: #243050;
+      --text: #c8d4e8;
+      --text-muted: #6b7fa0;
+      --accent: #4f8ef7;
+      --accent-warm: #e8714a;
+      --green: #22c55e;
+      --yellow: #f59e0b;
+      --red: #ef4444;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      padding: 20px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: -0.03em;
+    }
+    .logo span { color: var(--accent); }
+    .nav-pill {
+      font-size: 0.75rem;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+
+    /* HERO */
+    .hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 80px 24px 60px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(79,142,247,0.1);
+      border: 1px solid rgba(79,142,247,0.3);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      letter-spacing: 0.04em;
+    }
+    .hero-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 24px;
+    }
+    h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+    h1 .warm { color: var(--accent-warm); }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 580px;
+      margin: 0 auto 44px;
+      line-height: 1.8;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: background 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: #3a7de8; }
+    .btn-ghost {
+      display: inline-block;
+      color: var(--text);
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: 1px solid var(--border-bright);
+      transition: border-color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* LIVE PIPELINE VISUALIZATION */
+    .pipeline-section {
+      max-width: 1000px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+    }
+    .pipeline-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .pipeline-step {
+      padding: 24px 20px;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .pipeline-step:last-child { border-right: none; }
+    .pipeline-step::after {
+      content: "→";
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--border-bright);
+      font-size: 1rem;
+      z-index: 1;
+    }
+    .pipeline-step:last-child::after { display: none; }
+    .step-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .status-running { background: rgba(34,197,94,0.1); color: var(--green); }
+    .status-done { background: rgba(79,142,247,0.1); color: var(--accent); }
+    .status-queued { background: rgba(107,127,160,0.1); color: var(--text-muted); }
+    .status-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .status-running .status-dot { animation: pulse 1.5s infinite; }
+    .step-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .step-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .step-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+    .pipeline-footer {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .pipeline-footer code {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      color: var(--accent);
+    }
+
+    /* SECTION */
+    .section {
+      max-width: 960px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+    }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 36px;
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* AGENT CARDS */
+    .agents-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .agent-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      transition: border-color 0.2s;
+    }
+    .agent-card:hover { border-color: var(--accent); }
+    .agent-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .agent-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: #fff;
+    }
+    .agent-schedule {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      background: var(--bg);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    .agent-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+    .agent-outputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .output-tag {
+      font-size: 0.7rem;
+      background: rgba(79,142,247,0.08);
+      border: 1px solid rgba(79,142,247,0.2);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* COMPARISON */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .compare-table th {
+      background: var(--surface);
+      padding: 14px 20px;
+      text-align: left;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table th.highlight {
+      color: var(--accent);
+    }
+    .compare-table td {
+      padding: 14px 20px;
+      font-size: 0.88rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td.highlight { color: #fff; font-weight: 500; }
+    .compare-table td.muted { color: var(--text-muted); }
+    .check { color: var(--green); font-weight: 700; }
+    .cross { color: var(--red); }
+
+    /* LOG STREAM */
+    .log-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 2;
+      overflow: hidden;
+    }
+    .log-line { display: flex; gap: 12px; }
+    .log-time { color: var(--text-muted); flex-shrink: 0; }
+    .log-agent { color: var(--accent); flex-shrink: 0; width: 130px; }
+    .log-msg { color: var(--text); }
+    .log-success { color: var(--green); }
+    .log-info { color: var(--yellow); }
+
+    /* PRICING */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+    }
+    .plan {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      position: relative;
+    }
+    .plan.featured {
+      border-color: var(--accent);
+    }
+    .plan-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 100px;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .plan h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .plan-price {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 20px;
+      line-height: 1;
+    }
+    .plan-price sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      vertical-align: baseline;
+    }
+    .plan ul {
+      list-style: none;
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 2;
+    }
+    .plan li::before { content: "✓ "; color: var(--accent); font-weight: 700; }
+
+    /* FORM */
+    .form-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .form-section h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .form-section p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 24px;
+    }
+    .form-row { margin-bottom: 14px; }
+    .form-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="url"] {
+      width: 100%;
+      padding: 11px 14px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: var(--accent); }
+    input::placeholder { color: var(--text-muted); }
+    .btn-submit {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 6px;
+    }
+    .btn-submit:hover { background: #3a7de8; }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+    .form-fine {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+    .success-msg {
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      color: var(--green);
+      font-weight: 500;
+      display: none;
+    }
+    .error-msg {
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--red);
+      font-size: 0.82rem;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    /* BOTTOM */
+    .bottom-cta {
+      text-align: center;
+      padding: 80px 24px;
+      border-top: 1px solid var(--border);
+      margin-top: 80px;
+    }
+    .bottom-cta h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .bottom-cta p { color: var(--text-muted); margin-bottom: 28px; }
+
+    @media (max-width: 700px) {
+      .pipeline { grid-template-columns: 1fr 1fr; }
+      .pipeline-step::after { display: none; }
+      .form-section { padding: 24px; }
+      .compare-table { font-size: 0.78rem; }
+      .compare-table td, .compare-table th { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="logo">meridian<span>.</span></a>
+  <span class="nav-pill">Agentic SEO Infrastructure</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-badge">Running 24/7 across your sites</span>
+  <h1>SEO that runs like <em>infrastructure</em>,<br/>not a <span class="warm">retainer</span></h1>
+  <p class="hero-sub">
+    Six specialized agents — trend scout, tech auditor, content strategist, content creator, link builder, coordinator — running on schedule, every week. Your site gets faster, more visible, and more authoritative while you focus on your business.
+  </p>
+  <div class="hero-ctas">
+    <a href="#audit" class="btn-primary">Get a free site audit →</a>
+    <a href="#how-it-works" class="btn-ghost">See how it works</a>
+  </div>
+</section>
+
+<!-- LIVE PIPELINE -->
+<div class="pipeline-section">
+  <p class="pipeline-label">Live pipeline — running right now for active clients</p>
+  <div class="pipeline">
+    <div class="pipeline-step">
+      <div class="step-status status-done">
+        <span class="status-dot"></span> Done
+      </div>
+      <div class="step-name">Trend Scout</div>
+      <div class="step-desc">Scanned 47 news sources, Reddit, trade pubs</div>
+      <div class="step-time">03:00 UTC · 14s</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-status status-done">
+        <span class="status-dot"></span> Done
+      </div>
+      <div class="step-name">Tech Auditor</div>
+      <div class="step-desc">Crawled 20 pages · 3 issues flagged</div>
+      <div class="step-time">03:01 UTC · 40s</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-status status-running">
+        <span class="status-dot"></span> Running
+      </div>
+      <div class="step-name">Content Strategist</div>
+      <div class="step-desc">Analyzing keyword gaps · generating briefs</div>
+      <div class="step-time">03:02 UTC · 66s↑</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-status status-queued">
+        <span class="status-dot"></span> Queued
+      </div>
+      <div class="step-name">Content Creator</div>
+      <div class="step-desc">Waiting on strategist handoff</div>
+      <div class="step-time">Starts ~03:04</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-status status-queued">
+        <span class="status-dot"></span> Queued
+      </div>
+      <div class="step-name">Link Builder</div>
+      <div class="step-desc">Prospect discovery + outreach drafts</div>
+      <div class="step-time">Mon 10:00 UTC</div>
+    </div>
+  </div>
+  <p class="pipeline-footer">This runs automatically. You receive a <code>weekly_report</code> every Monday morning.</p>
+</div>
+
+<!-- AGENTS -->
+<div class="section" id="how-it-works">
+  <p class="section-label">The agent fleet</p>
+  <h2>Six agents. One coordinated system.</h2>
+  <p class="section-sub">Each agent has a defined role, a schedule, and a handoff protocol. The Coordinator synthesizes everything into your weekly report.</p>
+  <div class="agents-grid">
+    <div class="agent-card">
+      <div class="agent-header">
+        <span class="agent-name">🔍 Trend Scout</span>
+        <span class="agent-schedule">daily 03:00</span>
+      </div>
+      <p class="agent-desc">Scans news, Reddit, and trade publications for trending topics in your industry. Feeds signal to the Content Strategist so briefs are informed by what's actually moving right now.</p>
+      <div class="agent-outputs">
+        <span class="output-tag">trend_report</span>
+        <span class="output-tag">topic_signals</span>
+      </div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-header">
+        <span class="agent-name">🛡 Tech Auditor</span>
+        <span class="agent-schedule">daily 03:00</span>
+      </div>
+      <p class="agent-desc">Crawls your site every morning. Flags missing meta tags, broken canonicals, slow pages, noindex issues. Critical issues surface before they cost you traffic.</p>
+      <div class="agent-outputs">
+        <span class="output-tag">issue_list</span>
+        <span class="output-tag">fix_priority</span>
+      </div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-header">
+        <span class="agent-name">🗺 Content Strategist</span>
+        <span class="agent-schedule">weekly Tue</span>
+      </div>
+      <p class="agent-desc">Analyzes your keyword gaps, CTR opportunities, and competitor content. Creates detailed briefs for each piece — keyword, angle, word count, internal linking structure.</p>
+      <div class="agent-outputs">
+        <span class="output-tag">content_briefs</span>
+        <span class="output-tag">keyword_gaps</span>
+      </div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-header">
+        <span class="agent-name">✍️ Content Creator</span>
+        <span class="agent-schedule">weekly Tue</span>
+      </div>
+      <p class="agent-desc">Picks up approved briefs and writes full drafts — your voice, your keywords, your industry. Drafts land in the platform ready for your review and one-click publish.</p>
+      <div class="agent-outputs">
+        <span class="output-tag">draft_content</span>
+        <span class="output-tag">review_link</span>
+      </div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-header">
+        <span class="agent-name">🔗 Link Builder</span>
+        <span class="agent-schedule">weekly Mon</span>
+      </div>
+      <p class="agent-desc">Discovers qualified link prospects, scores them by relevance and authority, and drafts outreach emails. You approve before anything sends.</p>
+      <div class="agent-outputs">
+        <span class="output-tag">prospects</span>
+        <span class="output-tag">outreach_drafts</span>
+      </div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-header">
+        <span class="agent-name">📋 Coordinator</span>
+        <span class="agent-schedule">weekly Mon</span>
+      </div>
+      <p class="agent-desc">Synthesizes outputs from all agents into your weekly report. Traffic trends, ranking changes, content shipped, issues resolved. One email, full picture.</p>
+      <div class="agent-outputs">
+        <span class="output-tag">weekly_report</span>
+        <span class="output-tag">client_email</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOG STREAM -->
+<div class="section">
+  <p class="section-label">What it looks like in practice</p>
+  <h2>A system log, not a status update</h2>
+  <p class="section-sub">Every run is logged. Every handoff is tracked. You always know exactly what ran, when, and what it produced.</p>
+  <div class="log-block">
+    <div class="log-line"><span class="log-time">Mon 03:00</span><span class="log-agent">[trend_scout]</span><span class="log-msg">Starting weekly scan — 47 sources queued</span></div>
+    <div class="log-line"><span class="log-time">Mon 03:00</span><span class="log-agent">[tech_auditor]</span><span class="log-msg">Crawling 20 pages for isotecsecurity.com</span></div>
+    <div class="log-line"><span class="log-time">Mon 03:01</span><span class="log-agent">[tech_auditor]</span><span class="log-success">✓ 3 issues flagged: 2 high, 1 medium</span></div>
+    <div class="log-line"><span class="log-time">Mon 03:01</span><span class="log-agent">[trend_scout]</span><span class="log-success">✓ 12 trending topics identified → handoff to strategist</span></div>
+    <div class="log-line"><span class="log-time">Mon 03:02</span><span class="log-agent">[content_strategist]</span><span class="log-msg">Analyzing keyword gaps vs 3 competitors</span></div>
+    <div class="log-line"><span class="log-time">Mon 03:03</span><span class="log-agent">[content_strategist]</span><span class="log-success">✓ 2 briefs created → handoff to content_creator</span></div>
+    <div class="log-line"><span class="log-time">Mon 03:03</span><span class="log-agent">[content_creator]</span><span class="log-msg">Writing "Mantrap systems for financial institutions" (1,580 words)</span></div>
+    <div class="log-line"><span class="log-time">Mon 03:05</span><span class="log-agent">[content_creator]</span><span class="log-success">✓ Draft ready → review link sent</span></div>
+    <div class="log-line"><span class="log-time">Mon 10:00</span><span class="log-agent">[link_builder]</span><span class="log-msg">Discovering prospects for security industry vertical</span></div>
+    <div class="log-line"><span class="log-time">Mon 10:02</span><span class="log-agent">[link_builder]</span><span class="log-success">✓ 8 qualified prospects queued for review</span></div>
+    <div class="log-line"><span class="log-time">Mon 10:02</span><span class="log-agent">[coordinator]</span><span class="log-info">→ Compiling weekly report</span></div>
+    <div class="log-line"><span class="log-time">Mon 10:03</span><span class="log-agent">[coordinator]</span><span class="log-success">✓ Weekly report delivered · 1 draft · 3 issues · 8 prospects</span></div>
+  </div>
+</div>
+
+<!-- COMPARISON -->
+<div class="section">
+  <p class="section-label">Why not an agency or DIY?</p>
+  <h2>Built for operators, not for agencies</h2>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Capability</th>
+        <th>Traditional agency</th>
+        <th>DIY tools</th>
+        <th class="highlight">Meridian</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Daily site monitoring</td>
+        <td class="muted cross">✗ Monthly</td>
+        <td class="muted">Manual</td>
+        <td class="highlight check">✓ Automated daily</td>
+      </tr>
+      <tr>
+        <td>Content production</td>
+        <td class="muted">Slow + expensive</td>
+        <td class="muted cross">✗ Not included</td>
+        <td class="highlight check">✓ 2 drafts/week</td>
+      </tr>
+      <tr>
+        <td>Trend-informed briefs</td>
+        <td class="muted cross">✗ Rarely</td>
+        <td class="muted cross">✗</td>
+        <td class="highlight check">✓ Weekly</td>
+      </tr>
+      <tr>
+        <td>Link prospecting</td>
+        <td class="muted">Expensive add-on</td>
+        <td class="muted">Manual</td>
+        <td class="highlight check">✓ Automated weekly</td>
+      </tr>
+      <tr>
+        <td>Single point of failure</td>
+        <td class="muted">Account manager</td>
+        <td class="muted">You</td>
+        <td class="highlight check">✓ None — it's a system</td>
+      </tr>
+      <tr>
+        <td>Transparent operation</td>
+        <td class="muted cross">✗ Black box</td>
+        <td class="muted">Partial</td>
+        <td class="highlight check">✓ Full run logs</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PRICING -->
+<div class="section">
+  <p class="section-label">Pricing</p>
+  <h2>Infrastructure pricing, not agency pricing</h2>
+  <p class="section-sub">A system that runs every day costs less than a retainer that meets once a month.</p>
+  <div class="pricing-grid">
+    <div class="plan">
+      <h3>Foundation</h3>
+      <div class="plan-price">$1,500<sub>/mo</sub></div>
+      <ul>
+        <li>Daily tech audits</li>
+        <li>Rank tracking (20 keywords)</li>
+        <li>Weekly performance report</li>
+        <li>Monthly strategy review</li>
+        <li>Full run logs + audit history</li>
+      </ul>
+    </div>
+    <div class="plan featured">
+      <span class="plan-badge">Most popular</span>
+      <h3>Growth</h3>
+      <div class="plan-price">$3,000<sub>/mo</sub></div>
+      <ul>
+        <li>Everything in Foundation</li>
+        <li>Content Strategist + Creator</li>
+        <li>2 SEO drafts per week</li>
+        <li>Trend Scout (daily)</li>
+        <li>30 keywords tracked</li>
+      </ul>
+    </div>
+    <div class="plan">
+      <h3>Authority</h3>
+      <div class="plan-price">$5,000<sub>/mo</sub></div>
+      <ul>
+        <li>Everything in Growth</li>
+        <li>Link Builder agent</li>
+        <li>Competitor gap analysis</li>
+        <li>Unlimited keywords</li>
+        <li>Priority support</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- FREE AUDIT FORM -->
+<div class="section" id="audit">
+  <div class="form-section">
+    <h3>Start with a free audit</h3>
+    <p>See exactly what's slowing your site down. Free, in 24 hours. No commitment.</p>
+    <div class="error-msg" id="error-msg"></div>
+    <div id="form-area">
+      <div class="form-row">
+        <label class="form-label" for="name">Name</label>
+        <input type="text" id="name" placeholder="Jane Smith" autocomplete="name" />
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="email">Work email</label>
+        <input type="email" id="email" placeholder="jane@company.com" autocomplete="email" />
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="website">Website</label>
+        <input type="url" id="website" placeholder="https://yoursite.com" />
+      </div>
+      <button class="btn-submit" id="submit-btn" onclick="submitAudit()">
+        Get my free audit →
+      </button>
+      <p class="form-fine">Results in your inbox within 24 hours. No sales call required.</p>
+    </div>
+    <div class="success-msg" id="success-msg">
+      ✓ Queued. Expect your audit within 24 hours.
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <h2>Your competitors are publishing content every week.</h2>
+  <p>Your SEO system should be running while you sleep.</p>
+  <a href="#audit" class="btn-primary" onclick="document.getElementById('name').focus(); document.querySelector('#audit').scrollIntoView({behavior:'smooth'}); return false;">
+    Start the system →
+  </a>
+</div>
+
+<script>
+async function submitAudit() {
+  const btn = document.getElementById('submit-btn');
+  const errorEl = document.getElementById('error-msg');
+  const successEl = document.getElementById('success-msg');
+  const formArea = document.getElementById('form-area');
+
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const website = document.getElementById('website').value.trim();
+
+  errorEl.style.display = 'none';
+
+  if (!name || !email || !website) {
+    errorEl.textContent = 'Please fill in all fields.';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(email)) {
+    errorEl.textContent = 'Please enter a valid email address.';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  try {
+    await fetch('/api/audit-request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, website, source: 'google-ads-infra' })
+    });
+  } catch (e) {}
+
+  formArea.style.display = 'none';
+  successEl.style.display = 'block';
+
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'conversion', { send_to: 'AW-CONVERSION_ID/CONVERSION_LABEL' });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('website').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') submitAudit();
+  });
+});
+</script>
+
+</body>
+</html>
