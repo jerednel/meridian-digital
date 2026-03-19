@@ -1056,12 +1056,12 @@ async function submitAudit() {
       successEl.style.display = 'block';
 
       fireConversion('AUDIT_LABEL');
+      window.location.href = '/thank-you?type=audit';
     } else {
       throw new Error('Server error');
     }
   } catch (e) {
-    formArea.style.display = 'none';
-    successEl.style.display = 'block';
+    window.location.href = '/thank-you?type=audit';
   }
 }
 
@@ -1100,12 +1100,9 @@ async function submitSignup() {
     });
   } catch (_) {}
 
-  document.getElementById('panel-signup').querySelectorAll('input, button').forEach(function(el) { el.disabled = true; });
-  successEl.style.display = 'block';
-  btn.style.display = 'none';
-
   // Macro conversion — higher value signal to Google Ads
   fireConversion('SIGNUP_LABEL');
+  window.location.href = '/thank-you?type=signup';
 }
 </script>
 

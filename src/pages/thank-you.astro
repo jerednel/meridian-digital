@@ -1,0 +1,157 @@
+---
+const title = "You're in — Meridian";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <!-- Google Ads conversion tracking fires on page load -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-REPLACE_ME"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-REPLACE_ME');
+
+    // Determine conversion type from URL param
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type') || 'audit';
+
+    if (type === 'signup') {
+      gtag('event', 'conversion', { send_to: 'AW-REPLACE_ME/SIGNUP_LABEL', value: 1500.0, currency: 'USD' });
+    } else {
+      gtag('event', 'conversion', { send_to: 'AW-REPLACE_ME/AUDIT_LABEL' });
+    }
+  </script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fafafa;
+      color: #0f0f1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 20px;
+      padding: 56px 48px;
+      max-width: 540px;
+      width: 100%;
+      text-align: center;
+    }
+    .icon { font-size: 3rem; margin-bottom: 20px; }
+    h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    .sub {
+      color: #666;
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .what-next {
+      background: #f8f9fc;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: left;
+      margin-bottom: 28px;
+    }
+    .what-next-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #999;
+      margin-bottom: 14px;
+    }
+    .step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    .step:last-child { margin-bottom: 0; }
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e8714a;
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-text { font-size: 0.88rem; color: #444; line-height: 1.5; }
+    .step-text strong { color: #0f0f1a; }
+    a.btn {
+      display: inline-block;
+      background: #e8714a;
+      color: #fff;
+      padding: 13px 28px;
+      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+    }
+    @media (max-width: 540px) {
+      .card { padding: 36px 24px; }
+      h1 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">✅</div>
+    <h1 id="headline">You're in the queue</h1>
+    <p class="sub" id="subtext">
+      Your site audit is running. Expect results in your inbox within 24 hours — real data, specific issues, no fluff.
+    </p>
+    <div class="what-next">
+      <div class="what-next-title">What happens next</div>
+      <div id="steps-audit">
+        <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Audit runs automatically</strong> — we crawl your site, pull rank data, and analyze your competitors.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Report lands in your inbox</strong> — within 24 hours, you'll get a full breakdown: issues, opportunities, and 3 content recommendations.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Optional next step</strong> — if you want us to fix it, plans start at $1,500/mo. No pressure, no sales call required.</div></div>
+      </div>
+      <div id="steps-signup" style="display:none;">
+        <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Jeremy will reach out within 2 hours</strong> — to confirm your plan and schedule onboarding.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Your first audit kicks off immediately</strong> — we crawl your site, pull rankings, and send the report same day.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Agents go live on week one</strong> — daily tech monitoring, weekly content, link prospecting. All running automatically.</div></div>
+      </div>
+    </div>
+    <a href="https://bymeridian.com" class="btn">Back to Meridian →</a>
+  </div>
+
+  <script>
+    const p = new URLSearchParams(window.location.search);
+    if (p.get('type') === 'signup') {
+      document.getElementById('headline').textContent = "You're in — welcome aboard";
+      document.getElementById('subtext').textContent = "Jeremy will be in touch within 2 hours to get you set up. Your first audit starts immediately.";
+      document.getElementById('steps-audit').style.display = 'none';
+      document.getElementById('steps-signup').style.display = '';
+    }
+  </script>
+</body>
+</html>
