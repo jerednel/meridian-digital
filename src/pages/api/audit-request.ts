@@ -70,6 +70,15 @@ export const POST: APIRoute = async ({ request }) => {
     `,
   });
 
+  // Queue the automated audit — must await before returning or Vercel kills the request
+  try {
+    await fetch('https://app.bymeridian.com/api/free-audit-webhook', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, website, source }),
+    });
+  } catch (_) { /* non-fatal — emails already sent */ }
+
   return new Response(JSON.stringify({ success: true }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
