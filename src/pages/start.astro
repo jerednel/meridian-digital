@@ -1093,14 +1093,21 @@ async function submitSignup() {
   btn.textContent = 'Submitting...';
 
   try {
-    await fetch('/api/audit-request', {
+    const resp = await fetch('/api/create-checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, website, source: 'google-ads-signup', plan }),
+      body: JSON.stringify({ name, email, website, plan, source: 'google-ads-signup' }),
     });
+    const json = await resp.json();
+    if (json.url) {
+      // Macro conversion fires before redirect — Google Ads captures it
+      fireConversion('SIGNUP_LABEL');
+      window.location.href = json.url;
+      return;
+    }
   } catch (_) {}
 
-  // Macro conversion — higher value signal to Google Ads
+  // Fallback: send to thank-you directly if Stripe fails
   fireConversion('SIGNUP_LABEL');
   window.location.href = '/thank-you?type=signup';
 }
