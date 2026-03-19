@@ -552,11 +552,98 @@ const description = "See exactly what's hurting your rankings and traffic. Free 
       text-align: center;
     }
 
+    /* FORM TABS */
+    .form-tabs {
+      display: flex;
+      gap: 0;
+      margin: -32px -32px 24px;
+      border-bottom: 1px solid #e8eaf0;
+      background: #f8f9fc;
+      border-radius: 14px 14px 0 0;
+      overflow: hidden;
+    }
+    .form-tab {
+      flex: 1;
+      padding: 14px 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: #999;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .form-tab.active {
+      color: #e8714a;
+      background: #fff;
+      border-bottom-color: #e8714a;
+    }
+    .form-tab:hover:not(.active) { color: #555; background: #f0f1f5; }
+
+    /* SIGNUP PANEL */
+    .signup-intro {
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .signup-plans {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .signup-plan {
+      cursor: pointer;
+      position: relative;
+    }
+    .signup-plan input[type="radio"] { display: none; }
+    .signup-plan-inner {
+      border: 1.5px solid #e8eaf0;
+      border-radius: 10px;
+      padding: 14px 12px;
+      transition: border-color 0.2s;
+      position: relative;
+    }
+    .signup-plan.selected .signup-plan-inner,
+    .signup-plan input:checked ~ .signup-plan-inner {
+      border-color: #e8714a;
+      background: #fff8f5;
+    }
+    .signup-plan-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #e8714a;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .signup-plan-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #0f0f1a;
+      margin-bottom: 2px;
+    }
+    .signup-plan-price {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #e8714a;
+      margin-bottom: 4px;
+    }
+    .signup-plan-price span { font-size: 0.72rem; color: #999; font-weight: 500; }
+    .signup-plan-desc { font-size: 0.72rem; color: #777; line-height: 1.4; }
+
     @media (max-width: 640px) {
       .proof-stats { gap: 24px; }
       .form-card { padding: 24px; }
+      .form-tabs { margin: -24px -24px 20px; }
       .sample-audit { padding: 16px; }
       .sample-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+      .signup-plans { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -576,31 +663,92 @@ const description = "See exactly what's hurting your rankings and traffic. Free 
     We audit your site against 40+ ranking factors and send you a prioritized fix list — free, in 24 hours. No sales pitch. Just the data.
   </p>
 
-  <!-- FORM -->
+  <!-- FORM TABS -->
   <div class="form-card">
-    <div class="error-msg" id="error-msg"></div>
-    <div id="form-area">
-      <div class="form-row">
-        <label class="form-label" for="name">Your name</label>
-        <input type="text" id="name" placeholder="Jane Smith" autocomplete="name" />
-      </div>
-      <div class="form-row">
-        <label class="form-label" for="email">Work email</label>
-        <input type="email" id="email" placeholder="jane@company.com" autocomplete="email" />
-      </div>
-      <div class="form-row">
-        <label class="form-label" for="website">Your website</label>
-        <input type="url" id="website" placeholder="https://yoursite.com" />
-      </div>
-      <button class="btn-cta" id="submit-btn" type="button">
-        Get my free SEO audit →
-      </button>
-      <p class="form-fine">Takes 30 seconds. Results in your inbox within 24 hours.</p>
+    <div class="form-tabs">
+      <button class="form-tab active" id="tab-audit" type="button" onclick="switchTab('audit')">Get free audit</button>
+      <button class="form-tab" id="tab-signup" type="button" onclick="switchTab('signup')">Start now — from $1,500/mo</button>
     </div>
-    <div class="success-msg" id="success-msg">
-      ✅ Got it! Your audit is in the queue.<br/>
-      <strong>Check your inbox in the next 24 hours.</strong><br/>
-      <span style="font-size:0.85rem; color: #555; margin-top: 8px; display:block;">We'll send a full breakdown of what's hurting your rankings and a prioritized fix list.</span>
+
+    <!-- AUDIT TAB -->
+    <div id="panel-audit">
+      <div class="error-msg" id="error-msg"></div>
+      <div id="form-area">
+        <div class="form-row">
+          <label class="form-label" for="name">Your name</label>
+          <input type="text" id="name" placeholder="Jane Smith" autocomplete="name" />
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="email">Work email</label>
+          <input type="email" id="email" placeholder="jane@company.com" autocomplete="email" />
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="website">Your website</label>
+          <input type="url" id="website" placeholder="https://yoursite.com" />
+        </div>
+        <button class="btn-cta" id="submit-btn" type="button">
+          Get my free SEO audit →
+        </button>
+        <p class="form-fine">Takes 30 seconds. Results in your inbox within 24 hours.</p>
+      </div>
+      <div class="success-msg" id="success-msg">
+        ✅ Got it! Your audit is in the queue.<br/>
+        <strong>Check your inbox in the next 24 hours.</strong><br/>
+        <span style="font-size:0.85rem; color: #555; margin-top: 8px; display:block;">We'll send a full breakdown of what's hurting your rankings and a prioritized fix list.</span>
+      </div>
+    </div>
+
+    <!-- SIGNUP TAB -->
+    <div id="panel-signup" style="display:none;">
+      <p class="signup-intro">Choose your plan and get started today. Every plan includes the full site audit on day one.</p>
+      <div class="signup-plans">
+        <label class="signup-plan" id="plan-foundation">
+          <input type="radio" name="plan" value="foundation" />
+          <div class="signup-plan-inner">
+            <div class="signup-plan-name">Foundation</div>
+            <div class="signup-plan-price">$1,500<span>/mo</span></div>
+            <div class="signup-plan-desc">Daily tech audits, rank tracking, weekly report</div>
+          </div>
+        </label>
+        <label class="signup-plan selected" id="plan-growth">
+          <input type="radio" name="plan" value="growth" checked />
+          <div class="signup-plan-inner">
+            <div class="signup-plan-badge">Most popular</div>
+            <div class="signup-plan-name">Growth</div>
+            <div class="signup-plan-price">$3,000<span>/mo</span></div>
+            <div class="signup-plan-desc">+ Content creation, 2 drafts/week, trend scout</div>
+          </div>
+        </label>
+        <label class="signup-plan" id="plan-authority">
+          <input type="radio" name="plan" value="authority" />
+          <div class="signup-plan-inner">
+            <div class="signup-plan-name">Authority</div>
+            <div class="signup-plan-price">$5,000<span>/mo</span></div>
+            <div class="signup-plan-desc">+ Link building, competitor gap analysis</div>
+          </div>
+        </label>
+      </div>
+      <div class="form-row" style="margin-top:20px;">
+        <label class="form-label" for="su-name">Your name</label>
+        <input type="text" id="su-name" placeholder="Jane Smith" autocomplete="name" />
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="su-email">Work email</label>
+        <input type="email" id="su-email" placeholder="jane@company.com" autocomplete="email" />
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="su-website">Your website</label>
+        <input type="url" id="su-website" placeholder="https://yoursite.com" />
+      </div>
+      <div class="error-msg" id="su-error-msg"></div>
+      <button class="btn-cta" id="su-submit-btn" type="button">
+        Start my plan →
+      </button>
+      <p class="form-fine">We'll reach out within 2 hours to confirm and schedule onboarding.</p>
+      <div class="success-msg" id="su-success-msg">
+        ✅ You're in! Expect a message from Jeremy within 2 hours.<br/>
+        <strong>We'll schedule onboarding and kick off your first audit immediately.</strong>
+      </div>
     </div>
   </div>
   <p style="font-size:0.8rem; color:#aaa; text-align:center;">Trusted by security companies, financial services firms, and growing B2B businesses.</p>
@@ -832,10 +980,37 @@ const description = "See exactly what's hurting your rankings and traffic. Free 
 </div>
 
 <script>
+/* --- Google Ads conversion tracking stubs --- */
+function fireConversion(label) {
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'conversion', { send_to: 'AW-REPLACE_ME/' + label });
+  }
+}
+
+/* --- Tab switcher --- */
+function switchTab(tab) {
+  document.getElementById('panel-audit').style.display = tab === 'audit' ? '' : 'none';
+  document.getElementById('panel-signup').style.display = tab === 'signup' ? '' : 'none';
+  document.getElementById('tab-audit').classList.toggle('active', tab === 'audit');
+  document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
+}
+
+/* --- Plan selector --- */
 document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.signup-plan').forEach(function(label) {
+    label.addEventListener('click', function() {
+      document.querySelectorAll('.signup-plan').forEach(function(l) { l.classList.remove('selected'); });
+      label.classList.add('selected');
+    });
+  });
+
   document.getElementById('submit-btn').addEventListener('click', submitAudit);
+  document.getElementById('su-submit-btn').addEventListener('click', submitSignup);
   document.getElementById('website').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') submitAudit();
+  });
+  document.getElementById('su-website').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') submitSignup();
   });
 });
 
@@ -880,21 +1055,58 @@ async function submitAudit() {
       formArea.style.display = 'none';
       successEl.style.display = 'block';
 
-      // Also fire a gtag conversion event if Google Ads tag is present
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'conversion', { send_to: 'AW-CONVERSION_ID/CONVERSION_LABEL' });
-      }
+      fireConversion('AUDIT_LABEL');
     } else {
       throw new Error('Server error');
     }
   } catch (e) {
-    // Still show success — email will be handled manually for now
     formArea.style.display = 'none';
     successEl.style.display = 'block';
   }
 }
 
+async function submitSignup() {
+  const btn = document.getElementById('su-submit-btn');
+  const errorEl = document.getElementById('su-error-msg');
+  const successEl = document.getElementById('su-success-msg');
 
+  const name = document.getElementById('su-name').value.trim();
+  const email = document.getElementById('su-email').value.trim();
+  const website = document.getElementById('su-website').value.trim();
+  const plan = (document.querySelector('input[name="plan"]:checked') || {}).value || 'growth';
+
+  errorEl.style.display = 'none';
+
+  if (!name || !email || !website) {
+    errorEl.textContent = 'Please fill in all fields.';
+    errorEl.style.display = 'block';
+    return;
+  }
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(email)) {
+    errorEl.textContent = 'Please enter a valid email address.';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  try {
+    await fetch('/api/audit-request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, website, source: 'google-ads-signup', plan }),
+    });
+  } catch (_) {}
+
+  document.getElementById('panel-signup').querySelectorAll('input, button').forEach(function(el) { el.disabled = true; });
+  successEl.style.display = 'block';
+  btn.style.display = 'none';
+
+  // Macro conversion — higher value signal to Google Ads
+  fireConversion('SIGNUP_LABEL');
+}
 </script>
 
 </body>
