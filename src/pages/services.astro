@@ -2,180 +2,107 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Services — Meridian" description="Clear deliverables, custom strategy. Choose the level of SEO coverage that fits your business — Foundation, Growth, or Authority.">
+<Layout title="Services — Meridian" description="Clear deliverables, custom strategy. Choose the level of SEO coverage that fits your business — self-serve platform or agency partnership.">
 
   <!-- Hero -->
   <section class="bg-gradient-to-b from-dark to-dark-card pt-32 pb-20 md:pb-28">
     <div class="mx-auto max-w-7xl px-6">
       <h1 class="text-5xl md:text-7xl font-extrabold text-hero-text leading-[1.05] tracking-tight max-w-4xl">
-        Clear deliverables.<br />Custom strategy.
+        Clear deliverables.<br />Automated execution.
       </h1>
       <p class="mt-6 text-lg text-body-muted max-w-2xl leading-relaxed">
-        You know exactly what you're getting every week. The thinking behind it is built for you.
+        Choose how you want to work: self-serve platform with AI agents running 24/7, or hands-on agency partnership with direct strategist access.
       </p>
     </div>
   </section>
 
-  <!-- Tiers -->
+  <!-- Self-Serve Platform Tiers -->
   <section class="bg-white py-24 md:py-32">
-    <div class="mx-auto max-w-4xl px-6 space-y-20">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <p class="text-xs font-medium uppercase tracking-[0.2em] text-accent mb-4">Self-Serve Platform</p>
+        <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">Start in minutes. Scale as you grow.</h2>
+        <p class="mt-4 text-light-text text-lg">The AI team runs 24/7. No calls required. 14-day free trial, no credit card.</p>
+      </div>
 
-      <!-- Foundation -->
-      <div>
-        <h2 class="text-3xl font-bold text-dark">Foundation</h2>
-        <p class="text-4xl font-bold text-accent mt-2">$750<span class="text-lg font-normal text-light-text">/mo</span></p>
-        <p class="mt-2 text-light-text">Best for: businesses that create their own content but need professional technical oversight</p>
-        <div class="mt-8 space-y-4">
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Daily GSC + rank tracking pull (up to 20 keywords)</p>
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Foundation -->
+        <div class="border border-gray-200 rounded-2xl p-8 flex flex-col">
+          <div>
+            <h3 class="text-xl font-bold text-dark">Foundation</h3>
+            <p class="text-4xl font-bold text-accent mt-2">$49<span class="text-lg font-normal text-light-text">/mo</span></p>
+            <p class="mt-2 text-sm text-light-text">Best for: businesses that create their own content but need professional technical oversight</p>
+            <ul class="mt-8 space-y-3 text-[15px] text-light-text">
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Daily GSC + rank tracking (up to 20 keywords)</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Live page metadata audit (title, meta, H1, canonical)</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Schema validation (FAQPage, Organization, Product)</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Core Web Vitals monitoring (LCP, CLS, INP daily)</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> CTR opportunity detection & prioritization</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Weekly performance report with WoW trends</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Monthly strategy review (AI-generated)</li>
+            </ul>
           </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Live page metadata audit (title tag, meta description, H1, canonical, indexability)</p>
+          <a href="/start" class="mt-8 block w-full text-center px-6 py-3 border border-gray-200 text-dark font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
+            Start with Foundation
+          </a>
+        </div>
+
+        <!-- Growth -->
+        <div class="relative border-2 border-accent rounded-2xl p-8 flex flex-col">
+          <span class="absolute -top-3 left-8 bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">Most Popular</span>
+          <div>
+            <h3 class="text-xl font-bold text-dark">Growth</h3>
+            <p class="text-4xl font-bold text-accent mt-2">$99<span class="text-lg font-normal text-light-text">/mo</span></p>
+            <p class="mt-2 text-sm text-light-text">Best for: businesses ready to scale organic content production</p>
+            <p class="mt-4 text-sm text-light-text">Everything in Foundation, plus:</p>
+            <ul class="mt-4 space-y-3 text-[15px] text-light-text">
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> 2 SEO content drafts per week (AI-generated)</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Weekly content intelligence brief (trending topics)</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Copy-paste technical fixes (title tags, meta, schema)</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> 30-day post-fix monitoring (auto)</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Link prospects + outreach email drafts</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Conversion decay monitoring & alerts</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Up to 30 keywords tracked</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Content ROI tracking (30/60/90-day milestones)</li>
+            </ul>
           </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Schema markup audit — JSON-LD detection and validation (FAQPage, Organization, Product)</p>
+          <a href="/start" class="mt-8 block w-full text-center px-6 py-3 bg-accent text-white font-medium rounded-lg hover:bg-accent-hover transition-colors">
+            Start with Growth
+          </a>
+        </div>
+
+        <!-- Authority -->
+        <div class="border border-gray-200 rounded-2xl p-8 flex flex-col">
+          <div>
+            <h3 class="text-xl font-bold text-dark">Authority</h3>
+            <p class="text-4xl font-bold text-accent mt-2">$199<span class="text-lg font-normal text-light-text">/mo</span></p>
+            <p class="mt-2 text-sm text-light-text">Best for: competitive markets where content velocity & strategic depth matter</p>
+            <p class="mt-4 text-sm text-light-text">Everything in Growth, plus:</p>
+            <ul class="mt-4 space-y-3 text-[15px] text-light-text">
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Competitor gap analysis (automated)</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Monthly strategy deck (AI-generated)</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Unlimited keyword tracking</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Backlink monitoring (gains/losses/domain authority)</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> SERP feature tracking (snippets, PAA, knowledge panels)</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> GA4 organic funnel analysis</li>
+              <li class="flex gap-3"><span class="text-accent font-bold mt-0.5">&#10003;</span> Priority email support</li>
+            </ul>
           </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Core Web Vitals monitoring via PageSpeed Insights API (LCP, CLS, FID daily)</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">CTR analysis — queries with high impressions and low click-through flagged and prioritized</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Technical issues ranked by impact — critical, warning, and informational</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Weekly performance report with WoW trends</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Monthly strategy review</p>
-          </div>
+          <a href="/start" class="mt-8 block w-full text-center px-6 py-3 border border-gray-200 text-dark font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
+            Start with Authority
+          </a>
         </div>
       </div>
 
-      <hr class="border-gray-200" />
-
-      <!-- Growth -->
-      <div>
-        <div class="flex items-center gap-3">
-          <h2 class="text-3xl font-bold text-dark">Growth</h2>
-          <span class="bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">Most Popular</span>
-        </div>
-        <p class="text-4xl font-bold text-accent mt-2">$1,500<span class="text-lg font-normal text-light-text">/mo</span></p>
-        <p class="mt-2 text-light-text">Best for: businesses ready to scale organic content production</p>
-        <p class="mt-4 text-sm text-light-text">Everything in Foundation, plus:</p>
-        <div class="mt-6 space-y-4">
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">2 SEO content drafts per week (blog posts, landing pages, or optimizations)</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Weekly content intelligence brief (trending topics from your industry)</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Copy-paste technical fixes delivered — exact title tags, meta descriptions, and schema code (JSON-LD) ready to implement with no editing required</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Post-fix monitoring — every technical fix watched for 30 days to confirm GSC movement before closing</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Draft status tracking — nothing gets recreated, nothing gets lost</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Friday client-ready email draft (% changes, no explanation required)</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Up to 30 keywords tracked</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Weekly link prospecting (qualified prospects with ready-to-send outreach emails)</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Conversion decay monitoring — alerts when organic CVR drops on key pages</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Content ROI tracking — 30/60/90-day performance milestones on published content</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Action log — every change documented, connected to what moved in GSC</p>
-          </div>
-        </div>
-      </div>
-
-      <hr class="border-gray-200" />
-
-      <!-- Authority -->
-      <div>
-        <h2 class="text-3xl font-bold text-dark">Authority</h2>
-        <p class="text-4xl font-bold text-accent mt-2">$2,500<span class="text-lg font-normal text-light-text">/mo</span></p>
-        <p class="mt-2 text-light-text">Best for: competitive markets where content velocity and strategic depth matter</p>
-        <p class="mt-4 text-sm text-light-text">Everything in Growth, plus:</p>
-        <div class="mt-6 space-y-4">
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Competitor gap analysis</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Monthly strategy deck (MoM analysis, competitive signals, next-month priorities)</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Content brief reviews and edits</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Unlimited keyword tracking</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Priority turnaround</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Optional publish-on-behalf — we can publish directly to your CMS so nothing sits in a draft queue</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">Backlink monitoring (link gains, losses, and domain authority changes)</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">SERP feature tracking (featured snippets, PAA, knowledge panels)</p>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-accent font-bold mt-0.5">&#10003;</span>
-            <p class="text-dark">GA4 organic funnel analysis (impression → click → session → conversion)</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Platform Note -->
-  <section class="bg-white pb-0 pt-0">
-    <div class="mx-auto max-w-4xl px-6 pb-16">
-      <div class="bg-hero-text border border-gray-200 rounded-xl p-6 text-light-text leading-relaxed">
-        Every capability on this page is a built feature maintained in our platform — not a manual process recreated each month. See what's live and what's coming on our <a href="/roadmap" class="text-accent hover:text-accent-hover font-medium transition-colors">feature roadmap &rarr;</a>
-      </div>
+      <!-- Annual billing note -->
+      <p class="text-center mt-8 text-sm text-light-text">
+        <span class="inline-flex items-center gap-2">
+          <svg class="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Annual billing: 2 months free
+        </span>
+      </p>
     </div>
   </section>
 
@@ -184,32 +111,32 @@ import Layout from '../layouts/Layout.astro';
     <div class="mx-auto max-w-5xl px-6">
       <div class="text-center mb-16">
         <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">What's automated. What's human.</h2>
-        <p class="mt-4 text-light-text text-lg max-w-2xl mx-auto">Most agencies don't publish this. We do. The automation is what makes the economics work — and what makes the work consistent.</p>
+        <p class="mt-4 text-light-text text-lg max-w-2xl mx-auto">The automation handles the volume. You handle the judgment. That's the model.</p>
       </div>
       <div class="grid md:grid-cols-3 gap-8">
 
         <!-- Foundation -->
         <div class="bg-white rounded-2xl p-8 border border-gray-200">
           <h3 class="text-xl font-semibold text-dark mb-1">Foundation</h3>
-          <p class="text-accent font-bold text-lg mb-6">$750/mo</p>
+          <p class="text-accent font-bold text-lg mb-6">$49/mo</p>
           <div class="space-y-4 mb-8">
-            <p class="text-xs font-semibold text-light-text uppercase tracking-widest">Runs automatically</p>
+            <p class="text-xs font-semibold text-light-text uppercase tracking-widest">AI agents run 24/7</p>
             <ul class="space-y-2 text-sm text-light-text">
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Daily GSC + rank pull</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Live page fetch — title, meta, H1, canonical, schema</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Schema validation (JSON-LD extracted from live HTML)</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Core Web Vitals via PageSpeed API</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>CTR opportunity detection</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Weekly HTML report</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>Daily GSC + rank pull</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>Live page fetch — title, meta, H1, canonical, schema</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>Schema validation (JSON-LD extraction)</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>Core Web Vitals via PageSpeed API</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>CTR opportunity detection</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>Weekly HTML report generation</li>
             </ul>
           </div>
           <div class="border-t border-gray-100 pt-6 space-y-2">
-            <p class="text-xs font-semibold text-light-text uppercase tracking-widest mb-3">Human time</p>
+            <p class="text-xs font-semibold text-light-text uppercase tracking-widest mb-3">Your time</p>
             <ul class="space-y-2 text-sm text-light-text">
-              <li class="flex gap-2"><span class="text-dark font-medium">~20 min/week</span></li>
-              <li class="text-xs">Review findings, flag issues to you</li>
+              <li class="flex gap-2"><span class="text-dark font-medium">~10 min/week</span></li>
+              <li class="text-xs">Review reports, implement copy-paste fixes</li>
               <li class="flex gap-2 mt-2"><span class="text-dark font-medium">30 min/month</span></li>
-              <li class="text-xs">Strategy review call</li>
+              <li class="text-xs">Review AI strategy recommendations</li>
             </ul>
           </div>
         </div>
@@ -220,25 +147,24 @@ import Layout from '../layouts/Layout.astro';
             <span class="bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">Most Popular</span>
           </div>
           <h3 class="text-xl font-semibold text-dark mb-1">Growth</h3>
-          <p class="text-accent font-bold text-lg mb-6">$1,500/mo</p>
+          <p class="text-accent font-bold text-lg mb-6">$99/mo</p>
           <div class="space-y-4 mb-8">
-            <p class="text-xs font-semibold text-light-text uppercase tracking-widest">Runs automatically</p>
+            <p class="text-xs font-semibold text-light-text uppercase tracking-widest">AI agents run 24/7</p>
             <ul class="space-y-2 text-sm text-light-text">
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Everything in Foundation</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Technical fix generation — copy-paste title tags, meta, schema</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>30-day post-fix monitoring</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Weekly content intelligence pull</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>2 content drafts per week</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Link prospects + outreach emails</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Conversion decay monitoring</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Friday client email draft</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>Everything in Foundation</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>Technical fix generation — copy-paste ready</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>30-day post-fix monitoring</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>Weekly content intelligence pull</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>2 content drafts per week</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>Link prospects + outreach emails</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>Conversion decay monitoring</li>
             </ul>
           </div>
           <div class="border-t border-gray-100 pt-6">
-            <p class="text-xs font-semibold text-light-text uppercase tracking-widest mb-3">Human time</p>
+            <p class="text-xs font-semibold text-light-text uppercase tracking-widest mb-3">Your time</p>
             <ul class="space-y-2 text-sm text-light-text">
               <li class="flex gap-2"><span class="text-dark font-medium">~2 hrs/week</span></li>
-              <li class="text-xs">Draft review, publishing, link prospect review, client email send</li>
+              <li class="text-xs">Review drafts, publish content, review link prospects</li>
             </ul>
           </div>
         </div>
@@ -246,27 +172,58 @@ import Layout from '../layouts/Layout.astro';
         <!-- Authority -->
         <div class="bg-white rounded-2xl p-8 border border-gray-200">
           <h3 class="text-xl font-semibold text-dark mb-1">Authority</h3>
-          <p class="text-accent font-bold text-lg mb-6">$2,500/mo</p>
+          <p class="text-accent font-bold text-lg mb-6">$199/mo</p>
           <div class="space-y-4 mb-8">
-            <p class="text-xs font-semibold text-light-text uppercase tracking-widest">Runs automatically</p>
+            <p class="text-xs font-semibold text-light-text uppercase tracking-widest">AI agents run 24/7</p>
             <ul class="space-y-2 text-sm text-light-text">
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Everything in Growth</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Monthly strategy deck</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>Backlink monitoring</li>
-              <li class="flex gap-2"><span class="text-accent mt-0.5">⚙</span>SERP feature detection</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>Everything in Growth</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>Monthly strategy deck</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>Backlink monitoring</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>SERP feature detection</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">⚡</span>GA4 funnel analysis</li>
             </ul>
           </div>
           <div class="border-t border-gray-100 pt-6">
-            <p class="text-xs font-semibold text-light-text uppercase tracking-widest mb-3">Human time</p>
+            <p class="text-xs font-semibold text-light-text uppercase tracking-widest mb-3">Your time</p>
             <ul class="space-y-2 text-sm text-light-text">
-              <li class="flex gap-2"><span class="text-dark font-medium">~3.5 hrs/week</span></li>
-              <li class="text-xs">Everything in Growth, plus direct CMS publishing and monthly strategy session</li>
+              <li class="flex gap-2"><span class="text-dark font-medium">~3 hrs/week</span></li>
+              <li class="text-xs">Everything in Growth, plus strategic review</li>
             </ul>
           </div>
         </div>
 
       </div>
-      <p class="text-center text-sm text-light-text mt-10">The automation handles the volume. The human time handles the judgment. That's the model.</p>
+    </div>
+  </section>
+
+  <!-- Agency Option (Secondary) -->
+  <section class="bg-white py-24 md:py-32">
+    <div class="mx-auto max-w-4xl px-6">
+      <div class="bg-gradient-to-br from-dark to-dark-card rounded-2xl p-8 md:p-12">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+          <div class="max-w-xl">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-accent mb-4">Agency Services</p>
+            <h3 class="text-2xl md:text-3xl font-bold text-hero-text mb-4">Need hands-on partnership?</h3>
+            <p class="text-body-muted leading-relaxed">
+              For businesses that want a dedicated strategist, direct implementation, and white-glove service. 
+              We function as your outsourced SEO department with direct access to the platform and the humans behind it.
+            </p>
+            <ul class="mt-6 space-y-2 text-sm text-body-muted">
+              <li class="flex gap-3"><span class="text-accent">&#10003;</span> Dedicated SEO strategist</li>
+              <li class="flex gap-3"><span class="text-accent">&#10003;</span> Direct implementation (we publish for you)</li>
+              <li class="flex gap-3"><span class="text-accent">&#10003;</span> Monthly strategy calls</li>
+              <li class="flex gap-3"><span class="text-accent">&#10003;</span> Custom reporting & analysis</li>
+            </ul>
+          </div>
+          <div class="flex flex-col gap-4 md:text-right">
+            <p class="text-3xl font-bold text-hero-text">$750<span class="text-lg font-normal text-body-muted">+/mo</span></p>
+            <a href="/agency" class="inline-flex items-center justify-center px-6 py-3 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors">
+              Explore Agency Options
+            </a>
+            <p class="text-sm text-body-muted">Or <a href="/contact" class="text-accent hover:text-accent-hover">book a consultation &rarr;</a></p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -277,27 +234,31 @@ import Layout from '../layouts/Layout.astro';
       <div class="space-y-10">
         <div>
           <h3 class="text-lg font-semibold text-dark mb-2">Do I publish the content myself?</h3>
-          <p class="text-light-text leading-relaxed">Yes. You get publish-ready drafts with exact WP instructions. We don't need site access.</p>
+          <p class="text-light-text leading-relaxed">With the self-serve platform, yes. You get publish-ready drafts with exact CMS instructions. With agency services, we can publish directly to your CMS so nothing sits in a draft queue.</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-dark mb-2">How does the free trial work?</h3>
+          <p class="text-light-text leading-relaxed">14 days, no credit card required. You get full access to your chosen tier. If you don't love it, cancel anytime. If you hit usage limits during trial, we'll let you know.</p>
         </div>
         <div>
           <h3 class="text-lg font-semibold text-dark mb-2">How do you learn my brand voice?</h3>
-          <p class="text-light-text leading-relaxed">We build a brand voice document for your business before we touch any content.</p>
+          <p class="text-light-text leading-relaxed">During onboarding, the AI analyzes your existing content (or competitor content if you're starting fresh) to build a brand voice profile. You can refine it anytime through feedback.</p>
         </div>
         <div>
           <h3 class="text-lg font-semibold text-dark mb-2">What if I already have an SEO agency?</h3>
-          <p class="text-light-text leading-relaxed">We can audit what's been done and either complement it or replace it. We'll be honest about what we find.</p>
+          <p class="text-light-text leading-relaxed">Many clients use Meridian alongside their agency for technical monitoring and content intelligence. We can also audit what's been done and either complement it or replace it. We'll be honest about what we find.</p>
         </div>
         <div>
           <h3 class="text-lg font-semibold text-dark mb-2">How fast can we start?</h3>
-          <p class="text-light-text leading-relaxed">Usually within one week of kickoff.</p>
+          <p class="text-light-text leading-relaxed">Self-serve: your first audit completes within 24 hours of connecting GSC. Agency: usually within one week of kickoff call.</p>
         </div>
         <div>
           <h3 class="text-lg font-semibold text-dark mb-2">How do I know it's actually working?</h3>
-          <p class="text-light-text leading-relaxed">Every action we take is logged with a timestamp and connected to what moved in GSC afterward. You get a client dashboard showing rankings, traffic trends, content pipeline, and a running log of everything we've done. We don't ask you to take our word for it.</p>
+          <p class="text-light-text leading-relaxed">Every action is logged with a timestamp and connected to what moved in GSC afterward. You get a dashboard showing rankings, traffic trends, content pipeline, and a running log of everything the AI team has done. We don't ask you to take our word for it.</p>
         </div>
         <div>
           <h3 class="text-lg font-semibold text-dark mb-2">What happens if rankings drop?</h3>
-          <p class="text-light-text leading-relaxed">We catch it before you do — conversion decay monitoring and rank tracking fire daily. When something drops, you'll know why (algorithm update, new competitor content, technical regression) and you'll get a specific fix, not a vague explanation.</p>
+          <p class="text-light-text leading-relaxed">The AI catches it before you do — conversion decay monitoring and rank tracking fire daily. When something drops, you'll know why (algorithm update, new competitor content, technical regression) and you'll get a specific fix recommendation, not a vague explanation.</p>
         </div>
         <div>
           <h3 class="text-lg font-semibold text-dark mb-2">Is this month-to-month or a contract?</h3>
@@ -305,11 +266,11 @@ import Layout from '../layouts/Layout.astro';
         </div>
         <div>
           <h3 class="text-lg font-semibold text-dark mb-2">How is this different from hiring an in-house SEO?</h3>
-          <p class="text-light-text leading-relaxed">A mid-level in-house SEO costs $70-90k/year plus benefits — and they still can't run daily automated audits, generate content intelligence, and produce link prospects simultaneously. The platform does the volume work. You get the output of a full team at a fraction of the cost.</p>
+          <p class="text-light-text leading-relaxed">A mid-level in-house SEO costs $70-90k/year plus benefits — and they still can't run daily automated audits, generate content intelligence, and produce link prospects simultaneously. The platform does the volume work of a full team at a fraction of the cost.</p>
         </div>
         <div>
           <h3 class="text-lg font-semibold text-dark mb-2">What do you need from me to get started?</h3>
-          <p class="text-light-text leading-relaxed">GSC access, GA4 read access, a short brand voice doc (or 30 minutes on a call to build one), and your top 5 competitor domains. That's it. The system handles the rest from day one.</p>
+          <p class="text-light-text leading-relaxed">Self-serve: GSC access and your domain. The system handles the rest. Agency: GSC access, GA4 read access, a short brand voice doc (or 30 minutes on a call to build one), and your top 5 competitor domains.</p>
         </div>
       </div>
     </div>
@@ -318,11 +279,16 @@ import Layout from '../layouts/Layout.astro';
   <!-- CTA -->
   <section class="bg-gradient-to-br from-dark to-dark-card py-24 md:py-32">
     <div class="mx-auto max-w-3xl px-6 text-center">
-      <h2 class="text-3xl md:text-[44px] font-semibold text-hero-text leading-tight">Not sure which tier fits?</h2>
-      <p class="mt-6 text-body-muted text-lg">Tell us about your business and we'll recommend the right level of coverage.</p>
-      <a href="/contact" class="mt-10 inline-flex items-center px-8 py-4 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors">
-        Let's talk
-      </a>
+      <h2 class="text-3xl md:text-[44px] font-semibold text-hero-text leading-tight">Ready to see what the platform can do?</h2>
+      <p class="mt-6 text-body-muted text-lg">Start your free trial today. No credit card required.</p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <a href="/start" class="inline-flex items-center px-8 py-4 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors">
+          Start free trial
+        </a>
+        <a href="/agency" class="inline-flex items-center px-8 py-4 border border-dark-border text-body-muted hover:text-white hover:border-white/20 font-medium rounded-lg transition-colors">
+          Explore agency services
+        </a>
+      </div>
     </div>
   </section>
 

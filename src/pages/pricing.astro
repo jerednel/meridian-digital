@@ -1,0 +1,530 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Pricing — Meridian SEO Platform" 
+  description="Transparent pricing for the Meridian SEO platform. Start with a 14-day free trial. Starter ($49/mo), Growth ($99/mo), Pro ($199/mo)."
+>
+
+  <!-- Hero -->
+  <section class="relative pt-32 pb-20 bg-gradient-to-b from-dark to-dark-card">
+    <div class="mx-auto max-w-7xl px-6 text-center">
+      <p class="text-xs font-medium uppercase tracking-[0.2em] text-accent mb-6">Simple, Transparent Pricing</p>
+      <h1 class="text-4xl md:text-6xl font-extrabold text-hero-text leading-[1.05] tracking-tight max-w-3xl mx-auto">
+        Choose your level of SEO coverage
+      </h1>
+      <p class="mt-6 text-lg text-body-muted max-w-2xl mx-auto leading-relaxed">
+        Start with a 14-day free trial. No credit card required. Scale up or down anytime.
+      </p>
+    </div>
+  </section>
+
+  <!-- Pricing Cards -->
+  <section class="bg-white py-16 md:py-24">
+    <div class="mx-auto max-w-7xl px-6">
+      
+      <!-- Billing Toggle -->
+      <div class="flex items-center justify-center gap-4 mb-12">
+        <span class="text-sm font-medium text-light-text" id="monthly-label">Monthly</span>
+        <button 
+          id="billing-toggle"
+          class="relative w-14 h-7 rounded-full bg-dark-border transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+          aria-label="Toggle annual billing"
+          aria-pressed="false"
+        >
+          <span 
+            id="toggle-indicator"
+            class="absolute left-1 top-1 w-5 h-5 rounded-full bg-white transition-transform"
+          ></span>
+        </button>
+        <span class="text-sm font-medium text-light-text" id="annual-label">Annual</span>
+        <span class="text-xs font-medium text-accent bg-accent/10 px-2 py-1 rounded-full">Save 2 months</span>
+      </div>
+
+      <!-- Pricing Grid -->
+      <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        
+        <!-- Starter -->
+        <div class="border border-gray-200 rounded-2xl p-8 flex flex-col">
+          <div class="mb-6">
+            <h3 class="text-xl font-bold text-dark">Starter</h3>
+            <p class="text-sm text-light-text mt-1">For small sites getting serious about SEO</p>
+          </div>
+          <div class="mb-6">
+            <div class="flex items-baseline gap-2">
+              <span class="text-4xl font-extrabold text-dark price-amount" data-monthly="49" data-annual="490">$49</span>
+              <span class="text-light-text price-period">/mo</span>
+            </div>
+            <p class="text-sm text-light-text mt-1 annual-savings hidden">$490/year (save $98)</p>
+          </div>
+          <a 
+            href="/start?plan=starter" 
+            class="w-full inline-flex items-center justify-center px-6 py-3 border-2 border-accent text-accent hover:bg-accent hover:text-white text-sm font-medium rounded-lg transition-colors mb-6"
+          >
+            Start free trial
+          </a>
+          <ul class="space-y-3 text-[15px] text-light-text flex-grow">
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Daily technical audits
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Up to 50 pages monitored
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              25 keywords tracked
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              2 content drafts / month
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Weekly email reports
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              GSC integration
+            </li>
+          </ul>
+        </div>
+
+        <!-- Growth (Popular) -->
+        <div class="relative border-2 border-accent rounded-2xl p-8 flex flex-col bg-accent/5">
+          <span class="absolute -top-3 left-8 bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">Most Popular</span>
+          <div class="mb-6">
+            <h3 class="text-xl font-bold text-dark">Growth</h3>
+            <p class="text-sm text-light-text mt-1">For growing businesses ready to scale</p>
+          </div>
+          <div class="mb-6">
+            <div class="flex items-baseline gap-2">
+              <span class="text-4xl font-extrabold text-dark price-amount" data-monthly="99" data-annual="990">$99</span>
+              <span class="text-light-text price-period">/mo</span>
+            </div>
+            <p class="text-sm text-light-text mt-1 annual-savings hidden">$990/year (save $198)</p>
+          </div>
+          <a 
+            href="/start?plan=growth" 
+            class="w-full inline-flex items-center justify-center px-6 py-3 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg transition-colors mb-6"
+          >
+            Start free trial
+          </a>
+          <ul class="space-y-3 text-[15px] text-light-text flex-grow">
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span class="font-medium text-dark">Everything in Starter</span>
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Up to 200 pages monitored
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              100 keywords tracked
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              8 content drafts / month
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Copy-paste technical fixes
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Competitor tracking (3 sites)
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Priority email support
+            </li>
+          </ul>
+        </div>
+
+        <!-- Pro -->
+        <div class="border border-gray-200 rounded-2xl p-8 flex flex-col">
+          <div class="mb-6">
+            <h3 class="text-xl font-bold text-dark">Pro</h3>
+            <p class="text-sm text-light-text mt-1">For agencies and high-growth companies</p>
+          </div>
+          <div class="mb-6">
+            <div class="flex items-baseline gap-2">
+              <span class="text-4xl font-extrabold text-dark price-amount" data-monthly="199" data-annual="1990">$199</span>
+              <span class="text-light-text price-period">/mo</span>
+            </div>
+            <p class="text-sm text-light-text mt-1 annual-savings hidden">$1,990/year (save $398)</p>
+          </div>
+          <a 
+            href="/start?plan=pro" 
+            class="w-full inline-flex items-center justify-center px-6 py-3 border-2 border-accent text-accent hover:bg-accent hover:text-white text-sm font-medium rounded-lg transition-colors mb-6"
+          >
+            Start free trial
+          </a>
+          <ul class="space-y-3 text-[15px] text-light-text flex-grow">
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span class="font-medium text-dark">Everything in Growth</span>
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Up to 500 pages monitored
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Unlimited keywords
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              20 content drafts / month
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Competitor tracking (10 sites)
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              White-label reports
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Dedicated account manager
+            </li>
+            <li class="flex gap-3">
+              <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              API access
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature Comparison -->
+  <section class="bg-hero-text py-16 md:py-24">
+    <div class="mx-auto max-w-7xl px-6">
+      <h2 class="text-3xl md:text-4xl font-semibold text-dark leading-tight text-center mb-12">Compare all features</h2>
+      
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[700px] border-collapse">
+          <thead>
+            <tr class="border-b-2 border-dark">
+              <th class="text-left py-4 pr-4 font-semibold text-dark">Features</th>
+              <th class="text-center py-4 px-4 font-semibold text-dark w-32">Starter</th>
+              <th class="text-center py-4 px-4 font-semibold text-dark w-32 bg-accent/5">Growth</th>
+              <th class="text-center py-4 px-4 font-semibold text-dark w-32">Pro</th>
+            </tr>
+          </thead>
+          <tbody class="text-[15px]">
+            <!-- Technical SEO -->
+            <tr class="border-b border-gray-200">
+              <td colspan="4" class="py-3 pt-6 text-sm font-semibold text-accent uppercase tracking-wide">Technical SEO</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Daily site audits</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Pages monitored</td>
+              <td class="text-center py-3 px-4 text-dark">50</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">200</td>
+              <td class="text-center py-3 px-4 text-dark">500</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Core Web Vitals tracking</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Copy-paste fix recommendations</td>
+              <td class="text-center py-3 px-4 text-light-text">—</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Schema markup validation</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+
+            <!-- Rank Tracking -->
+            <tr class="border-b border-gray-200">
+              <td colspan="4" class="py-3 pt-6 text-sm font-semibold text-accent uppercase tracking-wide">Rank Tracking</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Keywords tracked</td>
+              <td class="text-center py-3 px-4 text-dark">25</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">100</td>
+              <td class="text-center py-3 px-4 text-dark">Unlimited</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Daily rank updates</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">SERP feature tracking</td>
+              <td class="text-center py-3 px-4 text-light-text">—</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Competitor tracking</td>
+              <td class="text-center py-3 px-4 text-light-text">—</td>
+              <td class="text-center py-3 px-4 text-dark bg-accent/5">3 sites</td>
+              <td class="text-center py-3 px-4 text-dark">10 sites</td>
+            </tr>
+
+            <!-- Content -->
+            <tr class="border-b border-gray-200">
+              <td colspan="4" class="py-3 pt-6 text-sm font-semibold text-accent uppercase tracking-wide">AI Content</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">SEO content drafts / month</td>
+              <td class="text-center py-3 px-4 text-dark">2</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">8</td>
+              <td class="text-center py-3 px-4 text-dark">20</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Trending topic intelligence</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Keyword research reports</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Content briefs</td>
+              <td class="text-center py-3 px-4 text-light-text">—</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+
+            <!-- Reporting -->
+            <tr class="border-b border-gray-200">
+              <td colspan="4" class="py-3 pt-6 text-sm font-semibold text-accent uppercase tracking-wide">Reporting</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Weekly email reports</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Monthly strategy deck</td>
+              <td class="text-center py-3 px-4 text-light-text">—</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">White-label reports</td>
+              <td class="text-center py-3 px-4 text-light-text">—</td>
+              <td class="text-center py-3 px-4 text-light-text bg-accent/5">—</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+
+            <!-- Integrations -->
+            <tr class="border-b border-gray-200">
+              <td colspan="4" class="py-3 pt-6 text-sm font-semibold text-accent uppercase tracking-wide">Integrations</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Google Search Console</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">Google Analytics 4</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">&#10003;</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-3 pr-4 text-light-text">API access</td>
+              <td class="text-center py-3 px-4 text-light-text">—</td>
+              <td class="text-center py-3 px-4 text-light-text bg-accent/5">—</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+
+            <!-- Support -->
+            <tr class="border-b-2 border-dark">
+              <td colspan="4" class="py-3 pt-6 text-sm font-semibold text-accent uppercase tracking-wide">Support</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 text-light-text">Email support</td>
+              <td class="text-center py-3 px-4 text-dark">Standard</td>
+              <td class="text-center py-3 px-4 text-dark font-medium bg-accent/5">Priority</td>
+              <td class="text-center py-3 px-4 text-dark">Priority</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 text-light-text">Dedicated account manager</td>
+              <td class="text-center py-3 px-4 text-light-text">—</td>
+              <td class="text-center py-3 px-4 text-light-text bg-accent/5">—</td>
+              <td class="text-center py-3 px-4 text-dark font-medium">&#10003;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="bg-white py-16 md:py-24">
+    <div class="mx-auto max-w-3xl px-6">
+      <h2 class="text-3xl md:text-4xl font-semibold text-dark leading-tight text-center mb-12">Frequently asked questions</h2>
+      
+      <div class="space-y-6">
+        <div class="border-b border-gray-200 pb-6">
+          <h3 class="text-lg font-semibold text-dark mb-2">What's included in the free trial?</h3>
+          <p class="text-light-text leading-relaxed">You get full access to all features in your chosen plan for 14 days. No credit card required to start. If you decide not to continue, your trial simply ends — no surprises, no charges.</p>
+        </div>
+        
+        <div class="border-b border-gray-200 pb-6">
+          <h3 class="text-lg font-semibold text-dark mb-2">Can I switch plans later?</h3>
+          <p class="text-light-text leading-relaxed">Absolutely. You can upgrade or downgrade your plan at any time. When upgrading, you'll get immediate access to additional features. When downgrading, changes take effect at your next billing cycle.</p>
+        </div>
+        
+        <div class="border-b border-gray-200 pb-6">
+          <h3 class="text-lg font-semibold text-dark mb-2">How does the annual billing discount work?</h3>
+          <p class="text-light-text leading-relaxed">When you choose annual billing, you pay for 10 months and get 12 months of service — effectively 2 months free. This is reflected in the annual prices shown when you toggle to annual billing.</p>
+        </div>
+        
+        <div class="border-b border-gray-200 pb-6">
+          <h3 class="text-lg font-semibold text-dark mb-2">What happens if I exceed my page or keyword limits?</h3>
+          <p class="text-light-text leading-relaxed">We'll notify you when you're approaching your limits. You can either upgrade to a higher tier or purchase add-on packs for additional pages/keywords. We never stop monitoring without warning.</p>
+        </div>
+        
+        <div class="border-b border-gray-200 pb-6">
+          <h3 class="text-lg font-semibold text-dark mb-2">Is there a setup fee?</h3>
+          <p class="text-light-text leading-relaxed">No setup fees for self-serve plans. You can connect your Google Search Console and start monitoring within minutes. For Pro plans with custom onboarding, we include a guided setup call at no extra charge.</p>
+        </div>
+        
+        <div class="border-b border-gray-200 pb-6">
+          <h3 class="text-lg font-semibold text-dark mb-2">Do you offer refunds?</h3>
+          <p class="text-light-text leading-relaxed">If you're not satisfied with the platform, contact us within 30 days of your first paid invoice for a full refund — no questions asked. After 30 days, you can cancel anytime and won't be billed again.</p>
+        </div>
+        
+        <div class="border-b border-gray-200 pb-6">
+          <h3 class="text-lg font-semibold text-dark mb-2">Can I use this for multiple websites?</h3>
+          <p class="text-light-text leading-relaxed">Each plan covers one primary domain. For agencies or businesses managing multiple sites, our Pro plan includes multi-site capabilities, or you can contact us about custom agency pricing.</p>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold text-dark mb-2">What's the difference between self-serve and agency services?</h3>
+          <p class="text-light-text leading-relaxed">Self-serve plans give you full platform access to run your own SEO operations. Our agency "Done With You" service includes hands-on strategy, implementation support, and direct access to our team — <a href="/contact" class="text-accent hover:text-accent-hover font-medium transition-colors">contact us</a> for agency pricing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-gradient-to-br from-dark to-dark-card py-24 md:py-32">
+    <div class="mx-auto max-w-3xl px-6 text-center">
+      <h2 class="text-3xl md:text-[44px] font-semibold text-hero-text leading-tight">Ready to systematize your SEO?</h2>
+      <p class="mt-6 text-body-muted text-lg max-w-xl mx-auto leading-relaxed">
+        Start your 14-day free trial today. No credit card required. See what Meridian can do for your business.
+      </p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <a href="/start" class="inline-flex items-center px-8 py-4 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors">
+          Start free trial
+        </a>
+        <a href="/audit" class="inline-flex items-center px-8 py-4 border border-dark-border text-body-muted hover:text-white hover:border-white/20 font-medium rounded-lg transition-colors">
+          Get a free audit first
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Billing Toggle Logic
+    const toggle = document.getElementById('billing-toggle')!;
+    const indicator = document.getElementById('toggle-indicator')!;
+    const priceAmounts = document.querySelectorAll('.price-amount');
+    const pricePeriods = document.querySelectorAll('.price-period');
+    const annualSavings = document.querySelectorAll('.annual-savings');
+    
+    let isAnnual = false;
+    
+    toggle.addEventListener('click', () => {
+      isAnnual = !isAnnual;
+      
+      // Update toggle visual
+      toggle.setAttribute('aria-pressed', isAnnual.toString());
+      indicator.style.transform = isAnnual ? 'translateX(28px)' : 'translateX(0)';
+      toggle.classList.toggle('bg-accent', isAnnual);
+      toggle.classList.toggle('bg-dark-border', !isAnnual);
+      
+      // Update prices
+      priceAmounts.forEach(el => {
+        const monthly = el.getAttribute('data-monthly');
+        const annual = el.getAttribute('data-annual');
+        el.textContent = `$${isAnnual ? annual : monthly}`;
+      });
+      
+      // Update period text
+      pricePeriods.forEach(el => {
+        el.textContent = isAnnual ? '/yr' : '/mo';
+      });
+      
+      // Show/hide annual savings
+      annualSavings.forEach(el => {
+        el.classList.toggle('hidden', !isAnnual);
+      });
+    });
+  </script>
+
+</Layout>

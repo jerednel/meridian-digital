@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Meridian — Systematic SEO Infrastructure" description="Automated SEO pipeline with bespoke strategy. Daily technical audits, AI-assisted content, weekly reports — all tailored to your business.">
+<Layout title="Meridian — Systematic SEO Infrastructure" description="Automated SEO pipeline with AI-powered strategy. Daily technical audits, AI-assisted content, weekly reports — the platform runs 24/7.">
 
   <!-- Hero -->
   <section class="relative min-h-screen flex items-center bg-gradient-to-b from-dark to-dark-card">
@@ -12,19 +12,19 @@ import Layout from '../layouts/Layout.astro';
         Systematic SEO.<br />Built around<br />your business.
       </h1>
       <p class="mt-6 text-lg text-body-muted max-w-2xl leading-relaxed">
-        Most agencies deliver a monthly report. We deliver a system — one that monitors your site every morning, surfaces issues before they cost you traffic, and ships fixes and content continuously. No account manager as a single point of failure. No lag between when something changes and when someone knows about it.
+        Most agencies deliver a monthly report. We deliver a system — one that monitors your site every morning, surfaces issues before they cost you traffic, and ships fixes and content continuously. The AI agent team runs 24/7. You get the output.
       </p>
       <div class="mt-10 flex flex-wrap gap-4">
-        <a href="/audit" class="inline-flex items-center px-6 py-3 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg transition-colors">
-          Get a free SEO audit &rarr;
+        <a href="/pricing" class="inline-flex items-center px-6 py-3 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg transition-colors">
+          Start free trial &rarr;
         </a>
-        <a href="/process" class="inline-flex items-center px-6 py-3 border border-dark-border text-body-muted hover:text-white hover:border-white/20 text-sm font-medium rounded-lg transition-colors">
-          See the process
+        <a href="/ai-team" class="inline-flex items-center px-6 py-3 border border-dark-border text-body-muted hover:text-white hover:border-white/20 text-sm font-medium rounded-lg transition-colors">
+          View AI team
         </a>
       </div>
       <p class="mt-6 text-sm text-body-muted">
-        <a href="/blog/seo-as-engineering" class="underline underline-offset-4 decoration-dark-border hover:text-white hover:decoration-white transition-colors">
-          How we're different from a traditional agency &rarr;
+        <a href="/audit" class="underline underline-offset-4 decoration-dark-border hover:text-white hover:decoration-white transition-colors">
+          Get a free SEO audit first &rarr;
         </a>
       </p>
     </div>
@@ -126,16 +126,16 @@ import Layout from '../layouts/Layout.astro';
     <div class="mx-auto max-w-7xl px-6">
       <div class="text-center max-w-2xl mx-auto mb-16">
         <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">A system that runs. A strategy that's yours.</h2>
-        <p class="mt-4 text-light-text text-lg">The process is engineered. The strategy is bespoke.</p>
+        <p class="mt-4 text-light-text text-lg">The process is engineered. The platform personalizes it to your business.</p>
       </div>
       <div class="relative grid md:grid-cols-4 gap-8 md:gap-6">
         <!-- Connecting line (desktop) -->
         <div class="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-px bg-dark-border"></div>
         {[
-          { step: '01', title: 'Audit', desc: 'We pull live data from Google Search Console, rank trackers, and your actual page HTML to understand exactly where you stand.' },
+          { step: '01', title: 'Audit', desc: 'The AI team pulls live data from Google Search Console, rank trackers, and your actual page HTML to understand exactly where you stand.' },
           { step: '02', title: 'Identify', desc: 'Technical issues, CTR opportunities, content gaps, and trending topics in your industry are surfaced and prioritized daily.' },
           { step: '03', title: 'Create', desc: 'Drafts are written for your site — your voice, your keywords, your industry — and handed off ready to publish.' },
-          { step: '04', title: 'Report', desc: 'Weekly performance numbers, Friday client emails, monthly strategy reviews. You always know what\'s happening and why.' },
+          { step: '04', title: 'Report', desc: 'Weekly performance numbers, content pipeline status, monthly strategy reviews. You always know what\'s happening and why.' },
         ].map(item => (
           <div class="relative text-center md:text-left">
             <div class="relative z-10 w-16 h-16 mx-auto md:mx-0 flex items-center justify-center rounded-full bg-accent text-white font-bold text-sm mb-4">{item.step}</div>
@@ -155,7 +155,7 @@ import Layout from '../layouts/Layout.astro';
         <!-- Foundation -->
         <div class="border border-gray-200 rounded-2xl p-8">
           <h3 class="text-xl font-bold text-dark">Foundation</h3>
-          <p class="text-sm text-light-text mt-1 mb-6">Starting at — let's talk</p>
+          <p class="text-sm text-light-text mt-1 mb-6">$49/mo</p>
           <ul class="space-y-3 text-[15px] text-light-text">
             <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Daily technical audits (schema, CWV, title, meta, CTR)</li>
             <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> GSC + rank tracking for up to 20 keywords</li>
@@ -163,12 +163,15 @@ import Layout from '../layouts/Layout.astro';
             <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Weekly performance report</li>
             <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Monthly strategy review</li>
           </ul>
+          <a href="/start" class="mt-8 block w-full text-center px-6 py-3 border border-gray-200 text-dark font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
+            Start with Foundation
+          </a>
         </div>
         <!-- Growth -->
         <div class="relative border-2 border-accent rounded-2xl p-8">
           <span class="absolute -top-3 left-8 bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">Most Popular</span>
           <h3 class="text-xl font-bold text-dark">Growth</h3>
-          <p class="text-sm text-light-text mt-1 mb-6">Starting at — let's talk</p>
+          <p class="text-sm text-light-text mt-1 mb-6">$99/mo</p>
           <ul class="space-y-3 text-[15px] text-light-text">
             <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Everything in Foundation</li>
             <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Copy-paste technical fixes (title tags, meta, JSON-LD schema)</li>
@@ -177,11 +180,14 @@ import Layout from '../layouts/Layout.astro';
             <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Friday client email draft</li>
             <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Content intelligence + up to 30 keywords</li>
           </ul>
+          <a href="/start" class="mt-8 block w-full text-center px-6 py-3 bg-accent text-white font-medium rounded-lg hover:bg-accent-hover transition-colors">
+            Start with Growth
+          </a>
         </div>
         <!-- Authority -->
         <div class="border border-gray-200 rounded-2xl p-8">
           <h3 class="text-xl font-bold text-dark">Authority</h3>
-          <p class="text-sm text-light-text mt-1 mb-6">Starting at — let's talk</p>
+          <p class="text-sm text-light-text mt-1 mb-6">$199/mo</p>
           <ul class="space-y-3 text-[15px] text-light-text">
             <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Everything in Growth</li>
             <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Competitor gap analysis</li>
@@ -189,10 +195,13 @@ import Layout from '../layouts/Layout.astro';
             <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Unlimited keywords</li>
             <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Priority support</li>
           </ul>
+          <a href="/start" class="mt-8 block w-full text-center px-6 py-3 border border-gray-200 text-dark font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
+            Start with Authority
+          </a>
         </div>
       </div>
       <p class="text-center mt-12 text-light-text">
-        Not sure which fits? <a href="/contact" class="text-accent hover:text-accent-hover font-medium transition-colors">Let's talk.</a>
+        Want more hands-on support? <a href="/agency" class="text-accent hover:text-accent-hover font-medium transition-colors">Explore agency services &rarr;</a>
       </p>
     </div>
   </section>
@@ -202,9 +211,14 @@ import Layout from '../layouts/Layout.astro';
     <div class="mx-auto max-w-3xl px-6 text-center">
       <h2 class="text-3xl md:text-[44px] font-semibold text-hero-text leading-tight">Your competitors are publishing content. Are you?</h2>
       <p class="mt-6 text-body-muted text-lg max-w-xl mx-auto leading-relaxed">Most SEO agencies do a site audit in month one and coast. We're running your pipeline every single day.</p>
-      <a href="/contact" class="mt-10 inline-flex items-center px-8 py-4 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors">
-        Book an intro call
-      </a>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <a href="/start" class="inline-flex items-center px-8 py-4 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors">
+          Start free trial
+        </a>
+        <a href="/pricing" class="inline-flex items-center px-8 py-4 border border-dark-border text-body-muted hover:text-white hover:border-white/20 font-medium rounded-lg transition-colors">
+          See pricing
+        </a>
+      </div>
     </div>
   </section>
 

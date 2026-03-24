@@ -1,0 +1,757 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Meet Your AI SEO Team — Meridian" 
+  description="Six specialized AI agents working together as your autonomous SEO department. Daily audits, content creation, link building, and trend monitoring — all for a fraction of hiring a team."
+>
+
+  <!-- Hero -->
+  <section class="relative min-h-[80vh] flex items-center bg-gradient-to-b from-dark to-dark-card">
+    <div class="mx-auto max-w-7xl px-6 pt-24 pb-20">
+      <div class="max-w-4xl">
+        <p class="text-xs font-medium uppercase tracking-[0.2em] text-accent mb-6">The Meridian AI Fleet</p>
+        <h1 class="text-5xl md:text-7xl font-extrabold text-hero-text leading-[1.05] tracking-tight">
+          Meet your AI<br/>SEO team.
+        </h1>
+        <p class="mt-6 text-lg text-body-muted max-w-2xl leading-relaxed">
+          Six specialist agents. One coordinated system. They audit your site every morning, research keywords, write content, find link opportunities, and monitor industry trends — then synthesize everything into clear, actionable recommendations.
+        </p>
+        <div class="mt-10 flex flex-wrap gap-4">
+          <a href="/pricing" class="inline-flex items-center px-6 py-3 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg transition-colors">
+            Start with your team &rarr;
+          </a>
+          <a href="#how-it-works" class="inline-flex items-center px-6 py-3 border border-dark-border text-body-muted hover:text-white hover:border-white/20 text-sm font-medium rounded-lg transition-colors">
+            See how they work together
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Animated agent nodes decoration -->
+    <div class="absolute right-0 top-1/2 -translate-y-1/2 w-1/2 h-full opacity-20 hidden lg:block pointer-events-none">
+      <svg class="w-full h-full" viewBox="0 0 400 400" fill="none">
+        <!-- Central coordinator -->
+        <circle cx="200" cy="200" r="40" fill="url(#coordinatorGradient)" opacity="0.8">
+          <animate attributeName="r" values="40;45;40" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <!-- Orbiting agents -->
+        <circle cx="200" cy="80" r="20" fill="#6366F1" opacity="0.6">
+          <animate attributeName="cy" values="80;85;80" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="320" cy="140" r="20" fill="#8B5CF6" opacity="0.6">
+          <animate attributeName="cx" values="320;325;320" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="320" cy="260" r="20" fill="#EC4899" opacity="0.6">
+          <animate attributeName="cy" values="260;255;260" dur="2.8s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="200" cy="320" r="20" fill="#F59E0B" opacity="0.6">
+          <animate attributeName="cy" values="320;325;320" dur="2.2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="80" cy="260" r="20" fill="#10B981" opacity="0.6">
+          <animate attributeName="cx" values="80;75;80" dur="2.7s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="80" cy="140" r="20" fill="#3B82F6" opacity="0.6">
+          <animate attributeName="cx" values="80;85;80" dur="3.2s" repeatCount="indefinite"/>
+        </circle>
+        <!-- Connection lines -->
+        <line x1="200" y1="200" x2="200" y2="80" stroke="#6366F1" stroke-width="1" opacity="0.3"/>
+        <line x1="200" y1="200" x2="320" y2="140" stroke="#8B5CF6" stroke-width="1" opacity="0.3"/>
+        <line x1="200" y1="200" x2="320" y2="260" stroke="#EC4899" stroke-width="1" opacity="0.3"/>
+        <line x1="200" y1="200" x2="200" y2="320" stroke="#F59E0B" stroke-width="1" opacity="0.3"/>
+        <line x1="200" y1="200" x2="80" y2="260" stroke="#10B981" stroke-width="1" opacity="0.3"/>
+        <line x1="200" y1="200" x2="80" y2="140" stroke="#3B82F6" stroke-width="1" opacity="0.3"/>
+        <defs>
+          <radialGradient id="coordinatorGradient" cx="50%" cy="50%">
+            <stop offset="0%" stop-color="#E8714A"/>
+            <stop offset="100%" stop-color="#CF5A35"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>
+  </section>
+
+  <!-- The 6 Agents Grid -->
+  <section class="bg-white py-24 md:py-32">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">Six specialists. One mission.</h2>
+        <p class="mt-4 text-light-text text-lg">Each agent has a focused role, specialized tools, and a defined output. They don't just chat — they deliver work product.</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Tech Auditor -->
+        <div class="group relative bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-8 hover:shadow-xl hover:shadow-indigo-100/50 transition-all duration-300 hover:-translate-y-1">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-bl-full"></div>
+          <div class="relative">
+            <div class="w-14 h-14 flex items-center justify-center rounded-xl bg-blue-500/10 mb-5">
+              <svg class="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-dark mb-2">Tech Auditor</h3>
+            <p class="text-sm text-accent font-medium mb-3">Daily Technical SEO Audits</p>
+            <p class="text-light-text leading-relaxed text-[15px]">
+              Crawls your site every morning checking Core Web Vitals, broken links, indexation issues, schema markup, and CTR opportunities. Creates a prioritized fix list with copy-paste code blocks.
+            </p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Crawl Analysis</span>
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Schema Validation</span>
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">CWV Monitoring</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Strategist -->
+        <div class="group relative bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-8 hover:shadow-xl hover:shadow-indigo-100/50 transition-all duration-300 hover:-translate-y-1">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-bl-full"></div>
+          <div class="relative">
+            <div class="w-14 h-14 flex items-center justify-center rounded-xl bg-purple-500/10 mb-5">
+              <svg class="w-7 h-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-dark mb-2">Content Strategist</h3>
+            <p class="text-sm text-purple-600 font-medium mb-3">Keyword Research & Content Briefs</p>
+            <p class="text-light-text leading-relaxed text-[15px]">
+              Analyzes competitor gaps, identifies trending topics in your industry, and creates detailed content briefs with priority scores. Knows what to write before writing begins.
+            </p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Gap Analysis</span>
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Trend Detection</span>
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Brief Creation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Creator -->
+        <div class="group relative bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-8 hover:shadow-xl hover:shadow-indigo-100/50 transition-all duration-300 hover:-translate-y-1">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-pink-500/5 rounded-bl-full"></div>
+          <div class="relative">
+            <div class="w-14 h-14 flex items-center justify-center rounded-xl bg-pink-500/10 mb-5">
+              <svg class="w-7 h-7 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-dark mb-2">Content Creator</h3>
+            <p class="text-sm text-pink-600 font-medium mb-3">SEO-Optimized Content Writing</p>
+            <p class="text-light-text leading-relaxed text-[15px]">
+              Writes complete drafts based on approved briefs, matching your brand voice. Uses your knowledge base for accuracy. Produces ready-to-publish markdown with meta descriptions.
+            </p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Brand Voice Match</span>
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">SEO Optimization</span>
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Knowledge Base</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Link Builder -->
+        <div class="group relative bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-8 hover:shadow-xl hover:shadow-indigo-100/50 transition-all duration-300 hover:-translate-y-1">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-bl-full"></div>
+          <div class="relative">
+            <div class="w-14 h-14 flex items-center justify-center rounded-xl bg-emerald-500/10 mb-5">
+              <svg class="w-7 h-7 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-dark mb-2">Link Builder</h3>
+            <p class="text-sm text-emerald-600 font-medium mb-3">Link Prospecting & Outreach</p>
+            <p class="text-light-text leading-relaxed text-[15px]">
+              Finds high-quality link opportunities, scores prospects by relevance and authority, and generates personalized outreach emails. Tracks the entire pipeline from prospect to placement.
+            </p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Prospect Scoring</span>
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Outreach Emails</span>
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Pipeline Tracking</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trend Scout -->
+        <div class="group relative bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-8 hover:shadow-xl hover:shadow-indigo-100/50 transition-all duration-300 hover:-translate-y-1">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-bl-full"></div>
+          <div class="relative">
+            <div class="w-14 h-14 flex items-center justify-center rounded-xl bg-amber-500/10 mb-5">
+              <svg class="w-7 h-7 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-dark mb-2">Trend Scout</h3>
+            <p class="text-sm text-amber-600 font-medium mb-3">Industry News & Algorithm Monitoring</p>
+            <p class="text-light-text leading-relaxed text-[15px]">
+              Monitors industry publications, social signals, and algorithm updates daily. Alerts you to emerging trends and recommends actions before your competitors react.
+            </p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">News Monitoring</span>
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Algorithm Alerts</span>
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Competitor Intel</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coordinator -->
+        <div class="group relative bg-gradient-to-br from-orange-50 to-white border-2 border-accent/20 rounded-2xl p-8 hover:shadow-xl hover:shadow-orange-100/50 transition-all duration-300 hover:-translate-y-1">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-accent/5 rounded-bl-full"></div>
+          <div class="relative">
+            <div class="w-14 h-14 flex items-center justify-center rounded-xl bg-accent/10 mb-5">
+              <svg class="w-7 h-7 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-dark mb-2">Coordinator</h3>
+            <p class="text-sm text-accent font-medium mb-3">User-Facing Orchestrator</p>
+            <p class="text-light-text leading-relaxed text-[15px]">
+              Your single point of contact. Synthesizes all agent outputs, runs daily standups, prioritizes your work queue, and handles your questions. The only agent you need to talk to.
+            </p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="text-xs px-2 py-1 bg-accent/10 text-accent rounded-full">Your Contact</span>
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Priority Queue</span>
+              <span class="text-xs px-2 py-1 bg-slate-100 text-slate-600 rounded-full">Daily Standups</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works / Agent Handoff Diagram -->
+  <section id="how-it-works" class="bg-hero-text py-24 md:py-32">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">How the agents work together</h2>
+        <p class="mt-4 text-light-text text-lg">A coordinated workflow where specialists hand off to each other, and the Coordinator keeps you informed every step of the way.</p>
+      </div>
+
+      <!-- Visual Workflow Diagram -->
+      <div class="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-slate-200">
+        <div class="relative">
+          <!-- Workflow SVG Diagram -->
+          <div class="hidden md:block">
+            <svg class="w-full" viewBox="0 0 900 400" fill="none">
+              <!-- Row 1: Tech Auditor (Foundation) -->
+              <rect x="50" y="50" width="160" height="80" rx="12" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2"/>
+              <text x="130" y="85" text-anchor="middle" font-size="14" font-weight="600" fill="#1E40AF">Tech Auditor</text>
+              <text x="130" y="105" text-anchor="middle" font-size="11" fill="#3B82F6">Daily Site Crawl</text>
+              <text x="130" y="120" text-anchor="middle" font-size="11" fill="#3B82F6">& Issue Detection</text>
+
+              <!-- Row 1: Trend Scout (Parallel) -->
+              <rect x="370" y="50" width="160" height="80" rx="12" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+              <text x="450" y="85" text-anchor="middle" font-size="14" font-weight="600" fill="#92400E">Trend Scout</text>
+              <text x="450" y="105" text-anchor="middle" font-size="11" fill="#F59E0B">Industry Monitoring</text>
+              <text x="450" y="120" text-anchor="middle" font-size="11" fill="#F59E0B">& Algorithm Alerts</text>
+
+              <!-- Row 1: Link Builder (Parallel) -->
+              <rect x="690" y="50" width="160" height="80" rx="12" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+              <text x="770" y="85" text-anchor="middle" font-size="14" font-weight="600" fill="#065F46">Link Builder</text>
+              <text x="770" y="105" text-anchor="middle" font-size="11" fill="#10B981">Prospect Discovery</text>
+              <text x="770" y="120" text-anchor="middle" font-size="11" fill="#10B981">& Scoring</text>
+
+              <!-- Connection arrows to Row 2 -->
+              <path d="M210 90 L290 90" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrowhead)"/>
+              <path d="M450 130 L450 170" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrowhead)"/>
+              <path d="M690 90 L610 90" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+              <!-- Row 2: Content Strategist -->
+              <rect x="210" y="170" width="180" height="80" rx="12" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+              <text x="300" y="205" text-anchor="middle" font-size="14" font-weight="600" fill="#6B21A8">Content Strategist</text>
+              <text x="300" y="225" text-anchor="middle" font-size="11" fill="#8B5CF6">Keyword Research</text>
+              <text x="300" y="240" text-anchor="middle" font-size="11" fill="#8B5CF6">& Brief Creation</text>
+
+              <!-- Row 2: Coordinator (Receives from all) -->
+              <rect x="530" y="170" width="160" height="80" rx="12" fill="#FFF7ED" stroke="#E8714A" stroke-width="3"/>
+              <text x="610" y="205" text-anchor="middle" font-size="14" font-weight="700" fill="#9A3412">Coordinator</text>
+              <text x="610" y="225" text-anchor="middle" font-size="11" fill="#E8714A">Synthesis & Updates</text>
+              <text x="610" y="240" text-anchor="middle" font-size="11" fill="#E8714A">User Communication</text>
+
+              <!-- Connections -->
+              <path d="M390 210 L530 210" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrowhead)"/>
+              <path d="M770 90 L770 150 L690 190" stroke="#94A3B8" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+              <!-- Row 3: Content Creator (Triggered by brief) -->
+              <rect x="210" y="290" width="180" height="80" rx="12" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+              <text x="300" y="325" text-anchor="middle" font-size="14" font-weight="600" fill="#9D174D">Content Creator</text>
+              <text x="300" y="345" text-anchor="middle" font-size="11" fill="#EC4899">Draft Writing</text>
+              <text x="300" y="360" text-anchor="middle" font-size="11" fill="#EC4899">& Optimization</text>
+
+              <!-- Connection: Strategist to Creator -->
+              <path d="M300 250 L300 290" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+              <!-- Connection: Creator back to Coordinator -->
+              <path d="M390 330 L530 250" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+              <!-- Labels -->
+              <text x="250" y="85" font-size="10" fill="#64748B">Data</text>
+              <text x="650" y="85" font-size="10" fill="#64748B">Opportunities</text>
+              <text x="460" y="155" font-size="10" fill="#64748B">Signals</text>
+              <text x="460" y="220" font-size="10" fill="#64748B">Briefs</text>
+              <text x="310" y="275" font-size="10" fill="#64748B">Brief Approved</text>
+              <text x="420" y="310" font-size="10" fill="#64748B">Draft Ready</text>
+
+              <!-- Arrow marker definition -->
+              <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                  <polygon points="0 0, 10 3.5, 0 7" fill="#94A3B8"/>
+                </marker>
+              </defs>
+            </svg>
+          </div>
+
+          <!-- Mobile-friendly text version -->
+          <div class="md:hidden space-y-6">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
+                <span class="text-blue-600 font-bold">1</span>
+              </div>
+              <div>
+                <p class="font-semibold text-dark">Tech Auditor crawls your site</p>
+                <p class="text-light-text text-sm">Detects technical issues, schema problems, and performance gaps daily.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center shrink-0">
+                <span class="text-amber-600 font-bold">2</span>
+              </div>
+              <div>
+                <p class="font-semibold text-dark">Trend Scout monitors industry</p>
+                <p class="text-light-text text-sm">Tracks news, algorithm updates, and competitor moves in parallel.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
+                <span class="text-emerald-600 font-bold">3</span>
+              </div>
+              <div>
+                <p class="font-semibold text-dark">Link Builder finds opportunities</p>
+                <p class="text-light-text text-sm">Discovers and scores link prospects with personalized outreach.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center shrink-0">
+                <span class="text-purple-600 font-bold">4</span>
+              </div>
+              <div>
+                <p class="font-semibold text-dark">Content Strategist creates briefs</p>
+                <p class="text-light-text text-sm">Uses audit data and trends to build prioritized content briefs.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-pink-100 flex items-center justify-center shrink-0">
+                <span class="text-pink-600 font-bold">5</span>
+              </div>
+              <div>
+                <p class="font-semibold text-dark">Content Creator writes drafts</p>
+                <p class="text-light-text text-sm">Produces SEO-optimized content matching your brand voice.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+                <span class="text-accent font-bold">6</span>
+              </div>
+              <div>
+                <p class="font-semibold text-dark">Coordinator synthesizes everything</p>
+                <p class="text-light-text text-sm">Delivers unified reports, prioritizes actions, and communicates with you.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workflow Legend -->
+        <div class="mt-8 pt-8 border-t border-slate-200">
+          <p class="text-sm font-medium text-dark mb-4">Agent Handoffs</p>
+          <div class="flex flex-wrap gap-6 text-sm text-light-text">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+              <span>Technical data flows to Strategist</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-purple-500"></div>
+              <span>Briefs trigger Content Creator</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-accent"></div>
+              <span>All outputs route to Coordinator</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why 6 Specialists Beat 1 Generalist -->
+  <section class="bg-white py-24 md:py-32">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">Why 6 specialized agents beat 1 general AI</h2>
+          <p class="mt-4 text-light-text text-lg">A single chatbot tries to do everything. Our fleet does one thing each, and does it exceptionally well.</p>
+          
+          <div class="mt-10 space-y-6">
+            <div class="flex gap-4">
+              <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-dark">Dedicated expertise, no context switching</h4>
+                <p class="text-light-text text-sm mt-1">Each agent has a focused persona, specialized tools, and defined outputs. The Tech Auditor doesn't get distracted by content ideas. The Content Creator doesn't worry about crawl budgets.</p>
+              </div>
+            </div>
+            
+            <div class="flex gap-4">
+              <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-dark">Parallel execution, not sequential</h4>
+                <p class="text-light-text text-sm mt-1">While the Tech Auditor crawls your site, the Trend Scout monitors news and the Link Builder scores prospects. They work simultaneously, not one-at-a-time.</p>
+              </div>
+            </div>
+            
+            <div class="flex gap-4">
+              <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-dark">Handoffs that preserve context</h4>
+                <p class="text-light-text text-sm mt-1">When the Content Strategist finishes a brief, it doesn't just "tell" the Content Creator — it passes structured data. The Creator gets the brief, keyword data, and brand voice profile in a single context window.</p>
+              </div>
+            </div>
+            
+            <div class="flex gap-4">
+              <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-dark">Observable, trackable work</h4>
+                <p class="text-light-text text-sm mt-1">Each agent produces concrete outputs: audit reports, content briefs, draft articles, prospect lists. You see exactly what was done, when, and by which specialist. No black box.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Comparison Cards -->
+        <div class="space-y-4">
+          <!-- Single Chatbot Card -->
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 opacity-70">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-full bg-slate-300 flex items-center justify-center">
+                <svg class="w-5 h-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                </svg>
+              </div>
+              <h3 class="font-bold text-dark">One General AI Chatbot</h3>
+            </div>
+            <ul class="space-y-2 text-sm text-light-text">
+              <li class="flex items-start gap-2">
+                <span class="text-red-500 mt-0.5">&times;</span>
+                <span>Has to "remember" everything in one conversation</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-red-500 mt-0.5">&times;</span>
+                <span>Constant context switching dilutes focus</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-red-500 mt-0.5">&times;</span>
+                <span>Can only do one thing at a time</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-red-500 mt-0.5">&times;</span>
+                <span>Output quality varies by task complexity</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-red-500 mt-0.5">&times;</span>
+                <span>No persistent memory between sessions</span>
+              </li>
+            </ul>
+          </div>
+          
+          <!-- 6-Agent Fleet Card -->
+          <div class="bg-gradient-to-br from-indigo-50 to-white border-2 border-accent/30 rounded-2xl p-6 shadow-lg">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </div>
+              <h3 class="font-bold text-dark">Six Specialist Agents</h3>
+            </div>
+            <ul class="space-y-2 text-sm text-light-text">
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-500 mt-0.5">&check;</span>
+                <span>Each has focused expertise and specialized tools</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-500 mt-0.5">&check;</span>
+                <span>Deep context on their specific domain</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-500 mt-0.5">&check;</span>
+                <span>Work in parallel, deliver results faster</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-500 mt-0.5">&check;</span>
+                <span>Consistent, high-quality specialized outputs</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-500 mt-0.5">&check;</span>
+                <span>Persistent memory and structured handoffs</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Daily/Weekly Rhythm -->
+  <section class="bg-gradient-to-br from-dark to-dark-card py-24 md:py-32">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl md:text-[44px] font-semibold text-hero-text leading-tight">Your team's daily and weekly rhythm</h2>
+        <p class="mt-4 text-body-muted text-lg">The system runs continuously. Here's what happens on a typical day and week.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Daily Column -->
+        <div class="bg-dark-card/50 backdrop-blur rounded-2xl p-8 border border-dark-border">
+          <h3 class="text-xl font-bold text-hero-text mb-6 flex items-center gap-3">
+            <span class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+              <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </span>
+            Every Morning
+          </h3>
+          <ul class="space-y-4">
+            <li class="flex gap-4">
+              <span class="text-xs font-mono text-body-muted mt-1">6:00 AM</span>
+              <div>
+                <p class="text-hero-text font-medium">Tech Auditor runs site crawl</p>
+                <p class="text-body-muted text-sm">Checks for broken links, schema issues, Core Web Vitals changes, and indexation problems.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="text-xs font-mono text-body-muted mt-1">7:00 AM</span>
+              <div>
+                <p class="text-hero-text font-medium">Trend Scout scans industry news</p>
+                <p class="text-body-muted text-sm">Monitors publications, social signals, and algorithm chatter for relevant updates.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="text-xs font-mono text-body-muted mt-1">8:00 AM</span>
+              <div>
+                <p class="text-hero-text font-medium">Coordinator delivers morning digest</p>
+                <p class="text-body-muted text-sm">Synthesizes all findings into a prioritized list of what needs attention today.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="text-xs font-mono text-body-muted mt-1">All Day</span>
+              <div>
+                <p class="text-hero-text font-medium">Coordinator responds to your questions</p>
+                <p class="text-body-muted text-sm">Ask about rankings, request clarification, or dig deeper into any finding.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Weekly Column -->
+        <div class="bg-dark-card/50 backdrop-blur rounded-2xl p-8 border border-dark-border">
+          <h3 class="text-xl font-bold text-hero-text mb-6 flex items-center gap-3">
+            <span class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+              <svg class="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </span>
+            Every Week
+          </h3>
+          <ul class="space-y-4">
+            <li class="flex gap-4">
+              <span class="text-xs font-mono text-body-muted mt-1">Monday</span>
+              <div>
+                <p class="text-hero-text font-medium">Content Strategist plans the week</p>
+                <p class="text-body-muted text-sm">Creates content briefs based on keyword opportunities and trending topics.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="text-xs font-mono text-body-muted mt-1">Tuesday</span>
+              <div>
+                <p class="text-hero-text font-medium">Link Builder updates prospect list</p>
+                <p class="text-body-muted text-sm">Scores new opportunities and generates fresh outreach templates.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="text-xs font-mono text-body-muted mt-1">Wednesday</span>
+              <div>
+                <p class="text-hero-text font-medium">Content Creator produces drafts</p>
+                <p class="text-body-muted text-sm">Writes articles based on approved briefs, ready for your review.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="text-xs font-mono text-body-muted mt-1">Friday</span>
+              <div>
+                <p class="text-hero-text font-medium">Weekly performance report</p>
+                <p class="text-body-muted text-sm">Rankings, traffic trends, content published, and next week's priorities.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cost Comparison -->
+  <section class="bg-white py-24 md:py-32">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">The cost of an SEO team vs. Meridian</h2>
+        <p class="mt-4 text-light-text text-lg">Hiring specialists for each function would cost thousands per month. Meridian delivers the same capability at a fraction of the price.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <!-- Hiring Column -->
+        <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+          <h3 class="text-lg font-semibold text-dark mb-6">Hiring an In-House Team</h3>
+          <ul class="space-y-4">
+            <li class="flex justify-between items-center py-3 border-b border-slate-200">
+              <span class="text-light-text">Technical SEO Specialist</span>
+              <span class="font-semibold text-dark">$5,000/mo</span>
+            </li>
+            <li class="flex justify-between items-center py-3 border-b border-slate-200">
+              <span class="text-light-text">Content Strategist</span>
+              <span class="font-semibold text-dark">$4,500/mo</span>
+            </li>
+            <li class="flex justify-between items-center py-3 border-b border-slate-200">
+              <span class="text-light-text">Content Writer</span>
+              <span class="font-semibold text-dark">$3,500/mo</span>
+            </li>
+            <li class="flex justify-between items-center py-3 border-b border-slate-200">
+              <span class="text-light-text">Link Building Specialist</span>
+              <span class="font-semibold text-dark">$3,500/mo</span>
+            </li>
+            <li class="flex justify-between items-center py-3 border-b border-slate-200">
+              <span class="text-light-text">SEO Analyst / Researcher</span>
+              <span class="font-semibold text-dark">$4,000/mo</span>
+            </li>
+            <li class="flex justify-between items-center py-3 border-b border-slate-200">
+              <span class="text-light-text">Account Manager</span>
+              <span class="font-semibold text-dark">$4,500/mo</span>
+            </li>
+            <li class="flex justify-between items-center py-3 text-sm text-light-text">
+              <span>Tools & Software</span>
+              <span class="font-semibold text-dark">+$500/mo</span>
+            </li>
+          </ul>
+          <div class="mt-6 pt-6 border-t-2 border-slate-300">
+            <div class="flex justify-between items-center">
+              <span class="text-lg font-semibold text-dark">Total Monthly Cost</span>
+              <span class="text-2xl font-bold text-dark">$25,500+</span>
+            </div>
+            <p class="text-sm text-light-text mt-2">Plus benefits, training, turnover, and management overhead</p>
+          </div>
+        </div>
+
+        <!-- Meridian Column -->
+        <div class="bg-gradient-to-br from-indigo-50 to-white rounded-2xl p-8 border-2 border-accent/30 relative">
+          <span class="absolute -top-3 left-8 bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">Recommended</span>
+          <h3 class="text-lg font-semibold text-dark mb-6">Meridian AI Team</h3>
+          <ul class="space-y-4">
+            <li class="flex justify-between items-center py-3 border-b border-indigo-100">
+              <span class="flex items-center gap-2 text-light-text">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                Tech Auditor
+              </span>
+              <span class="text-emerald-600 font-medium">Included</span>
+            </li>
+            <li class="flex justify-between items-center py-3 border-b border-indigo-100">
+              <span class="flex items-center gap-2 text-light-text">
+                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                Content Strategist
+              </span>
+              <span class="text-emerald-600 font-medium">Included</span>
+            </li>
+            <li class="flex justify-between items-center py-3 border-b border-indigo-100">
+              <span class="flex items-center gap-2 text-light-text">
+                <span class="w-2 h-2 rounded-full bg-pink-500"></span>
+                Content Creator
+              </span>
+              <span class="text-emerald-600 font-medium">Included</span>
+            </li>
+            <li class="flex justify-between items-center py-3 border-b border-indigo-100">
+              <span class="flex items-center gap-2 text-light-text">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                Link Builder
+              </span>
+              <span class="text-emerald-600 font-medium">Included</span>
+            </li>
+            <li class="flex justify-between items-center py-3 border-b border-indigo-100">
+              <span class="flex items-center gap-2 text-light-text">
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                Trend Scout
+              </span>
+              <span class="text-emerald-600 font-medium">Included</span>
+            </li>
+            <li class="flex justify-between items-center py-3 border-b border-indigo-100">
+              <span class="flex items-center gap-2 text-light-text">
+                <span class="w-2 h-2 rounded-full bg-accent"></span>
+                Coordinator
+              </span>
+              <span class="text-emerald-600 font-medium">Included</span>
+            </li>
+            <li class="flex justify-between items-center py-3 text-sm text-light-text">
+              <span>All SEO Tools & Data</span>
+              <span class="text-emerald-600 font-medium">Included</span>
+            </li>
+          </ul>
+          <div class="mt-6 pt-6 border-t-2 border-accent/20">
+            <div class="flex justify-between items-center">
+              <span class="text-lg font-semibold text-dark">Growth Plan</span>
+              <span class="text-2xl font-bold text-accent">$99/mo</span>
+            </div>
+            <div class="flex justify-between items-center mt-3">
+              <span class="text-lg font-semibold text-dark">Pro Plan</span>
+              <span class="text-2xl font-bold text-accent">$199/mo</span>
+            </div>
+            <p class="text-sm text-light-text mt-2">No contracts. Cancel anytime. All agents included at every tier.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROI Highlight -->
+      <div class="mt-12 text-center">
+        <p class="text-4xl md:text-5xl font-bold text-dark">128x cheaper</p>
+        <p class="text-light-text mt-2">than building an equivalent team — with 24/7 availability and no turnover</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="bg-gradient-to-br from-dark to-dark-card py-24 md:py-32">
+    <div class="mx-auto max-w-3xl px-6 text-center">
+      <h2 class="text-3xl md:text-[44px] font-semibold text-hero-text leading-tight">Ready to meet your team?</h2>
+      <p class="mt-6 text-body-muted text-lg max-w-xl mx-auto leading-relaxed">
+        Six specialist agents working around the clock to grow your organic traffic. Start your free trial and see your first audit within 24 hours.
+      </p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <a href="/pricing" class="inline-flex items-center px-8 py-4 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors">
+          See pricing & plans
+        </a>
+        <a href="/audit" class="inline-flex items-center px-8 py-4 border border-dark-border text-body-muted hover:text-white hover:border-white/20 font-medium rounded-lg transition-colors">
+          Get a free audit first
+        </a>
+      </div>
+      <p class="mt-6 text-sm text-body-muted">
+        No credit card required. First audit delivered within 24 hours.
+      </p>
+    </div>
+  </section>
+
+</Layout>
