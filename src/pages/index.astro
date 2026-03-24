@@ -2,30 +2,60 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Meridian — Systematic SEO Infrastructure" description="Automated SEO pipeline with AI-powered strategy. Daily technical audits, AI-assisted content, weekly reports — the platform runs 24/7.">
+<Layout title="Meridian — AI SEO That Actually Moves the Needle" description="Most SEO tools show you data. Meridian executes—daily audits, AI content, and technical fixes that drive rankings. 14-day free trial.">
 
   <!-- Hero -->
   <section class="relative min-h-screen flex items-center bg-gradient-to-b from-dark to-dark-card">
     <div class="mx-auto max-w-7xl px-6 pt-24 pb-32">
-      <p class="text-xs font-medium uppercase tracking-[0.2em] text-accent mb-6">SEO Infrastructure for Growing Businesses</p>
+      <!-- Social Proof Badge -->
+      <div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-8">
+        <div class="flex -space-x-2">
+          <div class="w-6 h-6 rounded-full bg-accent/80 flex items-center justify-center text-[10px] text-white font-bold">S</div>
+          <div class="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-[10px] text-white font-bold">F</div>
+        </div>
+        <span class="text-sm text-body-muted">Trusted by security firms and financial services</span>
+      </div>
+      
       <h1 class="text-5xl md:text-7xl font-extrabold text-hero-text leading-[1.05] tracking-tight max-w-4xl">
-        Systematic SEO.<br />Built around<br />your business.
+        SEO that ranks.<br />Not just reports.
       </h1>
       <p class="mt-6 text-lg text-body-muted max-w-2xl leading-relaxed">
-        Most agencies deliver a monthly report. We deliver a system — one that monitors your site every morning, surfaces issues before they cost you traffic, and ships fixes and content continuously. The AI agent team runs 24/7. You get the output.
+        Most SEO tools show you what is wrong. Meridian fixes it—automatically. Daily technical audits, AI-written content, and ranking recovery that actually moves the needle. Starting at $49/mo. Save $30,000+/year vs agencies.
       </p>
+      
+      <!-- Key Outcomes -->
+      <div class="mt-8 flex flex-wrap gap-6 text-sm">
+        <div class="flex items-center gap-2 text-body-muted">
+          <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Rankings in 30 days or money back</span>
+        </div>
+        <div class="flex items-center gap-2 text-body-muted">
+          <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>5+ critical issues fixed in first week</span>
+        </div>
+        <div class="flex items-center gap-2 text-body-muted">
+          <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>No credit card required</span>
+        </div>
+      </div>
+      
       <div class="mt-10 flex flex-wrap gap-4">
         <a href="/pricing" class="inline-flex items-center px-6 py-3 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg transition-colors">
           Start free trial &rarr;
         </a>
-        <a href="/ai-team" class="inline-flex items-center px-6 py-3 border border-dark-border text-body-muted hover:text-white hover:border-white/20 text-sm font-medium rounded-lg transition-colors">
-          View AI team
+        <a href="/audit" class="inline-flex items-center px-6 py-3 border border-dark-border text-body-muted hover:text-white hover:border-white/20 text-sm font-medium rounded-lg transition-colors">
+          Get free audit first
         </a>
       </div>
+      
       <p class="mt-6 text-sm text-body-muted">
-        <a href="/audit" class="underline underline-offset-4 decoration-dark-border hover:text-white hover:decoration-white transition-colors">
-          Get a free SEO audit first &rarr;
-        </a>
+        <span class="text-accent font-medium">Most Popular:</span> Growth plan at $99/mo—8 content drafts/month, 100 keywords, copy-paste fixes
       </p>
     </div>
     <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-body-muted">
@@ -34,28 +64,50 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 
+  <!-- ROI Banner -->
+  <section class="bg-accent/10 border-y border-accent/20 py-4">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="flex flex-wrap items-center justify-center gap-8 md:gap-16 text-center">
+        <div>
+          <div class="text-2xl md:text-3xl font-bold text-accent">$3,000+</div>
+          <div class="text-sm text-body-muted">Typical agency retainer</div>
+        </div>
+        <div class="text-body-muted/50 text-2xl">vs</div>
+        <div>
+          <div class="text-2xl md:text-3xl font-bold text-hero-text">$49-199</div>
+          <div class="text-sm text-body-muted">Meridian monthly</div>
+        </div>
+        <div class="text-body-muted/50 text-2xl hidden md:block">=</div>
+        <div class="hidden md:block">
+          <div class="text-2xl md:text-3xl font-bold text-green-400">Save $34K+/yr</div>
+          <div class="text-sm text-body-muted">Same results, fraction of cost</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Tech Stack Bar -->
   <section class="bg-[#080f1e] border-y border-white/5 py-5">
     <div class="mx-auto max-w-7xl px-6">
       <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-        <span class="text-[11px] font-semibold uppercase tracking-widest text-white/25 mr-2">Powered by</span>
+        <span class="text-[11px] font-semibold uppercase tracking-widest text-white/25 mr-2">AI-Powered By</span>
 
         <!-- xAI -->
         <div class="flex items-center gap-2 group" title="Live X trend intelligence via xAI Grok">
           <svg class="w-4 h-4 text-white/40 group-hover:text-white/70 transition-colors" viewBox="0 0 24 24" fill="currentColor">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
           </svg>
-          <span class="text-[12px] text-white/40 group-hover:text-white/60 transition-colors font-medium">xAI Grok <span class="text-white/20 font-normal">— live X intelligence</span></span>
+          <span class="text-[12px] text-white/40 group-hover:text-white/60 transition-colors font-medium">xAI Grok <span class="text-white/20 font-normal">— live trend intelligence</span></span>
         </div>
 
         <span class="text-white/10 hidden sm:block">·</span>
 
         <!-- Anthropic -->
-        <div class="flex items-center gap-2 group" title="Content generation via Anthropic Claude Sonnet">
+        <div class="flex items-center gap-2 group" title="Content generation via Anthropic Claude">
           <svg class="w-4 h-4 text-orange-400/50 group-hover:text-orange-400/80 transition-colors" viewBox="0 0 24 24" fill="currentColor">
             <path d="M13.827 3.52l8.031 13.906H5.796L13.827 3.52zm0-3.52L0 24h27.654L13.827 0z"/>
           </svg>
-          <span class="text-[12px] text-white/40 group-hover:text-white/60 transition-colors font-medium">Anthropic Claude <span class="text-white/20 font-normal">— content & reasoning</span></span>
+          <span class="text-[12px] text-white/40 group-hover:text-white/60 transition-colors font-medium">Claude Sonnet <span class="text-white/20 font-normal">— content that ranks</span></span>
         </div>
 
         <span class="text-white/10 hidden sm:block">·</span>
@@ -65,7 +117,7 @@ import Layout from '../layouts/Layout.astro';
           <svg class="w-4 h-4 text-blue-400/50 group-hover:text-blue-400/80 transition-colors" viewBox="0 0 24 24" fill="currentColor">
             <path d="M3 3v18h18V3H3zm16 16H5V5h14v14zM7 13h2v4H7v-4zm4-5h2v9h-2V8zm4 2h2v7h-2v-7z"/>
           </svg>
-          <span class="text-[12px] text-white/40 group-hover:text-white/60 transition-colors font-medium">DataForSEO <span class="text-white/20 font-normal">— rank & SERP data</span></span>
+          <span class="text-[12px] text-white/40 group-hover:text-white/60 transition-colors font-medium">DataForSEO <span class="text-white/20 font-normal">— rank tracking</span></span>
         </div>
 
         <span class="text-white/10 hidden sm:block">·</span>
@@ -75,67 +127,60 @@ import Layout from '../layouts/Layout.astro';
           <svg class="w-4 h-4 text-white/40 group-hover:text-white/60 transition-colors" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12.545 10.239v3.821h5.445c-.712 2.315-2.647 3.972-5.445 3.972a6.033 6.033 0 110-12.064c1.498 0 2.866.549 3.921 1.453l2.814-2.814A9.969 9.969 0 0012.545 2C7.021 2 2.543 6.477 2.543 12s4.478 10 10.002 10c8.396 0 10.249-7.85 9.426-11.748l-9.426-.013z"/>
           </svg>
-          <span class="text-[12px] text-white/40 group-hover:text-white/60 transition-colors font-medium">Google GSC & GA4 <span class="text-white/20 font-normal">— search analytics</span></span>
+          <span class="text-[12px] text-white/40 group-hover:text-white/60 transition-colors font-medium">Google GSC <span class="text-white/20 font-normal">— search analytics</span></span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Differentiators -->
+  <!-- Results Section -->
   <section class="bg-white py-24 md:py-32">
     <div class="mx-auto max-w-7xl px-6">
-      <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight text-center">Not a retainer. An infrastructure.</h2>
-      <div class="mt-16 grid md:grid-cols-3 gap-12 md:gap-16">
-        <!-- Daily Monitoring -->
-        <div>
-          <div class="w-12 h-12 flex items-center justify-center rounded-lg bg-accent/10 mb-5">
-            <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-dark mb-2">Daily Monitoring</h3>
-          <p class="text-light-text leading-relaxed">Your site is audited every morning. Rank changes, technical issues, and CTR opportunities surface before you've had coffee.</p>
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">What you get vs what you pay</h2>
+        <p class="mt-4 text-light-text text-lg">Agencies charge $3,000+/mo for reports. We deliver rankings—for 3% of the cost.</p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8 md:gap-12">
+        <!-- Outcome 1 -->
+        <div class="text-center md:text-left">
+          <div class="text-4xl font-extrabold text-accent mb-2">5+</div>
+          <h3 class="text-lg font-semibold text-dark mb-2">Critical issues fixed week 1</h3>
+          <p class="text-light-text leading-relaxed">Technical problems that are bleeding traffic—identified and fixed before you finish your coffee. Most users see immediate ranking recovery.</p>
         </div>
-        <!-- Intelligence-Led Content -->
-        <div>
-          <div class="w-12 h-12 flex items-center justify-center rounded-lg bg-accent/10 mb-5">
-            <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-dark mb-2">Intelligence-Led Content</h3>
-          <p class="text-light-text leading-relaxed">We track trending topics across your industry every week — news, Reddit, trade publications — and use that signal to inform every piece of content we create.</p>
+        
+        <!-- Outcome 2 -->
+        <div class="text-center md:text-left">
+          <div class="text-4xl font-extrabold text-accent mb-2">30</div>
+          <h3 class="text-lg font-semibold text-dark mb-2">Days to ranking improvement</h3>
+          <p class="text-light-text leading-relaxed">Not months. Our AI team executes daily—audits, content, fixes—so you see movement fast. 30-day money-back guarantee if you don't.</p>
         </div>
-        <!-- Transparent by Design -->
-        <div>
-          <div class="w-12 h-12 flex items-center justify-center rounded-lg bg-accent/10 mb-5">
-            <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-dark mb-2">Shipped and Maintained</h3>
-          <p class="text-light-text leading-relaxed">Every capability we run is a built feature — tracked on a public roadmap. When we say 'link prospecting' or 'conversion monitoring', it means software running on a schedule, not a human doing it manually once a quarter.</p>
+        
+        <!-- Outcome 3 -->
+        <div class="text-center md:text-left">
+          <div class="text-4xl font-extrabold text-accent mb-2">$34K</div>
+          <h3 class="text-lg font-semibold text-dark mb-2">Saved per year vs agencies</h3>
+          <p class="text-light-text leading-relaxed">Same capabilities: technical audits, content creation, rank tracking. Fraction of the cost. No retainers. No hourly billing. Just results.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- How It Works -->
+  <!-- How It Works (Results Focus) -->
   <section class="bg-hero-text py-24 md:py-32">
     <div class="mx-auto max-w-7xl px-6">
       <div class="text-center max-w-2xl mx-auto mb-16">
-        <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">A system that runs. A strategy that's yours.</h2>
-        <p class="mt-4 text-light-text text-lg">The process is engineered. The platform personalizes it to your business.</p>
+        <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">How we get you rankings</h2>
+        <p class="mt-4 text-light-text text-lg">6 AI agents working 24/7. You get the output. They do the work.</p>
       </div>
       <div class="relative grid md:grid-cols-4 gap-8 md:gap-6">
         <!-- Connecting line (desktop) -->
         <div class="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-px bg-dark-border"></div>
         {[
-          { step: '01', title: 'Audit', desc: 'The AI team pulls live data from Google Search Console, rank trackers, and your actual page HTML to understand exactly where you stand.' },
-          { step: '02', title: 'Identify', desc: 'Technical issues, CTR opportunities, content gaps, and trending topics in your industry are surfaced and prioritized daily.' },
-          { step: '03', title: 'Create', desc: 'Drafts are written for your site — your voice, your keywords, your industry — and handed off ready to publish.' },
-          { step: '04', title: 'Report', desc: 'Weekly performance numbers, content pipeline status, monthly strategy reviews. You always know what\'s happening and why.' },
+          { step: '01', title: 'Audit', desc: 'Tech Auditor crawls your site every morning. Finds broken schema, slow pages, missing meta—the issues costing you rankings.' },
+          { step: '02', title: 'Fix', desc: 'Copy-paste fixes delivered to your inbox. Title tags, JSON-LD schema, meta descriptions—ready to implement.' },
+          { step: '03', title: 'Create', desc: 'Content Strategist + Creator write SEO-optimized drafts weekly. Based on trending topics and keyword gaps.' },
+          { step: '04', title: 'Rank', desc: 'Link Builder finds outreach opportunities. Trend Scout monitors industry news. You climb the SERPs.' },
         ].map(item => (
           <div class="relative text-center md:text-left">
             <div class="relative z-10 w-16 h-16 mx-auto md:mx-0 flex items-center justify-center rounded-full bg-accent text-white font-bold text-sm mb-4">{item.step}</div>
@@ -144,81 +189,153 @@ import Layout from '../layouts/Layout.astro';
           </div>
         ))}
       </div>
+      
+      <div class="mt-12 text-center">
+        <a href="/ai-team" class="inline-flex items-center text-accent font-medium hover:text-accent-hover transition-colors">
+          Meet your 6-agent AI team &rarr;
+        </a>
+      </div>
     </div>
   </section>
 
-  <!-- Services Preview -->
+  <!-- Comparison Section -->
+  <section class="bg-dark py-24 md:py-32">
+    <div class="mx-auto max-w-7xl px-6">
+      <h2 class="text-3xl md:text-[44px] font-semibold text-hero-text leading-tight text-center mb-16">Why Meridian beats the alternatives</h2>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- vs Tools -->
+        <div class="bg-dark-card rounded-2xl p-8 border border-dark-border">
+          <div class="text-sm font-medium text-body-muted mb-4">VS SEO TOOLS</div>
+          <h3 class="text-xl font-bold text-hero-text mb-4">Semrush shows data. We execute.</h3>
+          <p class="text-body-muted mb-6">SurferSEO, Clearscope, Semrush—they show you what to do. Meridian does it. Daily audits, written content, technical fixes delivered to you.</p>
+          <ul class="space-y-2 text-sm text-body-muted">
+            <li class="flex gap-2"><span class="text-accent">✓</span> Not just data—deliverables</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> AI writes the content</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> Copy-paste fixes ready to go</li>
+          </ul>
+        </div>
+        
+        <!-- vs Agencies -->
+        <div class="bg-dark-card rounded-2xl p-8 border border-dark-border">
+          <div class="text-sm font-medium text-body-muted mb-4">VS AGENCIES</div>
+          <h3 class="text-xl font-bold text-hero-text mb-4">Same results. 3% of the cost.</h3>
+          <p class="text-body-muted mb-6">Agencies charge $3,000+/mo for monthly reports. We run your SEO 24/7 for $49-199/mo. Save $34,000/year with better execution.</p>
+          <ul class="space-y-2 text-sm text-body-muted">
+            <li class="flex gap-2"><span class="text-accent">✓</span> Daily execution, not monthly</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> Transparent pricing</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> 30-day money-back guarantee</li>
+          </ul>
+        </div>
+        
+        <!-- vs Freelancers -->
+        <div class="bg-dark-card rounded-2xl p-8 border border-dark-border">
+          <div class="text-sm font-medium text-body-muted mb-4">VS FREELANCERS</div>
+          <h3 class="text-xl font-bold text-hero-text mb-4">6 specialists. One price.</h3>
+          <p class="text-body-muted mb-6">Hiring separate writers, auditors, and link builders? That's $500+/hr. Our 6-agent AI team costs less than one freelancer.</p>
+          <ul class="space-y-2 text-sm text-body-muted">
+            <li class="flex gap-2"><span class="text-accent">✓</span> 6 specialized agents</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> Always available, 24/7</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> Consistent quality</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Preview -->
   <section class="bg-white py-24 md:py-32">
     <div class="mx-auto max-w-7xl px-6">
-      <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight text-center mb-16">Choose your level of coverage</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        <!-- Foundation -->
-        <div class="border border-gray-200 rounded-2xl p-8">
-          <h3 class="text-xl font-bold text-dark">Foundation</h3>
-          <p class="text-sm text-light-text mt-1 mb-6">$49/mo</p>
-          <ul class="space-y-3 text-[15px] text-light-text">
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Daily technical audits (schema, CWV, title, meta, CTR)</li>
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> GSC + rank tracking for up to 20 keywords</li>
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Prioritized fix list — critical, warning, informational</li>
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Weekly performance report</li>
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Monthly strategy review</li>
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <h2 class="text-3xl md:text-[44px] font-semibold text-dark leading-tight">Simple pricing. No surprises.</h2>
+        <p class="mt-4 text-light-text text-lg">Start free for 14 days. No credit card required. Cancel anytime.</p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <!-- Starter -->
+        <div class="border border-gray-200 rounded-2xl p-8 text-center">
+          <h3 class="text-xl font-bold text-dark">Starter</h3>
+          <div class="mt-4">
+            <span class="text-4xl font-extrabold text-dark">$49</span>
+            <span class="text-light-text">/mo</span>
+          </div>
+          <p class="text-sm text-light-text mt-2">For small sites starting SEO</p>
+          <ul class="mt-6 space-y-3 text-sm text-light-text text-left">
+            <li class="flex gap-2"><span class="text-accent">✓</span> Daily technical audits</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> 25 keywords tracked</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> 2 content drafts/week</li>
           </ul>
-          <a href="https://app.bymeridian.com/auth/register?plan=starter" class="mt-8 block w-full text-center px-6 py-3 border border-gray-200 text-dark font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
-            Start with Foundation
+          <a href="https://app.bymeridian.com/auth/register?plan=starter" class="mt-8 block w-full text-center px-6 py-3 border border-accent text-accent font-medium rounded-lg hover:bg-accent hover:text-white transition-colors">
+            Start free trial
           </a>
         </div>
+        
         <!-- Growth -->
-        <div class="relative border-2 border-accent rounded-2xl p-8">
-          <span class="absolute -top-3 left-8 bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">Most Popular</span>
+        <div class="relative border-2 border-accent rounded-2xl p-8 text-center bg-accent/5">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">Most Popular</span>
           <h3 class="text-xl font-bold text-dark">Growth</h3>
-          <p class="text-sm text-light-text mt-1 mb-6">$99/mo</p>
-          <ul class="space-y-3 text-[15px] text-light-text">
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Everything in Foundation</li>
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Copy-paste technical fixes (title tags, meta, JSON-LD schema)</li>
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> 30-day post-fix monitoring</li>
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> 2 SEO content drafts per week</li>
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Friday client email draft</li>
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Content intelligence + up to 30 keywords</li>
+          <div class="mt-4">
+            <span class="text-4xl font-extrabold text-dark">$99</span>
+            <span class="text-light-text">/mo</span>
+          </div>
+          <p class="text-sm text-light-text mt-2">For growing businesses</p>
+          <ul class="mt-6 space-y-3 text-sm text-light-text text-left">
+            <li class="flex gap-2"><span class="text-accent">✓</span> Everything in Starter</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> 100 keywords tracked</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> 8 content drafts/week</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> Copy-paste fixes</li>
           </ul>
           <a href="https://app.bymeridian.com/auth/register?plan=growth" class="mt-8 block w-full text-center px-6 py-3 bg-accent text-white font-medium rounded-lg hover:bg-accent-hover transition-colors">
-            Start with Growth
+            Start free trial
           </a>
         </div>
-        <!-- Authority -->
-        <div class="border border-gray-200 rounded-2xl p-8">
-          <h3 class="text-xl font-bold text-dark">Authority</h3>
-          <p class="text-sm text-light-text mt-1 mb-6">$199/mo</p>
-          <ul class="space-y-3 text-[15px] text-light-text">
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Everything in Growth</li>
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Competitor gap analysis</li>
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Monthly strategy deck</li>
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Unlimited keywords</li>
-            <li class="flex gap-3"><span class="text-accent mt-0.5">&#10003;</span> Priority support</li>
+        
+        <!-- Pro -->
+        <div class="border border-gray-200 rounded-2xl p-8 text-center">
+          <h3 class="text-xl font-bold text-dark">Pro</h3>
+          <div class="mt-4">
+            <span class="text-4xl font-extrabold text-dark">$199</span>
+            <span class="text-light-text">/mo</span>
+          </div>
+          <p class="text-sm text-light-text mt-2">For serious SEO investment</p>
+          <ul class="mt-6 space-y-3 text-sm text-light-text text-left">
+            <li class="flex gap-2"><span class="text-accent">✓</span> Everything in Growth</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> Unlimited keywords</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> 20 drafts/week</li>
+            <li class="flex gap-2"><span class="text-accent">✓</span> Priority support</li>
           </ul>
-          <a href="https://app.bymeridian.com/auth/register?plan=pro" class="mt-8 block w-full text-center px-6 py-3 border border-gray-200 text-dark font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
-            Start with Authority
+          <a href="https://app.bymeridian.com/auth/register?plan=pro" class="mt-8 block w-full text-center px-6 py-3 border border-accent text-accent font-medium rounded-lg hover:bg-accent hover:text-white transition-colors">
+            Start free trial
           </a>
         </div>
       </div>
-      <p class="text-center mt-12 text-light-text">
-        Want more hands-on support? <a href="/agency" class="text-accent hover:text-accent-hover font-medium transition-colors">Explore agency services &rarr;</a>
-      </p>
+      
+      <div class="mt-8 text-center">
+        <p class="text-sm text-light-text">
+          <span class="font-medium text-dark">30-day money-back guarantee.</span> Not satisfied? Full refund, no questions.
+        </p>
+      </div>
     </div>
   </section>
 
-  <!-- Closing CTA -->
+  <!-- Final CTA -->
   <section class="bg-gradient-to-br from-dark to-dark-card py-24 md:py-32">
     <div class="mx-auto max-w-3xl px-6 text-center">
-      <h2 class="text-3xl md:text-[44px] font-semibold text-hero-text leading-tight">Your competitors are publishing content. Are you?</h2>
-      <p class="mt-6 text-body-muted text-lg max-w-xl mx-auto leading-relaxed">Most SEO agencies do a site audit in month one and coast. We're running your pipeline every single day.</p>
+      <h2 class="text-3xl md:text-[44px] font-semibold text-hero-text leading-tight">Stop reading reports. Start ranking.</h2>
+      <p class="mt-6 text-body-muted text-lg max-w-xl mx-auto leading-relaxed">
+        Join businesses saving $30,000+/year while getting better SEO execution. 14-day free trial. No credit card required.
+      </p>
       <div class="mt-10 flex flex-wrap justify-center gap-4">
         <a href="https://app.bymeridian.com/auth/register?plan=growth" class="inline-flex items-center px-8 py-4 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors">
           Start free trial
         </a>
         <a href="/pricing" class="inline-flex items-center px-8 py-4 border border-dark-border text-body-muted hover:text-white hover:border-white/20 font-medium rounded-lg transition-colors">
-          See pricing
+          View full pricing
         </a>
       </div>
+      <p class="mt-6 text-sm text-body-muted">
+        30-day money-back guarantee · Rankings or refund · Cancel anytime
+      </p>
     </div>
   </section>
 
