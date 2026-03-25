@@ -10,7 +10,7 @@ const links = [
 ];
 ---
 
-<nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300">
+<nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-dark/95 backdrop-blur-sm transition-colors duration-300">
   <div class="mx-auto max-w-7xl px-6 flex items-center justify-between h-16">
     <a href="/" class="block" aria-label="Meridian Digital home">
       <img
@@ -97,12 +97,14 @@ const links = [
   const bar2 = document.getElementById('bar2')!;
   const bar3 = document.getElementById('bar3')!;
 
-  // Scroll-based bg
+  // Scroll-based bg - now adds solid background on scroll
   function updateNav() {
     if (window.scrollY > 20) {
-      nav.classList.add('bg-dark');
+      nav.classList.add('bg-dark', 'border-b', 'border-dark-border');
+      nav.classList.remove('bg-dark/95');
     } else {
-      nav.classList.remove('bg-dark');
+      nav.classList.remove('bg-dark', 'border-b', 'border-dark-border');
+      nav.classList.add('bg-dark/95');
     }
   }
   window.addEventListener('scroll', updateNav, { passive: true });
