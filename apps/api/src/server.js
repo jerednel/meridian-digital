@@ -15,6 +15,7 @@ const DATABASE_URL = env('DATABASE_URL');
 const STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY');
 const STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET', '');
 const RESEND_API_KEY = env('RESEND_API_KEY', '');
+const DATAFORSEO_AUTH = env('DATAFORSEO_AUTH', '');
 
 const PRICE_LOOKUPS = {
   diagnostic: 'ai_search_diagnostic',
@@ -187,6 +188,21 @@ app.post('/checkout/session-login', async (req, res) => {
   if (!record) return res.status(404).json({ error: 'Account not found.' });
 
   const sessionToken = randomToken();
+  const subscriptionId = typeof session.subscription === 'string' ? session.subscription : session.subscription?.id || null;
+  const paidStatus = subscriptionId ? 'active' : 'paid_diagnostic';
+  await pool.query(
+    `update accounts
+     set status = $1,
+         stripe_customer_id = coalesce(stripe_customer_id, $2),
+         stripe_subscription_id = coalesce($3, stripe_subscription_id),
+         updated_at = now()
+     where id = $4`,
+    [paidStatus, session.customer || null, subscriptionId, accountId],
+  );
+  record.status = paidStatus;
+  record.stripe_customer_id = record.stripe_customer_id || session.customer || null;
+  record.stripe_subscription_id = record.stripe_subscription_id || subscriptionId;
+
   await pool.query(
     `insert into sessions (token_hash, user_id, expires_at)
      values ($1, $2, now() + interval '45 days')`,
@@ -203,15 +219,28 @@ app.post('/checkout/session-login', async (req, res) => {
 app.get('/dashboard', requireAuth, async (req, res) => {
   const account = await getPrimaryAccount(req.user.id);
   if (!account) return res.json({ user: req.user, account: null, brief: null, report: null });
+  if (!hasPaidAccess(account)) return res.json({ user: req.user, account, brief: null, report: null, access_required: true });
 
   const brief = await getLatestBrief(account.id);
   const report = await getLatestReport(account.id, brief);
   res.json({ user: req.user, account, brief, report });
 });
 
+app.post('/reports/run', requireAuth, async (req, res) => {
+  const account = await getPrimaryAccount(req.user.id);
+  if (!account) return res.status(404).json({ error: 'No account found.' });
+  if (!hasPaidAccess(account)) return res.status(402).json({ error: 'A completed checkout is required before running a brief.' });
+  const brief = await getLatestBrief(account.id);
+  if (!brief) return res.status(400).json({ error: 'Submit an onboarding brief first.' });
+
+  const report = await generateAndStoreReport(account, brief);
+  res.json({ ok: true, report });
+});
+
 app.post('/onboarding', requireAuth, async (req, res) => {
   const account = await getPrimaryAccount(req.user.id);
   if (!account) return res.status(404).json({ error: 'No account found.' });
+  if (!hasPaidAccess(account)) return res.status(402).json({ error: 'A completed checkout is required before generating the first brief.' });
 
   const website = clean(req.body.website || account.website);
   const category = clean(req.body.category);
@@ -231,9 +260,10 @@ app.post('/onboarding', requireAuth, async (req, res) => {
      returning *`,
     [account.id, category, competitors, prompts],
   );
-  await ensureStarterReport(account.id, rows[0]);
+  const freshAccount = { ...account, website, company_name: companyName };
+  await generateAndStoreReport(freshAccount, rows[0]);
 
-  await sendInternalIntake({ user: req.user, account: { ...account, website, company_name: companyName }, brief: rows[0] });
+  await sendInternalIntake({ user: req.user, account: freshAccount, brief: rows[0] });
   res.json({ ok: true, brief: rows[0] });
 });
 
@@ -330,8 +360,11 @@ async function migrate() {
       answer_surface text not null,
       source_gap text not null,
       next_fix text not null,
+      report_json jsonb,
       created_at timestamptz not null default now()
     );
+
+    alter table reports add column if not exists report_json jsonb;
 
     create index if not exists accounts_user_id_idx on accounts(user_id);
     create index if not exists sessions_token_hash_idx on sessions(token_hash);
@@ -450,17 +483,17 @@ async function getLatestReport(accountId, brief) {
     `select * from reports where account_id = $1 order by created_at desc limit 1`,
     [accountId],
   );
-  if (rows[0]) return rows[0];
+  if (rows[0]) return serializeReport(rows[0]);
   return brief ? buildStarterReport(brief) : null;
 }
 
-async function ensureStarterReport(accountId, brief) {
-  const report = buildStarterReport(brief);
+async function generateAndStoreReport(account, brief) {
+  const report = await buildStrategicReport(account, brief);
   await pool.query(
-    `insert into reports (account_id, title, visibility_score, citation_score, competitor_pressure, summary, question, answer_surface, source_gap, next_fix)
-     values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+    `insert into reports (account_id, title, visibility_score, citation_score, competitor_pressure, summary, question, answer_surface, source_gap, next_fix, report_json)
+     values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
     [
-      accountId,
+      account.id,
       report.title,
       report.visibility_score,
       report.citation_score,
@@ -470,8 +503,10 @@ async function ensureStarterReport(accountId, brief) {
       report.answer_surface,
       report.source_gap,
       report.next_fix,
+      JSON.stringify(report),
     ],
   );
+  return report;
 }
 
 function buildStarterReport(brief) {
@@ -487,6 +522,365 @@ function buildStarterReport(brief) {
     source_gap: 'The monitor will identify which third-party pages, comparison content, documentation, and implementation guides shape the answer.',
     next_fix: 'Submit the strongest competitors and buyer questions. Meridian will convert them into the first live prompt set and prioritized fix queue.',
   };
+}
+
+async function buildStrategicReport(account, brief) {
+  const website = normalizeDomain(account.website);
+  const competitors = parseList(brief.competitors).slice(0, 5);
+  const category = brief.category || 'your category';
+  const promptMap = buildPromptMap(category, website, competitors, brief.prompts);
+  const evidence = await gatherEvidence({ website, competitors, category, promptMap });
+  const competitorRows = buildCompetitorRows({ website, competitors, evidence });
+  const sourceGaps = buildSourceGaps({ website, category, competitors, evidence });
+  const actionQueue = buildActionQueue({ website, category, competitors, sourceGaps, promptMap, evidence });
+  const scores = scoreReport({ website, competitors, evidence, sourceGaps, actionQueue });
+  const firstPrompt = promptMap[0]?.question || `Which ${category} vendors should a buyer compare before making a shortlist?`;
+  const topCompetitor = competitorRows.find((row) => row.domain !== website)?.domain || competitors[0] || 'the category leader';
+
+  return {
+    title: `Answer-market brief for ${category}`,
+    visibility_score: scores.visibility,
+    citation_score: scores.citation,
+    competitor_pressure: scores.pressure,
+    summary: `Meridian found ${sourceGaps.length} likely answer-market gaps for ${website}. The strongest early move is not more generic SEO content; it is a buyer-shortlist asset that makes ${website} easier for AI systems to name, compare, and cite when prospects ask about ${category}.`,
+    question: firstPrompt,
+    answer_surface: buildAnswerSurface({ website, topCompetitor, evidence }),
+    source_gap: sourceGaps[0]?.diagnosis || `AI systems need neutral, comparison-friendly source material before they can confidently cite ${website}.`,
+    next_fix: actionQueue[0]?.action || `Publish a comparison page that names the category, alternatives, buyer risks, and implementation criteria for ${category}.`,
+    generated_at: new Date().toISOString(),
+    evidence_status: evidence.status,
+    website,
+    category,
+    competitors,
+    prompt_map: promptMap,
+    competitor_rows: competitorRows,
+    source_gaps: sourceGaps,
+    action_queue: actionQueue,
+    data_sources: evidence.sources,
+    raw_signals: evidence.signals,
+  };
+}
+
+async function gatherEvidence({ website, competitors, category, promptMap }) {
+  const sources = [];
+  const signals = {
+    homepage: null,
+    competitor_homepages: [],
+    llm_mentions: null,
+    errors: [],
+  };
+
+  const homepage = await fetchPageSummary(`https://${website}`);
+  if (homepage) {
+    signals.homepage = homepage;
+    sources.push({ type: 'homepage', label: website, status: 'collected' });
+  }
+
+  for (const domain of competitors.slice(0, 3)) {
+    const summary = await fetchPageSummary(`https://${normalizeDomain(domain)}`);
+    if (summary) {
+      signals.competitor_homepages.push(summary);
+      sources.push({ type: 'competitor_homepage', label: normalizeDomain(domain), status: 'collected' });
+    }
+  }
+
+  if (DATAFORSEO_AUTH) {
+    try {
+      const mentions = await dataForSeoMentions({ website, competitors, category, promptMap });
+      signals.llm_mentions = mentions;
+      sources.push({ type: 'dataforseo_llm_mentions', label: 'DataForSEO LLM Mentions', status: 'collected' });
+    } catch (error) {
+      signals.errors.push(`DataForSEO unavailable: ${error.message}`);
+      sources.push({ type: 'dataforseo_llm_mentions', label: 'DataForSEO LLM Mentions', status: 'unavailable' });
+    }
+  } else {
+    sources.push({ type: 'dataforseo_llm_mentions', label: 'DataForSEO LLM Mentions', status: 'not_configured' });
+  }
+
+  return {
+    status: sources.some((source) => source.status === 'collected') ? 'evidence_collected' : 'strategy_only',
+    sources,
+    signals,
+  };
+}
+
+async function dataForSeoMentions({ website, competitors, category, promptMap }) {
+  const target = [
+    { domain: website, search_filter: 'include', search_scope: ['any'], include_subdomains: true },
+    ...competitors.slice(0, 3).map((domain) => ({
+      domain: normalizeDomain(domain),
+      search_filter: 'include',
+      search_scope: ['any'],
+      include_subdomains: true,
+    })),
+    { keyword: category, search_scope: ['question', 'answer'], match_type: 'partial_match' },
+  ].slice(0, 10);
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 12000);
+  let resp;
+  try {
+    resp = await fetch('https://api.dataforseo.com/v3/ai_optimization/llm_mentions/search/live', {
+      method: 'POST',
+      signal: controller.signal,
+      headers: {
+        Authorization: `Basic ${DATAFORSEO_AUTH}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify([{
+        language_name: 'English',
+        location_code: 2840,
+        target,
+        platform: 'google',
+        order_by: ['ai_search_volume,desc'],
+        limit: 10,
+      }]),
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+  const json = await resp.json();
+  if (!resp.ok || json.status_code >= 40000) {
+    throw new Error(json.status_message || `DataForSEO status ${resp.status}`);
+  }
+
+  const task = json.tasks?.[0] || {};
+  const items = task.result?.[0]?.items || task.result || [];
+  return {
+    cost: task.cost || 0,
+    count: Array.isArray(items) ? items.length : 0,
+    items: Array.isArray(items) ? items.slice(0, 10).map(simplifyMentionItem) : [],
+  };
+}
+
+function simplifyMentionItem(item) {
+  return {
+    keyword: item.keyword || item.question || item.prompt || '',
+    platform: item.platform || item.ai_platform || '',
+    ai_search_volume: item.ai_search_volume || item.search_volume || null,
+    mentions_count: item.mentions_count || item.count || null,
+    domain: item.domain || item.target || '',
+    url: item.url || item.page_url || '',
+    title: item.title || '',
+  };
+}
+
+async function fetchPageSummary(url) {
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000);
+    const resp = await fetch(url, {
+      signal: controller.signal,
+      headers: { 'User-Agent': 'MeridianAIVisibilityBot/0.1 (+https://bymeridian.com)' },
+    });
+    clearTimeout(timer);
+    if (!resp.ok) return null;
+    const html = await resp.text();
+    const text = html
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 4000);
+    return {
+      url,
+      title: matchMeta(html, /<title[^>]*>([\s\S]*?)<\/title>/i),
+      description: matchMeta(html, /<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)["']/i)
+        || matchMeta(html, /<meta[^>]+content=["']([^"']+)["'][^>]+name=["']description["']/i),
+      h1: matchMeta(html, /<h1[^>]*>([\s\S]*?)<\/h1>/i),
+      has_schema: /application\/ld\+json|schema\.org/i.test(html),
+      has_comparison_language: /\b(compare|alternative|versus|vs\.?|pricing|implementation|integration|security|risk|buyers?|vendor|shortlist)\b/i.test(text),
+      word_sample: text,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function buildPromptMap(category, website, competitors, userPrompts) {
+  const custom = parseList(userPrompts).map((question) => ({ question, intent: 'customer-specified', priority: 'high' }));
+  const competitorText = competitors.length ? competitors.slice(0, 3).join(', ') : 'the known alternatives';
+  const defaults = [
+    { question: `Which ${category} vendors should a buyer compare before making a shortlist?`, intent: 'shortlist', priority: 'high' },
+    { question: `What are the best ${category} options for a mid-market B2B team?`, intent: 'best-options', priority: 'high' },
+    { question: `How does ${website} compare with ${competitorText}?`, intent: 'comparison', priority: 'high' },
+    { question: `What implementation risks should buyers consider before choosing a ${category} vendor?`, intent: 'risk', priority: 'medium' },
+    { question: `Which ${category} vendors are strongest for technical teams?`, intent: 'technical-fit', priority: 'medium' },
+    { question: `What questions should procurement ask before buying ${category}?`, intent: 'procurement', priority: 'medium' },
+  ];
+  return [...custom, ...defaults].slice(0, 10);
+}
+
+function buildCompetitorRows({ website, competitors, evidence }) {
+  const homepageText = evidence.signals.homepage?.word_sample || '';
+  const rows = [
+    {
+      domain: website,
+      role: 'you',
+      answer_readiness: scoreReadiness(evidence.signals.homepage),
+      likely_strength: classifyStrength(homepageText),
+      missing_asset: missingAsset(evidence.signals.homepage),
+    },
+  ];
+  for (const domain of competitors) {
+    const normalized = normalizeDomain(domain);
+    const summary = evidence.signals.competitor_homepages.find((page) => normalizeDomain(page.url) === normalized);
+    rows.push({
+      domain: normalized,
+      role: 'competitor',
+      answer_readiness: scoreReadiness(summary) + 8,
+      likely_strength: classifyStrength(summary?.word_sample || ''),
+      missing_asset: summary ? missingAsset(summary) : 'Unknown until monitored; treat as an answer-surface competitor.',
+    });
+  }
+  return rows;
+}
+
+function buildSourceGaps({ website, category, competitors, evidence }) {
+  const homepage = evidence.signals.homepage;
+  const gaps = [];
+  if (!homepage?.has_comparison_language) {
+    gaps.push({
+      gap: 'No buyer-comparison asset',
+      diagnosis: `${website} is not making it easy for AI systems to compare it against ${competitors[0] || 'alternatives'} for ${category}.`,
+      why_it_matters: 'AI answers tend to synthesize explicit comparison, risk, pricing, and implementation language when building vendor shortlists.',
+    });
+  }
+  if (!homepage?.has_schema) {
+    gaps.push({
+      gap: 'Weak machine-readable entity layer',
+      diagnosis: `${website} should expose organization, product/service, FAQ, and article/schema context so answer engines can resolve the entity confidently.`,
+      why_it_matters: 'Schema will not force citation, but it reduces ambiguity and supports inclusion when the model is choosing between similar vendors.',
+    });
+  }
+  gaps.push({
+    gap: 'Missing neutral citation targets',
+    diagnosis: `The next visibility jump likely comes from third-party source placement: category roundups, implementation guides, integration pages, partner directories, or analyst-style comparisons.`,
+    why_it_matters: 'Many AI systems prefer neutral sources when making vendor recommendations; your own site is necessary but often insufficient.',
+  });
+  return gaps.slice(0, 5);
+}
+
+function buildActionQueue({ website, category, competitors, sourceGaps, promptMap }) {
+  const competitorText = competitors.slice(0, 3).join(', ') || 'the top alternatives';
+  return [
+    {
+      priority: 1,
+      action: `Publish an "${category} vendor comparison" page that explicitly compares ${website} with ${competitorText}.`,
+      asset_type: 'comparison page',
+      prompt_covered: promptMap.find((prompt) => prompt.intent === 'comparison')?.question,
+      effort: 'medium',
+      expected_effect: 'Raises answer readiness for shortlist and comparison prompts.',
+    },
+    {
+      priority: 2,
+      action: `Create a buyer-risk checklist for ${category}: implementation risk, security, integrations, timeline, and switching cost.`,
+      asset_type: 'implementation guide',
+      prompt_covered: promptMap.find((prompt) => prompt.intent === 'risk')?.question,
+      effort: 'medium',
+      expected_effect: 'Gives AI systems concrete criteria to cite beyond generic marketing copy.',
+    },
+    {
+      priority: 3,
+      action: `Add Organization, Product/Service, FAQ, and Breadcrumb schema to the core ${website} product pages.`,
+      asset_type: 'technical entity layer',
+      prompt_covered: 'All prompts',
+      effort: 'low',
+      expected_effect: 'Improves entity disambiguation and citation confidence.',
+    },
+    {
+      priority: 4,
+      action: `Pitch two neutral category references: one partner/integration directory and one expert roundup or implementation guide.`,
+      asset_type: 'third-party citation',
+      prompt_covered: promptMap[0]?.question,
+      effort: 'high',
+      expected_effect: 'Creates external evidence AI systems can cite without relying on your own claims.',
+    },
+    {
+      priority: 5,
+      action: `Instrument a weekly prompt watchlist for the top ${Math.min(promptMap.length, 10)} buyer questions and record mention/citation drift.`,
+      asset_type: 'monitoring loop',
+      prompt_covered: 'All prompts',
+      effort: 'low',
+      expected_effect: 'Separates one-off prompt noise from real answer-market movement.',
+    },
+  ].filter((item, index) => index < Math.max(4, sourceGaps.length));
+}
+
+function scoreReport({ competitors, evidence, sourceGaps, actionQueue }) {
+  const readiness = scoreReadiness(evidence.signals.homepage);
+  const dataBonus = evidence.signals.llm_mentions?.count ? 8 : 0;
+  const gapPenalty = sourceGaps.length * 6;
+  const visibility = clamp(readiness + dataBonus - gapPenalty + 20, 12, 84);
+  const citation = clamp((evidence.signals.homepage?.has_schema ? 56 : 34) + dataBonus - sourceGaps.length * 4, 10, 82);
+  const pressure = clamp(48 + competitors.length * 8 + actionQueue.length * 3 - readiness / 4, 35, 92);
+  return { visibility, citation, pressure };
+}
+
+function buildAnswerSurface({ website, topCompetitor, evidence }) {
+  const evidencePhrase = evidence.signals.llm_mentions?.count
+    ? `DataForSEO returned ${evidence.signals.llm_mentions.count} relevant AI-mention rows to seed the watchlist.`
+    : 'The first run is using page and category evidence while live AI-mention sampling is expanded.';
+  return `${website} is not yet framed as an obvious shortlist answer. ${topCompetitor} is the first comparison pressure point to watch. ${evidencePhrase}`;
+}
+
+function scoreReadiness(summary) {
+  if (!summary) return 20;
+  let score = 30;
+  if (summary.title) score += 8;
+  if (summary.description) score += 10;
+  if (summary.h1) score += 8;
+  if (summary.has_schema) score += 14;
+  if (summary.has_comparison_language) score += 18;
+  return clamp(score, 0, 100);
+}
+
+function classifyStrength(text) {
+  const matches = [
+    ['pricing', /\bpricing|plans|cost\b/i],
+    ['implementation', /\bimplementation|deploy|onboarding|migration\b/i],
+    ['security', /\bsecurity|compliance|soc 2|privacy|governance\b/i],
+    ['integration', /\bintegration|api|workflow|connect\b/i],
+    ['comparison', /\bcompare|alternative|versus|vs\.?\b/i],
+  ].filter(([, regex]) => regex.test(text)).map(([label]) => label);
+  return matches.length ? matches.join(', ') : 'generic positioning';
+}
+
+function missingAsset(summary) {
+  if (!summary) return 'Homepage fetch failed; verify crawlability and metadata.';
+  if (!summary.has_comparison_language) return 'Comparison/risk page with explicit alternatives and buyer criteria.';
+  if (!summary.has_schema) return 'Structured entity schema for organization, product, FAQ, and breadcrumbs.';
+  return 'Neutral third-party citations and category references.';
+}
+
+function serializeReport(row) {
+  return row.report_json || row;
+}
+
+function parseList(value) {
+  return String(value || '')
+    .split(/\n|,/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function normalizeDomain(value) {
+  return String(value || '')
+    .trim()
+    .replace(/^https?:\/\//i, '')
+    .replace(/^www\./i, '')
+    .split('/')[0]
+    .toLowerCase();
+}
+
+function matchMeta(html, regex) {
+  const match = html.match(regex);
+  return match?.[1]?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() || '';
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, Math.round(value)));
 }
 
 async function lookupPrice(plan) {
@@ -555,6 +949,10 @@ function serializeAccount(row) {
     stripe_subscription_id: row.stripe_subscription_id,
     current_period_end: row.current_period_end,
   };
+}
+
+function hasPaidAccess(account) {
+  return ['active', 'trialing', 'paid_diagnostic'].includes(account.status);
 }
 
 function env(name, fallback = '') {

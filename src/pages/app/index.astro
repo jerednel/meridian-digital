@@ -15,6 +15,11 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     <div class="app-kicker">AI Search monitor</div>
     <h1 class="app-title" id="dashboard-title">Your answer market.</h1>
     <p class="app-subtitle" id="dashboard-subtitle"></p>
+    <div class="app-actions">
+      <button id="run-report" class="app-button" type="button">Run fresh brief</button>
+      <a class="app-secondary" href="/app/onboarding">Edit inputs</a>
+    </div>
+    <div id="run-status" class="app-status"></div>
 
     <section class="app-grid-three">
       <div class="app-card metric">
@@ -36,13 +41,16 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
 
     <section class="app-grid">
       <div class="app-card">
-        <h2 id="report-title">Current scorecard</h2>
+        <div class="section-head">
+          <h2 id="report-title">Current operating brief</h2>
+          <span id="evidence-status" class="pill">pending</span>
+        </div>
         <p id="report-summary"></p>
         <div class="key-value">
-          <div><strong>Question</strong><span id="report-question"></span></div>
-          <div><strong>Answer</strong><span id="report-answer"></span></div>
-          <div><strong>Source gap</strong><span id="report-gap"></span></div>
-          <div><strong>Next fix</strong><span id="report-fix"></span></div>
+          <div><strong>Lead prompt</strong><span id="report-question"></span></div>
+          <div><strong>Answer surface</strong><span id="report-answer"></span></div>
+          <div><strong>Priority gap</strong><span id="report-gap"></span></div>
+          <div><strong>Next asset</strong><span id="report-fix"></span></div>
         </div>
       </div>
 
@@ -53,16 +61,45 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
           <div><strong>Status</strong><span id="account-status"></span></div>
           <div><strong>Domain</strong><span id="account-domain"></span></div>
         </div>
-        <p class="app-muted">Need to change the category, competitors, or buyer questions?</p>
-        <a class="app-secondary" href="/app/onboarding">Update brief</a>
+        <div class="source-list" id="data-sources"></div>
       </aside>
+    </section>
+
+    <section class="app-grid">
+      <div class="app-card">
+        <div class="section-head">
+          <h2>Priority queue</h2>
+          <span class="pill">sellable output</span>
+        </div>
+        <div id="action-queue" class="stack-list"></div>
+      </div>
+
+      <div class="app-card">
+        <div class="section-head">
+          <h2>Source gaps</h2>
+          <span class="pill">why AI skips you</span>
+        </div>
+        <div id="source-gaps" class="stack-list"></div>
+      </div>
+    </section>
+
+    <section class="app-grid">
+      <div class="app-card">
+        <h2>Prompt map</h2>
+        <div id="prompt-map" class="prompt-grid"></div>
+      </div>
+
+      <div class="app-card">
+        <h2>Competitive answer surface</h2>
+        <div id="competitor-rows" class="table-list"></div>
+      </div>
     </section>
   </div>
 
   <div id="empty" class="hidden">
-    <div class="app-kicker">no monitor yet</div>
-    <h1 class="app-title">Start with a paid monitor.</h1>
-    <p class="app-subtitle">Your account exists, but there is no active AI Search monitor attached yet.</p>
+    <div class="app-kicker" id="empty-kicker">no monitor yet</div>
+    <h1 class="app-title" id="empty-title">Start with a paid monitor.</h1>
+    <p class="app-subtitle" id="empty-copy">Your account exists, but there is no active AI Search monitor attached yet.</p>
     <a class="app-button" href="/ai-search#plans">Choose a plan</a>
   </div>
 
@@ -73,6 +110,78 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     const text = (id, value) => {
       document.getElementById(id).textContent = value || 'Not set';
     };
+
+    const escape = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    })[char]);
+
+    function renderReport(report) {
+      if (!report) return;
+      text('visibility-score', report.visibility_score);
+      text('citation-score', report.citation_score);
+      text('pressure-score', report.competitor_pressure);
+      text('report-title', report.title);
+      text('report-summary', report.summary);
+      text('report-question', report.question);
+      text('report-answer', report.answer_surface);
+      text('report-gap', report.source_gap);
+      text('report-fix', report.next_fix);
+      text('evidence-status', (report.evidence_status || 'starter').replaceAll('_', ' '));
+
+      document.getElementById('data-sources').innerHTML = (report.data_sources || [])
+        .map((source) => `<div><span>${escape(source.label)}</span><strong>${escape(source.status)}</strong></div>`)
+        .join('') || '<p class="app-muted">No evidence sources have been collected yet.</p>';
+
+      document.getElementById('action-queue').innerHTML = (report.action_queue || [])
+        .map((item) => `
+          <article>
+            <span class="rank">${escape(item.priority)}</span>
+            <div>
+              <h3>${escape(item.asset_type || 'Action')}</h3>
+              <p>${escape(item.action)}</p>
+              <small>${escape(item.expected_effect || '')}</small>
+            </div>
+          </article>
+        `)
+        .join('') || '<p class="app-muted">Complete onboarding to generate the action queue.</p>';
+
+      document.getElementById('source-gaps').innerHTML = (report.source_gaps || [])
+        .map((item) => `
+          <article>
+            <div>
+              <h3>${escape(item.gap)}</h3>
+              <p>${escape(item.diagnosis)}</p>
+              <small>${escape(item.why_it_matters)}</small>
+            </div>
+          </article>
+        `)
+        .join('') || '<p class="app-muted">No gaps available yet.</p>';
+
+      document.getElementById('prompt-map').innerHTML = (report.prompt_map || [])
+        .map((prompt) => `
+          <div class="prompt-card">
+            <span>${escape(prompt.priority || 'medium')}</span>
+            <p>${escape(prompt.question)}</p>
+            <small>${escape(prompt.intent || 'buyer intent')}</small>
+          </div>
+        `)
+        .join('') || '<p class="app-muted">No prompt map available yet.</p>';
+
+      document.getElementById('competitor-rows').innerHTML = (report.competitor_rows || [])
+        .map((row) => `
+          <div>
+            <strong>${escape(row.domain)}</strong>
+            <span>${escape(row.role)}</span>
+            <span>${escape(row.answer_readiness)}/100</span>
+            <p>${escape(row.likely_strength)}. ${escape(row.missing_asset)}</p>
+          </div>
+        `)
+        .join('') || '<p class="app-muted">Add competitors to compare answer readiness.</p>';
+    }
 
     async function loadDashboard() {
       try {
@@ -92,6 +201,13 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
           document.getElementById('empty').classList.remove('hidden');
           return;
         }
+        if (data.access_required) {
+          text('empty-kicker', 'checkout required');
+          text('empty-title', 'Complete checkout to generate the first brief.');
+          text('empty-copy', 'The product value is unlocked after Stripe confirms payment or an active subscription.');
+          document.getElementById('empty').classList.remove('hidden');
+          return;
+        }
 
         document.getElementById('dashboard').classList.remove('hidden');
         text('dashboard-title', data.account.company_name || data.account.website);
@@ -100,21 +216,37 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         text('account-status', data.account.status);
         text('account-domain', data.account.website);
 
-        if (data.report) {
-          text('visibility-score', data.report.visibility_score);
-          text('citation-score', data.report.citation_score);
-          text('pressure-score', data.report.competitor_pressure);
-          text('report-title', data.report.title);
-          text('report-summary', data.report.summary);
-          text('report-question', data.report.question);
-          text('report-answer', data.report.answer_surface);
-          text('report-gap', data.report.source_gap);
-          text('report-fix', data.report.next_fix);
-        }
+        renderReport(data.report);
       } catch (error) {
         document.getElementById('loading').innerHTML = `<div class="app-card"><h2>Could not load dashboard</h2><p class="app-muted">${error.message}</p></div>`;
       }
     }
+
+    document.getElementById('run-report').addEventListener('click', async () => {
+      const button = document.getElementById('run-report');
+      const status = document.getElementById('run-status');
+      button.disabled = true;
+      button.textContent = 'Running...';
+      status.textContent = 'Collecting page evidence and rebuilding the answer-market brief.';
+      status.className = 'app-status ok visible';
+
+      try {
+        const resp = await fetch(`${apiUrl}/reports/run`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const json = await resp.json();
+        if (!resp.ok) throw new Error(json.error || 'Could not run report.');
+        renderReport(json.report);
+        status.textContent = 'Fresh brief generated.';
+      } catch (error) {
+        status.textContent = error.message || 'Could not run report.';
+        status.className = 'app-status error visible';
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Run fresh brief';
+      }
+    });
 
     loadDashboard();
   </script>

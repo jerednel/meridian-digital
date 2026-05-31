@@ -8,7 +8,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
   <div class="app-kicker">monitoring brief</div>
   <h1 class="app-title">Set up your AI Search monitor.</h1>
   <p class="app-subtitle">
-    Add the domain, category, competitors, and buyer questions Meridian should track. This becomes the operating brief for your recurring scorecard.
+    Add the domain, category, competitors, and buyer questions Meridian should track. Meridian will generate the first answer-market operating brief as soon as you save.
   </p>
 
   <div class="app-grid">
@@ -34,7 +34,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
           Buyer questions to track
           <textarea name="prompts" placeholder="What would a buyer ask ChatGPT, Perplexity, Gemini, or Google AI before comparing vendors?"></textarea>
         </label>
-        <button class="app-button" type="submit">Save monitoring brief</button>
+        <button class="app-button" type="submit">Generate first brief</button>
         <div id="status" class="app-status"></div>
       </form>
     </section>
@@ -42,10 +42,10 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     <aside class="app-card">
       <h2>What happens next</h2>
       <ul>
-        <li>Meridian creates the first prompt set from your category and buyer questions.</li>
-        <li>The dashboard shows the scorecard structure immediately.</li>
-        <li>The live monitor tracks mentions, citations, source gaps, and competitor drift.</li>
-        <li>Operator and Partner tiers get implementation-ready fixes layered on top.</li>
+        <li>Meridian creates a buyer-question map from your category and examples.</li>
+        <li>The first brief checks your site, competitor pages, and configured AI visibility data.</li>
+        <li>You get a prioritized asset queue, source gaps, and answer-readiness scores.</li>
+        <li>Operator and Partner tiers turn the highest-leverage fixes into shipped pages and citations.</li>
       </ul>
     </aside>
   </div>
@@ -117,7 +117,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         });
         const json = await resp.json();
         if (!resp.ok) throw new Error(json.error || 'Could not save brief.');
-        status.textContent = 'Monitoring brief saved. Opening dashboard...';
+        status.textContent = 'First brief generated. Opening dashboard...';
         status.className = 'app-status ok visible';
         window.setTimeout(() => { window.location.href = '/app'; }, 700);
       } catch (error) {
