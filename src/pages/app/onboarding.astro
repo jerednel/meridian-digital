@@ -1,0 +1,131 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+
+const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000';
+---
+
+<AppLayout title="Onboarding - Meridian" description="Set up your Meridian AI Search monitoring brief.">
+  <div class="app-kicker">monitoring brief</div>
+  <h1 class="app-title">Set up your AI Search monitor.</h1>
+  <p class="app-subtitle">
+    Add the domain, category, competitors, and buyer questions Meridian should track. This becomes the operating brief for your recurring scorecard.
+  </p>
+
+  <div class="app-grid">
+    <section class="app-card">
+      <form id="brief-form" class="app-form">
+        <label>
+          Company name
+          <input name="company_name" autocomplete="organization" placeholder="Acme AI" />
+        </label>
+        <label>
+          Domain to monitor
+          <input name="website" type="url" required placeholder="https://company.com" />
+        </label>
+        <label>
+          Category / buyer problem
+          <input name="category" required placeholder="AI governance platform for financial services" />
+        </label>
+        <label>
+          Competitors or adjacent firms
+          <textarea name="competitors" placeholder="List 3-5 competitors, one per line."></textarea>
+        </label>
+        <label>
+          Buyer questions to track
+          <textarea name="prompts" placeholder="What would a buyer ask ChatGPT, Perplexity, Gemini, or Google AI before comparing vendors?"></textarea>
+        </label>
+        <button class="app-button" type="submit">Save monitoring brief</button>
+        <div id="status" class="app-status"></div>
+      </form>
+    </section>
+
+    <aside class="app-card">
+      <h2>What happens next</h2>
+      <ul>
+        <li>Meridian creates the first prompt set from your category and buyer questions.</li>
+        <li>The dashboard shows the scorecard structure immediately.</li>
+        <li>The live monitor tracks mentions, citations, source gaps, and competitor drift.</li>
+        <li>Operator and Partner tiers get implementation-ready fixes layered on top.</li>
+      </ul>
+    </aside>
+  </div>
+
+  <script define:vars={{ apiUrl }}>
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get('session_id');
+    const form = document.getElementById('brief-form');
+    const status = document.getElementById('status');
+
+    let token = localStorage.getItem('meridian_session');
+
+    async function attachCheckoutSession() {
+      if (!sessionId) return;
+      const resp = await fetch(`${apiUrl}/checkout/session-login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId }),
+      });
+      const json = await resp.json();
+      if (!resp.ok) throw new Error(json.error || 'Could not open checkout session.');
+      token = json.token;
+      localStorage.setItem('meridian_session', token);
+      if (json.account?.website) form.website.value = json.account.website;
+      if (json.account?.company_name) form.company_name.value = json.account.company_name;
+    }
+
+    async function loadExisting() {
+      if (!token) return;
+      const resp = await fetch(`${apiUrl}/dashboard`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await resp.json();
+      if (!resp.ok) return;
+      if (data.account?.website) form.website.value = data.account.website;
+      if (data.account?.company_name) form.company_name.value = data.account.company_name;
+      if (data.brief?.category) form.category.value = data.brief.category;
+      if (data.brief?.competitors) form.competitors.value = data.brief.competitors;
+      if (data.brief?.prompts) form.prompts.value = data.brief.prompts;
+    }
+
+    async function init() {
+      try {
+        await attachCheckoutSession();
+        if (!token) {
+          window.location.href = '/app/login';
+          return;
+        }
+        await loadExisting();
+      } catch (error) {
+        status.textContent = error.message;
+        status.className = 'app-status error visible';
+      }
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      status.className = 'app-status';
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      try {
+        const resp = await fetch(`${apiUrl}/onboarding`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(data),
+        });
+        const json = await resp.json();
+        if (!resp.ok) throw new Error(json.error || 'Could not save brief.');
+        status.textContent = 'Monitoring brief saved. Opening dashboard...';
+        status.className = 'app-status ok visible';
+        window.setTimeout(() => { window.location.href = '/app'; }, 700);
+      } catch (error) {
+        status.textContent = error.message || 'Could not save brief.';
+        status.className = 'app-status error visible';
+      }
+    });
+
+    init();
+  </script>
+</AppLayout>

@@ -38,13 +38,30 @@ depend on Jeremy doing custom work for every customer.
 
 - Sales page: `/ai-search`
 - Checkout API: `/api/create-checkout`
-- Post-checkout setup: `/visibility-onboarding`
-- Intake API: `/api/visibility-intake`
+- Customer app: `/app`
+- Login: `/app/login`
+- Post-checkout setup: `/app/onboarding`
+- Account and billing: `/app/account`
+- Legacy intake API: `/api/visibility-intake`
+- Backend API service: `apps/api`
 - Stripe lookup keys:
   - `ai_search_diagnostic`
   - `ai_search_monitor`
   - `ai_search_operator`
   - `ai_search_partner`
+
+## App Flow
+
+1. Buyer chooses a plan on `/ai-search`.
+2. Vercel `/api/create-checkout` forwards the checkout request to the backend API.
+3. Backend creates or updates the user/account, starts Stripe Checkout, and stores
+   the checkout session id.
+4. Stripe redirects the buyer to `/app/onboarding?session_id=...`.
+5. The app exchanges the checkout session id for a customer session token, then
+   saves the monitoring brief.
+6. `/app` shows account status, subscription plan, and the current scorecard.
+7. `/app/account` opens the Stripe billing portal for invoices, cards, and
+   cancellation.
 
 ## Operating Rule
 

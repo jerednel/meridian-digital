@@ -1,0 +1,121 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+
+const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000';
+---
+
+<AppLayout title="Dashboard - Meridian" description="Your Meridian AI Search dashboard.">
+  <div id="loading">
+    <div class="app-kicker">dashboard</div>
+    <h1 class="app-title">Loading your monitor.</h1>
+    <p class="app-subtitle">Checking your subscription and latest scorecard.</p>
+  </div>
+
+  <div id="dashboard" class="hidden">
+    <div class="app-kicker">AI Search monitor</div>
+    <h1 class="app-title" id="dashboard-title">Your answer market.</h1>
+    <p class="app-subtitle" id="dashboard-subtitle"></p>
+
+    <section class="app-grid-three">
+      <div class="app-card metric">
+        <span class="app-muted">Visibility</span>
+        <strong id="visibility-score">--</strong>
+        <span class="app-muted">Do AI answers mention you?</span>
+      </div>
+      <div class="app-card metric">
+        <span class="app-muted">Citation Strength</span>
+        <strong id="citation-score">--</strong>
+        <span class="app-muted">Are the cited sources helping?</span>
+      </div>
+      <div class="app-card metric">
+        <span class="app-muted">Competitor Pressure</span>
+        <strong id="pressure-score">--</strong>
+        <span class="app-muted">How often competitors shape the answer.</span>
+      </div>
+    </section>
+
+    <section class="app-grid">
+      <div class="app-card">
+        <h2 id="report-title">Current scorecard</h2>
+        <p id="report-summary"></p>
+        <div class="key-value">
+          <div><strong>Question</strong><span id="report-question"></span></div>
+          <div><strong>Answer</strong><span id="report-answer"></span></div>
+          <div><strong>Source gap</strong><span id="report-gap"></span></div>
+          <div><strong>Next fix</strong><span id="report-fix"></span></div>
+        </div>
+      </div>
+
+      <aside class="app-card">
+        <h2>Account</h2>
+        <div class="key-value">
+          <div><strong>Plan</strong><span id="account-plan"></span></div>
+          <div><strong>Status</strong><span id="account-status"></span></div>
+          <div><strong>Domain</strong><span id="account-domain"></span></div>
+        </div>
+        <p class="app-muted">Need to change the category, competitors, or buyer questions?</p>
+        <a class="app-secondary" href="/app/onboarding">Update brief</a>
+      </aside>
+    </section>
+  </div>
+
+  <div id="empty" class="hidden">
+    <div class="app-kicker">no monitor yet</div>
+    <h1 class="app-title">Start with a paid monitor.</h1>
+    <p class="app-subtitle">Your account exists, but there is no active AI Search monitor attached yet.</p>
+    <a class="app-button" href="/ai-search#plans">Choose a plan</a>
+  </div>
+
+  <script define:vars={{ apiUrl }}>
+    const token = localStorage.getItem('meridian_session');
+    if (!token) window.location.href = '/app/login';
+
+    const text = (id, value) => {
+      document.getElementById(id).textContent = value || 'Not set';
+    };
+
+    async function loadDashboard() {
+      try {
+        const resp = await fetch(`${apiUrl}/dashboard`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await resp.json();
+        if (resp.status === 401) {
+          localStorage.removeItem('meridian_session');
+          window.location.href = '/app/login';
+          return;
+        }
+        if (!resp.ok) throw new Error(data.error || 'Could not load dashboard.');
+
+        document.getElementById('loading').classList.add('hidden');
+        if (!data.account) {
+          document.getElementById('empty').classList.remove('hidden');
+          return;
+        }
+
+        document.getElementById('dashboard').classList.remove('hidden');
+        text('dashboard-title', data.account.company_name || data.account.website);
+        text('dashboard-subtitle', `Monitoring ${data.account.website} for AI answer visibility and competitor drift.`);
+        text('account-plan', data.account.plan);
+        text('account-status', data.account.status);
+        text('account-domain', data.account.website);
+
+        if (data.report) {
+          text('visibility-score', data.report.visibility_score);
+          text('citation-score', data.report.citation_score);
+          text('pressure-score', data.report.competitor_pressure);
+          text('report-title', data.report.title);
+          text('report-summary', data.report.summary);
+          text('report-question', data.report.question);
+          text('report-answer', data.report.answer_surface);
+          text('report-gap', data.report.source_gap);
+          text('report-fix', data.report.next_fix);
+        }
+      } catch (error) {
+        document.getElementById('loading').innerHTML = `<div class="app-card"><h2>Could not load dashboard</h2><p class="app-muted">${error.message}</p></div>`;
+      }
+    }
+
+    loadDashboard();
+  </script>
+</AppLayout>

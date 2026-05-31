@@ -1,0 +1,87 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+
+const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000';
+---
+
+<AppLayout title="Account - Meridian" description="Manage your Meridian AI Search account and billing.">
+  <div class="app-kicker">account</div>
+  <h1 class="app-title">Manage your monitor.</h1>
+  <p class="app-subtitle">
+    Review your account details, subscription status, and billing settings.
+  </p>
+
+  <section class="app-grid">
+    <div class="app-card">
+      <h2>Subscription</h2>
+      <div class="key-value">
+        <div><strong>Email</strong><span id="email">Loading...</span></div>
+        <div><strong>Plan</strong><span id="plan">Loading...</span></div>
+        <div><strong>Status</strong><span id="status-text">Loading...</span></div>
+        <div><strong>Domain</strong><span id="website">Loading...</span></div>
+      </div>
+      <p class="app-muted">Billing is managed through Stripe so payment method changes, invoices, and cancellations stay secure.</p>
+      <button id="portal-button" class="app-button" type="button">Open billing portal</button>
+      <div id="status" class="app-status"></div>
+    </div>
+
+    <aside class="app-card">
+      <h2>Need a different monitor?</h2>
+      <ul>
+        <li>Use onboarding to change category, competitors, and buyer questions.</li>
+        <li>Start another plan from the product page for a second domain.</li>
+        <li>Reply to any Meridian email if your account needs manual help.</li>
+      </ul>
+      <a class="app-secondary" href="/app/onboarding">Update monitoring brief</a>
+    </aside>
+  </section>
+
+  <script define:vars={{ apiUrl }}>
+    const token = localStorage.getItem('meridian_session');
+    const status = document.getElementById('status');
+    const portalButton = document.getElementById('portal-button');
+    if (!token) window.location.href = '/app/login';
+
+    const text = (id, value) => {
+      document.getElementById(id).textContent = value || 'Not set';
+    };
+
+    async function loadAccount() {
+      const resp = await fetch(`${apiUrl}/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await resp.json();
+      if (resp.status === 401) {
+        localStorage.removeItem('meridian_session');
+        window.location.href = '/app/login';
+        return;
+      }
+      if (!resp.ok) throw new Error(data.error || 'Could not load account.');
+      text('email', data.user.email);
+      text('plan', data.account?.plan);
+      text('status-text', data.account?.status);
+      text('website', data.account?.website);
+    }
+
+    portalButton.addEventListener('click', async () => {
+      status.className = 'app-status';
+      try {
+        const resp = await fetch(`${apiUrl}/billing/portal`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await resp.json();
+        if (!resp.ok) throw new Error(data.error || 'Could not open billing portal.');
+        window.location.href = data.url;
+      } catch (error) {
+        status.textContent = error.message;
+        status.className = 'app-status error visible';
+      }
+    });
+
+    loadAccount().catch((error) => {
+      status.textContent = error.message;
+      status.className = 'app-status error visible';
+    });
+  </script>
+</AppLayout>

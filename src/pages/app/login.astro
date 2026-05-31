@@ -1,0 +1,65 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+
+const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000';
+---
+
+<AppLayout title="Log in - Meridian" description="Log in to your Meridian AI Search account.">
+  <div class="app-kicker">customer login</div>
+  <h1 class="app-title">Open your AI Search account.</h1>
+  <p class="app-subtitle">
+    Enter the email you used at checkout. Meridian will send a secure login link for your dashboard, onboarding brief, and billing settings.
+  </p>
+
+  <div class="app-grid">
+    <section class="app-card">
+      <form id="login-form" class="app-form">
+        <label>
+          Work email
+          <input name="email" type="email" autocomplete="email" required placeholder="you@company.com" />
+        </label>
+        <label>
+          Name
+          <input name="name" autocomplete="name" placeholder="Optional" />
+        </label>
+        <button class="app-button" type="submit">Send login link</button>
+        <div id="status" class="app-status"></div>
+      </form>
+    </section>
+
+    <aside class="app-card">
+      <h2>What lives here</h2>
+      <ul>
+        <li>Subscription status and Stripe account management.</li>
+        <li>Your domain, category, competitors, and buyer-question brief.</li>
+        <li>The current AI Search scorecard and prioritized fix queue.</li>
+      </ul>
+    </aside>
+  </div>
+
+  <script define:vars={{ apiUrl }}>
+    const form = document.getElementById('login-form');
+    const status = document.getElementById('status');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      status.className = 'app-status';
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      try {
+        const resp = await fetch(`${apiUrl}/auth/request-link`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const json = await resp.json();
+        if (!resp.ok) throw new Error(json.error || 'Could not send login link.');
+        status.textContent = 'Login link sent. Check your email.';
+        status.className = 'app-status ok visible';
+      } catch (error) {
+        status.textContent = error.message || 'Could not send login link.';
+        status.className = 'app-status error visible';
+      }
+    });
+  </script>
+</AppLayout>

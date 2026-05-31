@@ -1,0 +1,21 @@
+{
+  "name": "meridian-ai-search-api",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "node --check src/server.js",
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "pg": "^8.16.3",
+    "resend": "^6.9.3",
+    "stripe": "^20.4.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

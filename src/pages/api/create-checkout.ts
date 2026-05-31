@@ -28,6 +28,20 @@ export const POST: APIRoute = async ({ request }) => {
   const name: string  = (data.name  || '').trim();
   const website: string = (data.website || '').trim();
   const source: string = (data.source || 'landing').trim();
+  const apiUrl = envValue(import.meta.env.MERIDIAN_API_URL);
+
+  if (apiUrl && source === 'ai-search') {
+    const resp = await fetch(`${apiUrl}/checkout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan, email, name, website, source }),
+    });
+    const body = await resp.text();
+    return new Response(body, {
+      status: resp.status,
+      headers: { 'Content-Type': resp.headers.get('content-type') || 'application/json' },
+    });
+  }
 
   let priceId = PLAN_PRICE_MAP[plan] || '';
 
@@ -59,7 +73,7 @@ export const POST: APIRoute = async ({ request }) => {
     metadata: { name, email, website, plan, source },
     client_reference_id: website || email || undefined,
     success_url: source === 'ai-search'
-      ? `https://bymeridian.com/visibility-onboarding?plan=${encodeURIComponent(plan)}&session_id={CHECKOUT_SESSION_ID}`
+      ? `https://bymeridian.com/app/onboarding?plan=${encodeURIComponent(plan)}&session_id={CHECKOUT_SESSION_ID}`
       : 'https://bymeridian.com/thank-you?type=signup&session_id={CHECKOUT_SESSION_ID}',
     cancel_url: source === 'ai-search'
       ? 'https://bymeridian.com/ai-search'
