@@ -202,6 +202,9 @@ app.post('/checkout', async (req, res) => {
 
   const user = await upsertUser({ email, name });
   const account = await upsertAccount({ userId: user.id, website, plan, status: 'checkout_started' });
+  if (hasActiveSubscription(account) && !isOneTimePlan(plan)) {
+    return res.status(409).json({ error: 'This domain already has an active Meridian subscription. Log in and use the billing portal to change plans.' });
+  }
   const price = await lookupPrice(plan);
   const mode = isOneTimePlan(plan) ? 'payment' : 'subscription';
 
@@ -255,16 +258,19 @@ app.post('/checkout/session-login', async (req, res) => {
   const sessionToken = randomToken();
   const subscriptionId = typeof session.subscription === 'string' ? session.subscription : session.subscription?.id || null;
   const paidStatus = subscriptionId ? 'active' : 'paid_diagnostic';
+  const paidPlan = clean(session.metadata?.plan || record.plan || 'monitor').toLowerCase();
   await pool.query(
     `update accounts
      set status = $1,
-         stripe_customer_id = coalesce(stripe_customer_id, $2),
-         stripe_subscription_id = coalesce($3, stripe_subscription_id),
+         plan = $2,
+         stripe_customer_id = coalesce(stripe_customer_id, $3),
+         stripe_subscription_id = coalesce($4, stripe_subscription_id),
          updated_at = now()
-     where id = $4`,
-    [paidStatus, session.customer || null, subscriptionId, accountId],
+     where id = $5`,
+    [paidStatus, paidPlan, session.customer || null, subscriptionId, accountId],
   );
   record.status = paidStatus;
+  record.plan = paidPlan;
   record.stripe_customer_id = record.stripe_customer_id || session.customer || null;
   record.stripe_subscription_id = record.stripe_subscription_id || subscriptionId;
 
@@ -473,14 +479,16 @@ async function handleStripeEvent(event) {
     const accountId = session.metadata?.account_id || session.client_reference_id;
     if (!accountId) return;
     const subscriptionId = typeof session.subscription === 'string' ? session.subscription : session.subscription?.id || null;
+    const paidPlan = clean(session.metadata?.plan || '').toLowerCase();
     await pool.query(
       `update accounts
        set status = $1,
-           stripe_customer_id = $2,
-           stripe_subscription_id = coalesce($3, stripe_subscription_id),
+           plan = coalesce(nullif($2, ''), plan),
+           stripe_customer_id = $3,
+           stripe_subscription_id = coalesce($4, stripe_subscription_id),
            updated_at = now()
-       where id = $4`,
-      [subscriptionId ? 'active' : 'paid_diagnostic', session.customer || null, subscriptionId, accountId],
+       where id = $5`,
+      [subscriptionId ? 'active' : 'paid_diagnostic', paidPlan, session.customer || null, subscriptionId, accountId],
     );
   }
 
@@ -488,15 +496,17 @@ async function handleStripeEvent(event) {
     const subscription = event.data.object;
     const accountId = subscription.metadata?.account_id;
     if (!accountId) return;
+    const plan = clean(subscription.metadata?.plan || '').toLowerCase();
     await pool.query(
       `update accounts
        set status = $1,
-           stripe_subscription_id = $2,
-           stripe_customer_id = $3,
-           current_period_end = to_timestamp($4),
+           plan = coalesce(nullif($2, ''), plan),
+           stripe_subscription_id = $3,
+           stripe_customer_id = $4,
+           current_period_end = to_timestamp($5),
            updated_at = now()
-       where id = $5`,
-      [subscription.status, subscription.id, subscription.customer, subscription.current_period_end || null, accountId],
+       where id = $6`,
+      [subscription.status, plan, subscription.id, subscription.customer, subscription.current_period_end || null, accountId],
     );
   }
 }
@@ -520,6 +530,7 @@ async function upsertAccount({ userId, website, plan, status }) {
     [userId, website],
   );
   if (existing.rows[0]) {
+    if (hasPaidAccess(existing.rows[0])) return existing.rows[0];
     const { rows } = await pool.query(
       `update accounts set plan = $1, status = $2, updated_at = now() where id = $3 returning *`,
       [plan, status, existing.rows[0].id],
@@ -1081,6 +1092,10 @@ function serializeAccount(row) {
 
 function hasPaidAccess(account) {
   return ['active', 'trialing', 'paid_diagnostic'].includes(account.status);
+}
+
+function hasActiveSubscription(account) {
+  return ['active', 'trialing'].includes(account.status);
 }
 
 function isOneTimePlan(plan) {
