@@ -387,6 +387,20 @@ app.post('/actions', requireAuth, async (req, res) => {
   res.json({ ok: true, action_log: serializeActionLog(rows[0]), progress: await getProgress(account.id) });
 });
 
+app.delete('/actions/:id', requireAuth, async (req, res) => {
+  const account = await getPrimaryAccount(req.user.id);
+  if (!account) return res.status(404).json({ error: 'No account found.' });
+  if (!hasPaidAccess(account)) return res.status(402).json({ error: 'A completed checkout is required before editing action logs.' });
+
+  const id = clean(req.params.id);
+  if (!id) return res.status(400).json({ error: 'Action log id is required.' });
+  await pool.query(
+    `delete from action_logs where id = $1 and account_id = $2`,
+    [id, account.id],
+  );
+  res.json({ ok: true, progress: await getProgress(account.id) });
+});
+
 app.post('/onboarding', requireAuth, async (req, res) => {
   const account = await getPrimaryAccount(req.user.id);
   if (!account) return res.status(404).json({ error: 'No account found.' });
