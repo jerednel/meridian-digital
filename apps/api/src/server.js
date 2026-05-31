@@ -17,7 +17,9 @@ const STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET', '');
 const RESEND_API_KEY = env('RESEND_API_KEY', '');
 const DATAFORSEO_AUTH = env('DATAFORSEO_AUTH', '');
 const OPENAI_API_KEY = env('OPENAI_API_KEY', '');
-const OPENAI_MODEL = env('OPENAI_MODEL', 'gpt-5.5');
+const OPENAI_MODEL = env('OPENAI_MODEL', 'gpt-5-mini');
+const OPENAI_TIMEOUT_MS = Number(env('OPENAI_TIMEOUT_MS', '90000'));
+const OPENAI_MAX_OUTPUT_TOKENS = Number(env('OPENAI_MAX_OUTPUT_TOKENS', '12000'));
 const ADMIN_EMAILS = env('ADMIN_EMAILS', 'jeremy@bymeridian.com')
   .split(',')
   .map((email) => email.trim().toLowerCase())
@@ -859,7 +861,7 @@ async function buildSolutionAssets(context) {
 
 async function callOpenAiForSolutionAssets(payload) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 30000);
+  const timer = setTimeout(() => controller.abort(), OPENAI_TIMEOUT_MS);
   let resp;
   try {
     resp = await fetch('https://api.openai.com/v1/responses', {
@@ -879,7 +881,7 @@ async function callOpenAiForSolutionAssets(payload) {
           },
         ],
         text: { format: { type: 'json_object' } },
-        max_output_tokens: 6000,
+        max_output_tokens: OPENAI_MAX_OUTPUT_TOKENS,
       }),
     });
   } finally {
@@ -893,7 +895,10 @@ async function callOpenAiForSolutionAssets(payload) {
   const outputText = json.output_text || extractResponseText(json);
   if (!outputText) throw new Error('OpenAI returned no text output');
   try {
-    return JSON.parse(outputText);
+    return {
+      ...JSON.parse(outputText),
+      _openai_model: json.model || OPENAI_MODEL,
+    };
   } catch (error) {
     throw new Error(`OpenAI returned invalid JSON: ${error.message}`);
   }
@@ -915,7 +920,7 @@ function normalizeSolutionAssets(generated, context) {
   const page = generated?.comparison_page || {};
   return {
     status: generated?.status || 'generated',
-    model: generated?.model || OPENAI_MODEL,
+    model: generated?._openai_model || OPENAI_MODEL,
     comparison_page: {
       ...fallback.comparison_page,
       ...page,
