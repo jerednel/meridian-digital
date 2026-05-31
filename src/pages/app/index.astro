@@ -188,11 +188,11 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
 
       text('visibility-verdict', scoreTone(
         visibility,
-        `Strong visibility in ${promptCount || 'tracked'} buyer prompts.`,
-        `Partial visibility in ${promptCount || 'tracked'} buyer prompts.`,
-        `Buyers can miss you in ${promptCount || 'tracked'} AI prompts.`,
+        `Strong answer-readiness for the tracked prompt set.`,
+        `Partial answer-readiness for the tracked prompt set.`,
+        `Buyers can miss you across the tracked prompt set.`,
       ));
-      text('visibility-score', `${visibility}/100 answer-market visibility`);
+      text('visibility-score', `${visibility}/100 modeled readiness · ${promptCount || 0} prompts tracked`);
       text('citation-verdict', scoreTone(
         citation,
         `${sourceCount || 'Enough'} source signals support the answer.`,
