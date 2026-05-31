@@ -362,6 +362,121 @@ const { title, description } = Astro.props;
         grid-column: 1 / -1;
         margin: 0;
       }
+      .solution-assets {
+        margin-top: 28px;
+      }
+      .asset-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 0.72fr);
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .asset-panel,
+      .code-panel {
+        min-width: 0;
+        border: 1px solid rgba(48, 54, 61, 0.72);
+        border-radius: 8px;
+        background: rgba(8, 13, 19, 0.45);
+        padding: 16px;
+      }
+      .asset-panel h3,
+      .asset-panel h4 {
+        margin: 0 0 10px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        letter-spacing: 0;
+      }
+      .asset-description,
+      .asset-copy,
+      .asset-section p,
+      .faq-list p,
+      .asset-panel li,
+      .asset-panel p {
+        color: #8b949e;
+        line-height: 1.65;
+      }
+      .asset-copy {
+        white-space: pre-line;
+      }
+      .asset-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+        color: #8fd3ff;
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.76rem;
+        overflow-wrap: anywhere;
+      }
+      .copy-button {
+        flex: 0 0 auto;
+        min-height: 32px;
+        border: 1px solid rgba(143, 211, 255, 0.45);
+        border-radius: 8px;
+        background: rgba(143, 211, 255, 0.08);
+        color: #e6edf3;
+        font: inherit;
+        font-family: Inter, sans-serif;
+        font-size: 0.78rem;
+        font-weight: 800;
+        cursor: pointer;
+        padding: 6px 10px;
+      }
+      .asset-section-list,
+      .faq-list,
+      .snippet-list {
+        display: grid;
+        gap: 12px;
+        margin-top: 14px;
+      }
+      .asset-section,
+      .faq-list article {
+        border-top: 1px solid rgba(48, 54, 61, 0.72);
+        padding-top: 12px;
+      }
+      .asset-table {
+        display: grid;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .asset-table div {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 12px;
+        border: 1px solid rgba(48, 54, 61, 0.72);
+        border-radius: 8px;
+        padding: 10px;
+      }
+      .asset-table strong {
+        color: #8be9a8;
+      }
+      .asset-table span {
+        color: #8b949e;
+        line-height: 1.55;
+      }
+      .asset-cta {
+        border-left: 3px solid #8be9a8;
+        margin-top: 16px;
+        padding-left: 12px;
+      }
+      .code-panel {
+        margin-top: 16px;
+      }
+      .code-panel pre {
+        max-height: 440px;
+        overflow: auto;
+        border-radius: 8px;
+        background: #05080d;
+        margin: 0;
+        padding: 14px;
+      }
+      .code-panel code {
+        color: #c9d1d9;
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.8rem;
+        line-height: 1.6;
+        white-space: pre;
+      }
       .hidden { display: none !important; }
       @media (max-width: 820px) {
         .app-main {
@@ -403,8 +518,17 @@ const { title, description } = Astro.props;
           flex-direction: column;
         }
         .prompt-grid,
-        .table-list div {
+        .table-list div,
+        .asset-grid,
+        .asset-table div {
           grid-template-columns: 1fr;
+        }
+        .asset-meta {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .copy-button {
+          width: 100%;
         }
       }
     </style>

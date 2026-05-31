@@ -109,6 +109,14 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       </div>
     </section>
 
+    <section class="app-card solution-assets">
+      <div class="section-head">
+        <h2>Generated solution assets</h2>
+        <span id="solution-status" class="pill">copy ready</span>
+      </div>
+      <div id="solution-assets"></div>
+    </section>
+
     <section class="app-grid">
       <div class="app-card">
         <h2>Prompt map</h2>
@@ -209,6 +217,97 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
           </div>
         `)
         .join('') || '<p class="app-muted">Add competitors to compare answer readiness.</p>';
+
+      renderSolutionAssets(report.solution_assets);
+    }
+
+    function renderSolutionAssets(assets) {
+      const target = document.getElementById('solution-assets');
+      if (!assets) {
+        target.innerHTML = '<p class="app-muted">Run a fresh brief to generate implementation-ready assets.</p>';
+        return;
+      }
+      text('solution-status', assets.status || 'generated');
+      const page = assets.comparison_page || {};
+      const sections = (page.sections || [])
+        .map((section) => `
+          <article class="asset-section">
+            <h3>${escape(section.heading)}</h3>
+            <p>${escape(section.body)}</p>
+          </article>
+        `)
+        .join('');
+      const table = (page.comparison_table || [])
+        .map((row) => `
+          <div>
+            <strong>${escape(row.criterion)}</strong>
+            <span>${escape(row.recommended_copy)}</span>
+          </div>
+        `)
+        .join('');
+      const faq = (assets.faq || [])
+        .map((item) => `
+          <article>
+            <h3>${escape(item.question)}</h3>
+            <p>${escape(item.answer)}</p>
+          </article>
+        `)
+        .join('');
+      const snippets = (assets.implementation_snippets || [])
+        .map((snippet, index) => renderCodeBlock(snippet.label, snippet.code, snippet.language, `snippet-${index}`))
+        .join('');
+
+      target.innerHTML = `
+        <div class="asset-grid">
+          <article class="asset-panel">
+            <div class="asset-meta">
+              <span>${escape(page.slug || '/comparison')}</span>
+              <button class="copy-button" type="button" data-copy="${escape([page.title, page.meta_description, page.h1, page.intro].join('\n\n'))}">Copy page open</button>
+            </div>
+            <h3>${escape(page.title || 'Comparison page draft')}</h3>
+            <p class="asset-description">${escape(page.meta_description || '')}</p>
+            <h4>${escape(page.h1 || '')}</h4>
+            <p class="asset-copy">${escape(page.intro || '')}</p>
+            <div class="asset-section-list">${sections}</div>
+            <div class="asset-table">${table}</div>
+            <p class="asset-cta">${escape(page.cta || '')}</p>
+          </article>
+
+          <article class="asset-panel">
+            <h3>FAQ copy</h3>
+            <div class="faq-list">${faq}</div>
+          </article>
+        </div>
+
+        ${renderCodeBlock('Structured data JSON-LD', assets.schema_json_ld, 'html', 'schema-json-ld')}
+        <div class="snippet-list">${snippets}</div>
+
+        <div class="asset-grid">
+          <article class="asset-panel">
+            <h3>Citation pitch</h3>
+            <p><strong>${escape(assets.citation_pitch?.subject || 'Pitch')}</strong></p>
+            <p>${escape(assets.citation_pitch?.body || '')}</p>
+          </article>
+          <article class="asset-panel">
+            <h3>Editorial notes</h3>
+            <ul>${(assets.editorial_notes || []).map((note) => `<li>${escape(note)}</li>`).join('')}</ul>
+          </article>
+        </div>
+      `;
+    }
+
+    function renderCodeBlock(label, code, language = 'text', key = 'code') {
+      const safeCode = String(code || '').trim();
+      if (!safeCode) return '';
+      return `
+        <article class="code-panel">
+          <div class="asset-meta">
+            <span>${escape(label)}${language ? ` · ${escape(language)}` : ''}</span>
+            <button class="copy-button" type="button" data-copy="${escape(safeCode)}" data-copy-key="${escape(key)}">Copy</button>
+          </div>
+          <pre><code>${escape(safeCode)}</code></pre>
+        </article>
+      `;
     }
 
     async function loadDashboard() {
@@ -315,6 +414,21 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       } catch (error) {
         status.textContent = error.message || 'Could not switch tier.';
         status.className = 'app-status error visible';
+      }
+    });
+
+    document.addEventListener('click', async (event) => {
+      const button = event.target.closest('[data-copy]');
+      if (!button) return;
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy || '');
+        const original = button.textContent;
+        button.textContent = 'Copied';
+        setTimeout(() => {
+          button.textContent = original;
+        }, 1200);
+      } catch {
+        button.textContent = 'Copy failed';
       }
     });
 

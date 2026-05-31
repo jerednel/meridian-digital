@@ -16,10 +16,57 @@ const STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY');
 const STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET', '');
 const RESEND_API_KEY = env('RESEND_API_KEY', '');
 const DATAFORSEO_AUTH = env('DATAFORSEO_AUTH', '');
+const OPENAI_API_KEY = env('OPENAI_API_KEY', '');
+const OPENAI_MODEL = env('OPENAI_MODEL', 'gpt-5.5');
 const ADMIN_EMAILS = env('ADMIN_EMAILS', 'jeremy@bymeridian.com')
   .split(',')
   .map((email) => email.trim().toLowerCase())
   .filter(Boolean);
+
+const SOLUTION_WRITING_SYSTEM_PROMPT = `
+You are Meridian's implementation strategist for AI-search visibility.
+
+Your job is to turn an answer-market diagnosis into publishable customer assets, not advice.
+Return only valid JSON. Do not wrap the JSON in Markdown.
+
+Taste and writing rules:
+- Write original, concrete B2B copy. Use observed details from the supplied evidence.
+- Sound like a sharp operator with field notes, not a content marketer.
+- Prefer exact nouns, buyer anxieties, implementation constraints, and proof gaps.
+- Avoid generic AI phrases such as "in today's landscape", "unlock", "leverage", "seamless", "robust", "game changer", and "elevate".
+- Do not imitate any living or deceased author. Do not use copyrighted excerpts. Use the good/bad examples below only as taste calibration.
+
+Bad example:
+"In today's competitive digital landscape, businesses need a robust solution that leverages AI to unlock growth and streamline their workflows."
+
+Good example:
+"A buyer does not need another vendor claiming visibility. They need to know what happens when procurement asks for proof, when the site has no comparison page, and when the answer engine has to choose between three similarly named tools."
+
+Output shape:
+{
+  "status": "generated",
+  "model": "model id",
+  "comparison_page": {
+    "slug": "/path",
+    "title": "title",
+    "meta_description": "description",
+    "h1": "headline",
+    "intro": "2-3 tight paragraphs",
+    "sections": [{"heading": "heading", "body": "publishable body copy"}],
+    "comparison_table": [{"criterion": "criterion", "recommended_copy": "cell copy"}],
+    "cta": "call to action"
+  },
+  "faq": [{"question": "question", "answer": "answer"}],
+  "schema_json_ld": "a complete JSON-LD script tag string with Organization, Service/Product, FAQPage, and BreadcrumbList where appropriate",
+  "implementation_snippets": [{"label": "label", "language": "html|json|astro|javascript", "code": "copy-paste code"}],
+  "citation_pitch": {
+    "target": "type of external source",
+    "subject": "subject line",
+    "body": "short outreach draft"
+  },
+  "editorial_notes": ["specific implementation notes"]
+}
+`.trim();
 
 const PRICE_LOOKUPS = {
   starter: 'ai_search_starter_49',
@@ -722,6 +769,10 @@ async function generateAndStoreReport(account, brief) {
 
 function buildStarterReport(brief) {
   const category = brief.category || 'your category';
+  const website = 'your-domain.com';
+  const promptMap = buildPromptMap(category, website, [], brief.prompts, 6);
+  const sourceGaps = buildSourceGaps({ website, category, competitors: [], evidence: { signals: {} } });
+  const actionQueue = buildActionQueue({ website, category, competitors: [], sourceGaps, promptMap });
   return {
     title: `Starter AI Search run for ${category}`,
     visibility_score: 24,
@@ -732,6 +783,7 @@ function buildStarterReport(brief) {
     answer_surface: 'Initial run pending. The first cycle will check whether you are mentioned directly, cited indirectly, or omitted while competitors appear.',
     source_gap: 'The monitor will identify which third-party pages, comparison content, documentation, and implementation guides shape the answer.',
     next_fix: 'Submit the strongest competitors and buyer questions. Meridian will convert them into the first live prompt set and prioritized fix queue.',
+    solution_assets: buildFallbackSolutionAssets({ website, category, promptMap, sourceGaps, actionQueue, status: 'starter_preview' }),
   };
 }
 
@@ -745,6 +797,7 @@ async function buildStrategicReport(account, brief) {
   const competitorRows = buildCompetitorRows({ website, competitors, evidence });
   const sourceGaps = buildSourceGaps({ website, category, competitors, evidence });
   const actionQueue = buildActionQueue({ website, category, competitors, sourceGaps, promptMap, evidence });
+  const solutionAssets = await buildSolutionAssets({ account, website, category, competitors, promptMap, sourceGaps, actionQueue, evidence });
   const scores = scoreReport({ website, competitors, evidence, sourceGaps, actionQueue });
   const firstPrompt = promptMap[0]?.question || `Which ${category} vendors should a buyer compare before making a shortlist?`;
   const topCompetitor = competitorRows.find((row) => row.domain !== website)?.domain || competitors[0] || 'the category leader';
@@ -770,8 +823,230 @@ async function buildStrategicReport(account, brief) {
     competitor_rows: competitorRows,
     source_gaps: sourceGaps,
     action_queue: actionQueue,
+    solution_assets: solutionAssets,
     data_sources: evidence.sources,
     raw_signals: evidence.signals,
+  };
+}
+
+async function buildSolutionAssets(context) {
+  if (!OPENAI_API_KEY) {
+    return buildFallbackSolutionAssets({ ...context, status: 'fallback_no_openai_key' });
+  }
+
+  const payload = {
+    website: context.website,
+    company_name: context.account.company_name || context.website,
+    category: context.category,
+    competitors: context.competitors,
+    prompt_map: context.promptMap,
+    source_gaps: context.sourceGaps,
+    action_queue: context.actionQueue,
+    homepage: context.evidence.signals.homepage,
+    llm_mentions: context.evidence.signals.llm_mentions,
+  };
+
+  try {
+    const generated = await callOpenAiForSolutionAssets(payload);
+    return normalizeSolutionAssets(generated, context);
+  } catch (error) {
+    return {
+      ...buildFallbackSolutionAssets({ ...context, status: 'fallback_openai_error' }),
+      error: error.message,
+    };
+  }
+}
+
+async function callOpenAiForSolutionAssets(payload) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 30000);
+  let resp;
+  try {
+    resp = await fetch('https://api.openai.com/v1/responses', {
+      method: 'POST',
+      signal: controller.signal,
+      headers: {
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: OPENAI_MODEL,
+        input: [
+          { role: 'system', content: SOLUTION_WRITING_SYSTEM_PROMPT },
+          {
+            role: 'user',
+            content: `Generate Meridian solution assets from this diagnosis:\n${JSON.stringify(payload, null, 2)}`,
+          },
+        ],
+        text: { format: { type: 'json_object' } },
+        max_output_tokens: 6000,
+      }),
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+
+  const json = await resp.json().catch(() => ({}));
+  if (!resp.ok) {
+    throw new Error(json.error?.message || `OpenAI request failed with ${resp.status}`);
+  }
+  const outputText = json.output_text || extractResponseText(json);
+  if (!outputText) throw new Error('OpenAI returned no text output');
+  try {
+    return JSON.parse(outputText);
+  } catch (error) {
+    throw new Error(`OpenAI returned invalid JSON: ${error.message}`);
+  }
+}
+
+function extractResponseText(response) {
+  const chunks = [];
+  for (const item of response.output || []) {
+    for (const content of item.content || []) {
+      if (content.type === 'output_text' && content.text) chunks.push(content.text);
+      if (content.type === 'text' && content.text) chunks.push(content.text);
+    }
+  }
+  return chunks.join('\n').trim();
+}
+
+function normalizeSolutionAssets(generated, context) {
+  const fallback = buildFallbackSolutionAssets({ ...context, status: 'fallback_partial_openai' });
+  const page = generated?.comparison_page || {};
+  return {
+    status: generated?.status || 'generated',
+    model: generated?.model || OPENAI_MODEL,
+    comparison_page: {
+      ...fallback.comparison_page,
+      ...page,
+      sections: Array.isArray(page.sections) && page.sections.length ? page.sections : fallback.comparison_page.sections,
+      comparison_table: Array.isArray(page.comparison_table) && page.comparison_table.length
+        ? page.comparison_table
+        : fallback.comparison_page.comparison_table,
+    },
+    faq: Array.isArray(generated?.faq) && generated.faq.length ? generated.faq.slice(0, 8) : fallback.faq,
+    schema_json_ld: clean(generated?.schema_json_ld) || fallback.schema_json_ld,
+    implementation_snippets: Array.isArray(generated?.implementation_snippets) && generated.implementation_snippets.length
+      ? generated.implementation_snippets.slice(0, 6)
+      : fallback.implementation_snippets,
+    citation_pitch: generated?.citation_pitch || fallback.citation_pitch,
+    editorial_notes: Array.isArray(generated?.editorial_notes) && generated.editorial_notes.length
+      ? generated.editorial_notes.slice(0, 8)
+      : fallback.editorial_notes,
+  };
+}
+
+function buildFallbackSolutionAssets({ website, category, competitors = [], promptMap = [], sourceGaps = [], actionQueue = [], status = 'fallback' }) {
+  const competitorText = competitors.slice(0, 3).join(', ') || 'the common alternatives';
+  const slug = `/${slugify(category)}-vendor-comparison`;
+  const companyName = titleCase(website.split('.')[0] || website);
+  const faq = [
+    {
+      question: `How should buyers compare ${category} vendors?`,
+      answer: `Start with fit for the actual operating constraint: implementation time, integrations, security review, reporting needs, and switching cost. A shortlist should explain where ${website} is strong, where ${competitorText} may be a better fit, and what proof a buyer should ask each vendor to provide.`,
+    },
+    {
+      question: `Why is ${website} missing from some AI search answers?`,
+      answer: `AI systems usually need explicit comparison language, machine-readable entity context, and neutral third-party references before they confidently include a vendor in shortlist answers. If those assets are thin, better-known competitors can become the default recommendation.`,
+    },
+    {
+      question: `What should ${website} publish first?`,
+      answer: actionQueue[0]?.action || `Publish a comparison page for ${category} that names alternatives, buyer risks, implementation criteria, and proof points in plain language.`,
+    },
+  ];
+  const schema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': `https://${website}/#organization`,
+        name: companyName,
+        url: `https://${website}`,
+      },
+      {
+        '@type': 'Service',
+        '@id': `https://${website}${slug}#service`,
+        name: `${companyName} ${category}`,
+        provider: { '@id': `https://${website}/#organization` },
+        areaServed: 'US',
+        description: `${companyName} helps buyers evaluate ${category} with clearer implementation, risk, and comparison evidence.`,
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `https://${website}${slug}#faq`,
+        mainEntity: faq.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `https://${website}${slug}#breadcrumbs`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `https://${website}` },
+          { '@type': 'ListItem', position: 2, name: `${titleCase(category)} comparison`, item: `https://${website}${slug}` },
+        ],
+      },
+    ],
+  };
+  const schemaTag = `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
+  return {
+    status,
+    model: OPENAI_API_KEY ? OPENAI_MODEL : 'deterministic-fallback',
+    comparison_page: {
+      slug,
+      title: `${titleCase(category)} vendor comparison for buyers who need proof`,
+      meta_description: `Compare ${website} with ${competitorText} across implementation risk, evidence quality, and buyer-readiness for ${category}.`,
+      h1: `${titleCase(category)} comparison: what buyers should verify before choosing`,
+      intro: `A buyer asking about ${category} is not looking for a slogan. They are trying to avoid a bad shortlist. The page ${website} needs now should make the evaluation obvious: what the product does, which alternatives deserve a look, and what proof separates a credible vendor from a familiar name.\n\nThis draft is built for answer engines and human buyers at the same time. It names the comparison set, explains the risks, and gives search systems clean language they can cite without inventing the positioning.`,
+      sections: [
+        {
+          heading: 'Where the shortlist usually goes wrong',
+          body: `Most ${category} comparisons collapse into feature grids. That is not enough for a buyer who has to defend a decision. The useful comparison starts with operating risk: who owns implementation, what data has to move, what integrations are required, and how quickly the team can see whether the tool is working.`,
+        },
+        {
+          heading: `How ${website} should be evaluated against ${competitorText}`,
+          body: `${website} should be compared on evidence quality, implementation clarity, reporting depth, and the buyer's tolerance for managed help. If an alternative has more category awareness, call that out directly. Then show where ${website} gives the buyer a clearer path from evaluation to measurable adoption.`,
+        },
+        {
+          heading: 'Proof buyers should ask for',
+          body: `Ask each vendor for a sample implementation plan, example reporting output, security or data-handling documentation, and a realistic description of what happens in the first 30 days. Vague claims are easy to rank. Specific proof is easier to buy and easier for AI systems to cite.`,
+        },
+      ],
+      comparison_table: [
+        { criterion: 'Implementation clarity', recommended_copy: `Explain the first 30 days with roles, required access, and expected decisions.` },
+        { criterion: 'Evidence quality', recommended_copy: `Show sample outputs, reporting artifacts, and before/after examples instead of generic outcomes.` },
+        { criterion: 'Buyer risk', recommended_copy: `Name switching cost, data dependency, stakeholder review, and maintenance requirements.` },
+        { criterion: 'AI-search readiness', recommended_copy: `Use direct comparison language, FAQ answers, and schema so answer engines can resolve the entity.` },
+      ],
+      cta: `Use this page as the public comparison asset, then add schema and pursue two neutral category references so ${website} is not relying on its own claims alone.`,
+    },
+    faq,
+    schema_json_ld: schemaTag,
+    implementation_snippets: [
+      {
+        label: 'Paste this JSON-LD into the comparison page head',
+        language: 'html',
+        code: schemaTag,
+      },
+      {
+        label: 'Astro page metadata starter',
+        language: 'astro',
+        code: `---\nconst title = '${escapeSingle(`${titleCase(category)} vendor comparison for buyers who need proof`)}';\nconst description = '${escapeSingle(`Compare ${website} with ${competitorText} across implementation risk, evidence quality, and buyer-readiness for ${category}.`)}';\n---\n<Layout title={title} description={description}>\n  <script type="application/ld+json" set:html={JSON.stringify(schema)} />\n</Layout>`,
+      },
+    ],
+    citation_pitch: {
+      target: 'Partner directory, integration guide, or expert roundup editor',
+      subject: `${titleCase(category)} comparison resource for your next update`,
+      body: `Hi, I noticed your ${category} resource helps buyers understand the market. We put together a practical comparison page for ${website} that covers implementation risk, proof points, and alternatives including ${competitorText}. If you are updating the guide, I can send the source notes or a concise vendor summary for review.`,
+    },
+    editorial_notes: [
+      sourceGaps[0]?.diagnosis || `Lead with comparison language because ${website} needs a clearer answer-market asset.`,
+      `Keep the competitor names visible on the page. Omitting them makes the asset less useful to buyers and answer engines.`,
+      `Publish the schema with the page instead of treating it as a later technical cleanup.`,
+      promptMap[0]?.question ? `Primary prompt covered: ${promptMap[0].question}` : `Primary prompt covered: ${category} vendor shortlist questions.`,
+    ],
   };
 }
 
@@ -1069,7 +1344,27 @@ function missingAsset(summary) {
 }
 
 function serializeReport(row) {
-  return row.report_json || row;
+  const report = row.report_json || row;
+  if (!report.solution_assets) {
+    const website = report.website || 'your-domain.com';
+    const category = report.category || 'your category';
+    const promptMap = report.prompt_map || buildPromptMap(category, website, report.competitors || [], '', 6);
+    const sourceGaps = report.source_gaps || [];
+    const actionQueue = report.action_queue || [];
+    return {
+      ...report,
+      solution_assets: buildFallbackSolutionAssets({
+        website,
+        category,
+        competitors: report.competitors || [],
+        promptMap,
+        sourceGaps,
+        actionQueue,
+        status: 'backfilled_fallback',
+      }),
+    };
+  }
+  return report;
 }
 
 function parseList(value) {
@@ -1095,6 +1390,26 @@ function matchMeta(html, regex) {
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, Math.round(value)));
+}
+
+function slugify(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80) || 'comparison';
+}
+
+function titleCase(value) {
+  return String(value || '')
+    .split(/[\s-]+/)
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+function escapeSingle(value) {
+  return String(value || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 
 async function lookupPrice(plan) {
