@@ -665,6 +665,141 @@ const { title, description } = Astro.props;
         background: rgba(139, 233, 168, 0.12);
         color: #8be9a8;
       }
+      .copy-button:disabled {
+        opacity: 0.62;
+        cursor: wait;
+      }
+      .action-log-button {
+        justify-self: start;
+        margin-top: 10px;
+      }
+      .progress-card {
+        margin-top: 28px;
+      }
+      .progress-chart {
+        display: grid;
+        gap: 14px;
+      }
+      .progress-summary {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .progress-summary div {
+        border: 1px solid rgba(48, 54, 61, 0.72);
+        border-radius: 8px;
+        background: rgba(8, 13, 19, 0.45);
+        padding: 12px;
+      }
+      .progress-summary strong {
+        display: block;
+        color: #e6edf3;
+        font-size: 1.45rem;
+        line-height: 1;
+      }
+      .progress-summary span {
+        color: #8b949e;
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+      .trend-svg {
+        width: 100%;
+        min-height: 220px;
+        overflow: visible;
+      }
+      .axis {
+        stroke: rgba(139, 148, 158, 0.34);
+        stroke-width: 1;
+      }
+      .trend-line {
+        fill: none;
+        stroke-width: 3;
+      }
+      .trend-line.visibility,
+      .trend-dot.visibility {
+        stroke: #8be9a8;
+        fill: #8be9a8;
+      }
+      .trend-line.citation,
+      .trend-dot.citation {
+        stroke: #8fd3ff;
+        fill: #8fd3ff;
+      }
+      .trend-line.pressure,
+      .trend-dot.pressure {
+        stroke: #ffcf7a;
+        fill: #ffcf7a;
+      }
+      .action-marker {
+        stroke: rgba(255, 255, 255, 0.26);
+        stroke-dasharray: 4 5;
+      }
+      .action-dot {
+        fill: #f778ba;
+        stroke: #0d1117;
+        stroke-width: 2;
+      }
+      .chart-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        color: #8b949e;
+        font-size: 0.84rem;
+        font-weight: 800;
+      }
+      .chart-legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .legend-swatch {
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        border-radius: 999px;
+      }
+      .legend-swatch.visibility { background: #8be9a8; }
+      .legend-swatch.citation { background: #8fd3ff; }
+      .legend-swatch.pressure { background: #ffcf7a; }
+      .legend-swatch.action { background: #f778ba; }
+      .timeline-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+      }
+      .timeline-list article {
+        display: grid;
+        grid-template-columns: 86px 1fr;
+        gap: 12px;
+        border-top: 1px solid rgba(48, 54, 61, 0.72);
+        padding-top: 12px;
+      }
+      .timeline-list article > span {
+        color: #8fd3ff;
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.78rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+      .timeline-list strong {
+        color: #e6edf3;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        text-transform: capitalize;
+      }
+      .timeline-list p,
+      .timeline-list small {
+        color: #8b949e;
+        display: block;
+        line-height: 1.55;
+        margin: 4px 0 0;
+      }
+      .timeline-list a {
+        color: #8be9a8;
+        display: inline-flex;
+        font-weight: 800;
+        margin-top: 6px;
+      }
       .agent-bar {
         display: flex;
         align-items: center;
@@ -804,7 +939,11 @@ const { title, description } = Astro.props;
         .prompt-grid,
         .table-list div,
         .asset-grid,
+        .progress-summary,
         .asset-table div {
+          grid-template-columns: 1fr;
+        }
+        .timeline-list article {
           grid-template-columns: 1fr;
         }
         .asset-meta {

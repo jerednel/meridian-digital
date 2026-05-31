@@ -351,7 +351,8 @@ app.get('/dashboard', requireAuth, async (req, res) => {
 
   const brief = await getLatestBrief(account.id);
   const report = await getLatestReport(account.id, brief);
-  res.json({ user: req.user, account, brief, report });
+  const progress = await getProgress(account.id);
+  res.json({ user: req.user, account, brief, report, progress });
 });
 
 app.post('/reports/run', requireAuth, async (req, res) => {
@@ -363,6 +364,27 @@ app.post('/reports/run', requireAuth, async (req, res) => {
 
   const report = await generateAndStoreReport(account, brief);
   res.json({ ok: true, report });
+});
+
+app.post('/actions', requireAuth, async (req, res) => {
+  const account = await getPrimaryAccount(req.user.id);
+  if (!account) return res.status(404).json({ error: 'No account found.' });
+  if (!hasPaidAccess(account)) return res.status(402).json({ error: 'A completed checkout is required before logging actions.' });
+
+  const action = clean(req.body.action);
+  const assetType = clean(req.body.asset_type || 'action');
+  const note = clean(req.body.note);
+  const url = clean(req.body.url);
+  if (!action) return res.status(400).json({ error: 'Action is required.' });
+
+  const { rows } = await pool.query(
+    `insert into action_logs (account_id, action, asset_type, note, url)
+     values ($1, $2, $3, nullif($4, ''), nullif($5, ''))
+     returning *`,
+    [account.id, action.slice(0, 1600), assetType.slice(0, 160), note.slice(0, 1200), url.slice(0, 500)],
+  );
+
+  res.json({ ok: true, action_log: serializeActionLog(rows[0]), progress: await getProgress(account.id) });
 });
 
 app.post('/onboarding', requireAuth, async (req, res) => {
@@ -528,8 +550,20 @@ async function migrate() {
 
     alter table reports add column if not exists report_json jsonb;
 
+    create table if not exists action_logs (
+      id uuid primary key default gen_random_uuid(),
+      account_id uuid not null references accounts(id) on delete cascade,
+      action text not null,
+      asset_type text not null default 'action',
+      note text,
+      url text,
+      created_at timestamptz not null default now()
+    );
+
     create index if not exists accounts_user_id_idx on accounts(user_id);
     create index if not exists sessions_token_hash_idx on sessions(token_hash);
+    create index if not exists reports_account_created_idx on reports(account_id, created_at);
+    create index if not exists action_logs_account_created_idx on action_logs(account_id, created_at);
   `);
 }
 
@@ -705,6 +739,50 @@ async function getLatestReport(accountId, brief) {
   );
   if (rows[0]) return serializeReport(rows[0]);
   return brief ? buildStarterReport(brief) : null;
+}
+
+async function getProgress(accountId) {
+  const [reports, actions] = await Promise.all([
+    pool.query(
+      `select id, title, visibility_score, citation_score, competitor_pressure, created_at
+       from reports
+       where account_id = $1
+       order by created_at asc
+       limit 24`,
+      [accountId],
+    ),
+    pool.query(
+      `select *
+       from action_logs
+       where account_id = $1
+       order by created_at desc
+       limit 50`,
+      [accountId],
+    ),
+  ]);
+
+  return {
+    reports: reports.rows.map((row) => ({
+      id: row.id,
+      title: row.title,
+      visibility_score: row.visibility_score,
+      citation_score: row.citation_score,
+      competitor_pressure: row.competitor_pressure,
+      created_at: row.created_at,
+    })),
+    actions: actions.rows.map(serializeActionLog),
+  };
+}
+
+function serializeActionLog(row) {
+  return {
+    id: row.id,
+    action: row.action,
+    asset_type: row.asset_type,
+    note: row.note,
+    url: row.url,
+    created_at: row.created_at,
+  };
 }
 
 function startReportScheduler() {

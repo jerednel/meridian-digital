@@ -109,6 +109,22 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       </aside>
     </section>
 
+    <section class="app-card progress-card">
+      <div class="section-head">
+        <div>
+          <h2 class="help-label">
+            <span>Progress over time</span>
+            <button class="help-dot" type="button" aria-label="Progress over time explanation">i</button>
+            <span class="help-tip" role="tooltip">A timeline of brief scores plus the changes you logged. Use this to see whether shipped pages, schema, FAQs, or citation work are followed by better modeled readiness or citation strength in later runs.</span>
+          </h2>
+          <p class="app-muted">Log shipped recommendations, then run a fresh brief after the change is live. The chart keeps the score history and annotates what changed.</p>
+        </div>
+        <button id="manual-log-action" class="app-secondary" type="button">Log a change</button>
+      </div>
+      <div id="progress-chart" class="progress-chart"></div>
+      <div id="progress-events" class="timeline-list"></div>
+    </section>
+
     <section id="generated-assets" class="app-card solution-assets">
       <div class="section-head">
         <div>
@@ -212,6 +228,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     const token = localStorage.getItem('meridian_session');
     if (!token) window.location.href = '/app/login';
     let currentReport = null;
+    let currentProgress = { reports: [], actions: [] };
 
     const text = (id, value) => {
       const element = document.getElementById(id);
@@ -368,6 +385,12 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
               <h3>${help(item.asset_type || 'Action', 'The kind of fix Meridian recommends shipping. Examples include comparison pages, implementation guides, schema, or citation outreach.')}</h3>
               <p>${escape(item.action)}</p>
               <small>${escape(item.expected_effect || '')}</small>
+              <button
+                class="copy-button action-log-button"
+                type="button"
+                data-log-action="${escape(item.action)}"
+                data-log-asset="${escape(item.asset_type || 'action')}"
+              >Mark actioned</button>
             </div>
           </article>
         `)
@@ -407,6 +430,116 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         .join('') || '<p class="app-muted">Add competitors to compare answer readiness.</p>';
 
       renderSolutionAssets(report.solution_assets);
+    }
+
+    function renderProgress(progress = { reports: [], actions: [] }) {
+      currentProgress = progress;
+      renderProgressChart(progress.reports || [], progress.actions || []);
+      renderProgressEvents(progress.actions || []);
+    }
+
+    function renderProgressChart(reports, actions) {
+      const target = document.getElementById('progress-chart');
+      if (!target) return;
+      if (!reports.length) {
+        target.innerHTML = '<p class="app-muted">No saved brief history yet. Run a brief after shipping changes to start the trend line.</p>';
+        return;
+      }
+
+      const width = 720;
+      const height = 220;
+      const pad = 34;
+      const metric = (key) => reports.map((report, index) => ({
+        x: reports.length === 1 ? width / 2 : pad + (index * (width - pad * 2)) / (reports.length - 1),
+        y: pad + (100 - number(report[key])) * (height - pad * 2) / 100,
+        value: number(report[key]),
+        date: report.created_at,
+      }));
+      const path = (points) => points.map((point, index) => `${index ? 'L' : 'M'}${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(' ');
+      const reportStart = new Date(reports[0].created_at).getTime();
+      const reportEnd = new Date(reports[reports.length - 1].created_at).getTime();
+      const span = Math.max(1, reportEnd - reportStart);
+      const actionMarks = (actions || []).slice().reverse().map((action) => {
+        const t = new Date(action.created_at).getTime();
+        const x = reports.length === 1 ? width / 2 : pad + ((t - reportStart) / span) * (width - pad * 2);
+        return { ...action, x: Math.max(pad, Math.min(width - pad, x)) };
+      });
+
+      const visibility = metric('visibility_score');
+      const citation = metric('citation_score');
+      const pressure = metric('competitor_pressure');
+      const latest = reports[reports.length - 1];
+
+      target.innerHTML = `
+        <div class="progress-summary">
+          <div><strong>${escape(latest.visibility_score)}</strong><span>modeled readiness</span></div>
+          <div><strong>${escape(latest.citation_score)}</strong><span>citation strength</span></div>
+          <div><strong>${escape(latest.competitor_pressure)}</strong><span>competitor pressure</span></div>
+        </div>
+        <svg class="trend-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Meridian metric trend chart">
+          <line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" class="axis" />
+          <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${height - pad}" class="axis" />
+          <path d="${path(visibility)}" class="trend-line visibility" />
+          <path d="${path(citation)}" class="trend-line citation" />
+          <path d="${path(pressure)}" class="trend-line pressure" />
+          ${visibility.map((point) => `<circle cx="${point.x}" cy="${point.y}" r="4" class="trend-dot visibility"><title>Readiness ${point.value} on ${formatDate(point.date)}</title></circle>`).join('')}
+          ${citation.map((point) => `<circle cx="${point.x}" cy="${point.y}" r="4" class="trend-dot citation"><title>Citation ${point.value} on ${formatDate(point.date)}</title></circle>`).join('')}
+          ${pressure.map((point) => `<circle cx="${point.x}" cy="${point.y}" r="4" class="trend-dot pressure"><title>Pressure ${point.value} on ${formatDate(point.date)}</title></circle>`).join('')}
+          ${actionMarks.map((action) => `<g><line x1="${action.x}" x2="${action.x}" y1="${pad}" y2="${height - pad}" class="action-marker" /><circle cx="${action.x}" cy="${pad + 8}" r="5" class="action-dot"><title>${escape(action.asset_type)} logged ${formatDate(action.created_at)}</title></circle></g>`).join('')}
+        </svg>
+        <div class="chart-legend">
+          <span><i class="legend-swatch visibility"></i>Readiness</span>
+          <span><i class="legend-swatch citation"></i>Citation</span>
+          <span><i class="legend-swatch pressure"></i>Pressure</span>
+          <span><i class="legend-swatch action"></i>Logged change</span>
+        </div>
+      `;
+    }
+
+    function renderProgressEvents(actions) {
+      const target = document.getElementById('progress-events');
+      if (!target) return;
+      target.innerHTML = actions.length
+        ? actions.map((action) => `
+          <article>
+            <span>${escape(formatDate(action.created_at))}</span>
+            <div>
+              <strong>${escape(action.asset_type || 'action')}</strong>
+              <p>${escape(action.action)}</p>
+              ${action.note ? `<small>${escape(action.note)}</small>` : ''}
+              ${action.url ? `<a href="${escape(action.url)}" target="_blank" rel="noreferrer">View change</a>` : ''}
+            </div>
+          </article>
+        `).join('')
+        : '<p class="app-muted">No changes logged yet. Mark a recommendation as actioned when you ship it, then run a fresh brief to start measuring impact.</p>';
+    }
+
+    function formatDate(value) {
+      if (!value) return 'No date';
+      return new Date(value).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    }
+
+    async function logAction({ action, assetType }) {
+      const note = window.prompt('What changed? Add a short note, URL, or leave blank.') || '';
+      const url = /^https?:\/\//i.test(note.trim()) ? note.trim() : '';
+      const body = {
+        action,
+        asset_type: assetType || 'action',
+        note: url ? '' : note.trim(),
+        url,
+      };
+      const resp = await fetch(`${apiUrl}/actions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+      const json = await resp.json();
+      if (!resp.ok) throw new Error(json.error || 'Could not log action.');
+      renderProgress(json.progress);
+      return json.action_log;
     }
 
     function renderSolutionAssets(assets) {
@@ -645,6 +778,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         text('account-competitors', `${data.account.plan_features?.competitors || 0} tracked competitors`);
 
         renderReport(data.report);
+        renderProgress(data.progress);
       } catch (error) {
         document.getElementById('loading').innerHTML = `<div class="app-card"><h2>Could not load dashboard</h2><p class="app-muted">${error.message}</p></div>`;
       }
@@ -666,6 +800,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         const json = await resp.json();
         if (!resp.ok) throw new Error(json.error || 'Could not run report.');
         renderReport(json.report);
+        await loadDashboard();
         status.textContent = 'Fresh brief generated.';
       } catch (error) {
         status.textContent = error.message || 'Could not run report.';
@@ -713,6 +848,27 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     });
 
     document.addEventListener('click', async (event) => {
+      const logButton = event.target.closest('[data-log-action]');
+      if (logButton) {
+        const status = document.getElementById('run-status');
+        logButton.disabled = true;
+        status.textContent = 'Logging the shipped change.';
+        status.className = 'app-status ok visible';
+        try {
+          await logAction({
+            action: logButton.dataset.logAction,
+            assetType: logButton.dataset.logAsset,
+          });
+          status.textContent = 'Change logged. Run a fresh brief once the change is live to measure movement.';
+        } catch (error) {
+          status.textContent = error.message || 'Could not log change.';
+          status.className = 'app-status error visible';
+        } finally {
+          logButton.disabled = false;
+        }
+        return;
+      }
+
       const button = event.target.closest('[data-copy]');
       if (!button) return;
       try {
@@ -737,6 +893,21 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       document.querySelectorAll('[data-asset-pane]').forEach((pane) => {
         pane.classList.toggle('active', pane.dataset.assetPane === name);
       });
+    });
+
+    document.getElementById('manual-log-action').addEventListener('click', async () => {
+      const action = window.prompt('What did you ship or change?');
+      if (!action) return;
+      const status = document.getElementById('run-status');
+      status.textContent = 'Logging the shipped change.';
+      status.className = 'app-status ok visible';
+      try {
+        await logAction({ action, assetType: 'manual change' });
+        status.textContent = 'Change logged. Run a fresh brief when it is live to measure movement.';
+      } catch (error) {
+        status.textContent = error.message || 'Could not log change.';
+        status.className = 'app-status error visible';
+      }
     });
 
     loadDashboard();
