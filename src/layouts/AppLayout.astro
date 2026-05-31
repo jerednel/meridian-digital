@@ -639,6 +639,13 @@ const { title, description } = Astro.props;
         font-size: 0.76rem;
         overflow-wrap: anywhere;
       }
+      .asset-buttons {
+        flex: 0 0 auto;
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
       .copy-button {
         flex: 0 0 auto;
         min-height: 32px;
@@ -652,6 +659,25 @@ const { title, description } = Astro.props;
         font-weight: 800;
         cursor: pointer;
         padding: 6px 10px;
+      }
+      .copy-button.agent-copy {
+        border-color: rgba(139, 233, 168, 0.48);
+        background: rgba(139, 233, 168, 0.12);
+        color: #8be9a8;
+      }
+      .agent-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border: 1px solid rgba(139, 233, 168, 0.24);
+        border-radius: 8px;
+        background: rgba(139, 233, 168, 0.08);
+        color: #c9d1d9;
+        font-size: 0.88rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        padding: 12px;
       }
       .asset-section-list,
       .faq-list,
@@ -784,6 +810,15 @@ const { title, description } = Astro.props;
         .asset-meta {
           align-items: flex-start;
           flex-direction: column;
+        }
+        .asset-buttons,
+        .agent-bar {
+          width: 100%;
+        }
+        .asset-buttons,
+        .agent-bar {
+          flex-direction: column;
+          align-items: stretch;
         }
         .copy-button {
           width: 100%;

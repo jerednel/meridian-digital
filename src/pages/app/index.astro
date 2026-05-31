@@ -296,6 +296,55 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       .filter(Boolean)
       .length;
 
+    function buildAgentPrompt({ task, assetType, assetDraft, destination = 'the relevant website or CMS', checks = [] }) {
+      const report = currentReport || {};
+      const promptMap = (report.prompt_map || []).map((prompt) => `- ${prompt.question} (${prompt.intent || 'buyer intent'})`).join('\n');
+      const sourceGaps = (report.source_gaps || []).map((gap) => `- ${gap.gap}: ${gap.diagnosis}`).join('\n');
+      const actionQueue = (report.action_queue || []).slice(0, 5).map((item) => `- P${item.priority}: ${item.action}`).join('\n');
+      const checkText = checks.length ? checks.map((item) => `- ${item}`).join('\n') : '- Preserve factual claims and mark anything uncertain for human review.';
+
+      return [
+        `You are helping implement a Meridian AI Search recommendation for ${report.website || 'this company'}.`,
+        '',
+        `Task: ${task}`,
+        `Asset type: ${assetType}`,
+        `Destination: ${destination}`,
+        '',
+        'Product/category context:',
+        `- Website: ${report.website || 'unknown'}`,
+        `- Category: ${report.category || 'unknown'}`,
+        `- Competitors: ${(report.competitors || []).join(', ') || 'not provided'}`,
+        '',
+        'Why this matters:',
+        report.summary || 'Use this asset to make the company easier for buyers and AI systems to understand, compare, and cite.',
+        '',
+        'Primary source gap:',
+        report.source_gap || 'No source gap provided.',
+        '',
+        'Recommended next fix:',
+        report.next_fix || 'No next fix provided.',
+        '',
+        'Prompt map to satisfy:',
+        promptMap || '- No prompt map provided.',
+        '',
+        'Known source gaps:',
+        sourceGaps || '- No source gaps provided.',
+        '',
+        'Action queue context:',
+        actionQueue || '- No action queue provided.',
+        '',
+        'Implementation requirements:',
+        checkText,
+        '- Do not invent performance numbers, customer names, certifications, or third-party placements.',
+        '- Keep language clear for a marketing manager who is not an SEO or GEO specialist.',
+        '- If a claim depends on unavailable evidence, add a TODO instead of pretending it is proven.',
+        '- Return the exact files/pages/fields you changed and any follow-up checks needed.',
+        '',
+        'Asset draft to implement:',
+        assetDraft || 'No draft provided.',
+      ].join('\n');
+    }
+
     function renderReport(report) {
       if (!report) return;
       currentReport = report;
@@ -403,6 +452,67 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         ...(page.sections || []).map((section) => `${section.heading}\n${section.body}`),
         page.cta,
       ].filter(Boolean).join('\n\n');
+      const faqCopy = (assets.faq || []).map((item) => `${item.question}\n${item.answer}`).join('\n\n');
+      const pitchCopy = `${assets.citation_pitch?.subject || 'Pitch'}\n\n${assets.citation_pitch?.body || ''}`;
+      const schemaCopy = String(assets.schema_json_ld || '').trim();
+      const implementationCopy = (assets.implementation_snippets || [])
+        .map((snippet) => `${snippet.label || 'Implementation snippet'}${snippet.language ? ` (${snippet.language})` : ''}\n${snippet.code || ''}`)
+        .join('\n\n---\n\n');
+      const pageAgentPrompt = buildAgentPrompt({
+        task: 'Create or update the recommended comparison page using the draft below.',
+        assetType: 'comparison page',
+        destination: page.slug ? `a page at ${page.slug}` : 'a comparison page on the website',
+        assetDraft: pageCopy,
+        checks: [
+          'Create a buyer-useful page with title, meta description, H1, intro, comparison sections, FAQ/supporting copy if appropriate, and CTA.',
+          'Mention competitors only in accurate comparison context.',
+          'Make the page useful to human buyers first, then structure it so AI systems can cite it.',
+        ],
+      });
+      const faqAgentPrompt = buildAgentPrompt({
+        task: 'Add these FAQ answers to the most relevant product, comparison, or resource page.',
+        assetType: 'FAQ copy',
+        destination: 'the relevant page FAQ section and any matching structured data',
+        assetDraft: faqCopy,
+        checks: [
+          'Add only FAQs that fit the destination page.',
+          'Keep answers short, specific, and defensible.',
+          'If schema exists, update FAQPage structured data to match the visible FAQ copy.',
+        ],
+      });
+      const schemaAgentPrompt = buildAgentPrompt({
+        task: 'Add or update structured data using the JSON-LD draft below.',
+        assetType: 'structured data JSON-LD',
+        destination: 'the page head or structured-data component for the relevant page',
+        assetDraft: schemaCopy,
+        checks: [
+          'Validate the JSON-LD before committing.',
+          'Only include schema properties that are true for the company and page.',
+          'Avoid duplicate conflicting Organization, Service, Breadcrumb, or FAQ schema.',
+        ],
+      });
+      const pitchAgentPrompt = buildAgentPrompt({
+        task: 'Prepare the citation outreach workflow using the pitch below.',
+        assetType: 'citation pitch',
+        destination: 'an outreach draft, CRM task, or prospecting sheet; do not send without human approval',
+        assetDraft: pitchCopy,
+        checks: [
+          'Do not send outreach automatically.',
+          'Identify suitable neutral targets before using the pitch.',
+          'Personalize the pitch with source-specific context and remove anything unsupported.',
+        ],
+      });
+      const implementationAgentPrompt = buildAgentPrompt({
+        task: 'Implement the technical snippets below in the relevant codebase or CMS.',
+        assetType: 'implementation snippets',
+        destination: 'the relevant website templates, components, or CMS fields',
+        assetDraft: implementationCopy,
+        checks: [
+          'Place snippets in the correct page/template location.',
+          'Run build or validation checks after editing.',
+          'Keep generated code aligned with the existing site framework and style.',
+        ],
+      });
 
       target.innerHTML = `
         <div class="asset-tabs" role="tablist" aria-label="Generated assets">
@@ -416,7 +526,10 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         <article class="asset-panel asset-pane active" data-asset-pane="comparison">
           <div class="asset-meta">
             <span class="asset-status">Ready to publish · ${escape(page.slug || '/comparison')}</span>
-            <button class="copy-button" type="button" data-copy="${escape(pageCopy)}">Copy page draft</button>
+            <span class="asset-buttons">
+              <button class="copy-button" type="button" data-copy="${escape(pageCopy)}">Copy page draft</button>
+              <button class="copy-button agent-copy" type="button" data-copy="${escape(pageAgentPrompt)}">Copy for AI/Agent</button>
+            </span>
           </div>
           <h3>${escape(page.title || 'Comparison page draft')}</h3>
           <p class="asset-description">${escape(page.meta_description || '')}</p>
@@ -434,20 +547,30 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         <article class="asset-panel asset-pane" data-asset-pane="faq">
           <div class="asset-meta">
             <span class="asset-status">Ready for page support</span>
-            <button class="copy-button" type="button" data-copy="${escape((assets.faq || []).map((item) => `${item.question}\n${item.answer}`).join('\n\n'))}">Copy FAQ</button>
+            <span class="asset-buttons">
+              <button class="copy-button" type="button" data-copy="${escape(faqCopy)}">Copy FAQ</button>
+              <button class="copy-button agent-copy" type="button" data-copy="${escape(faqAgentPrompt)}">Copy for AI/Agent</button>
+            </span>
           </div>
           <h3>FAQ copy</h3>
           <div class="faq-list">${faq}</div>
         </article>
 
         <div class="asset-pane" data-asset-pane="schema">
+          <div class="agent-bar">
+            <span>Implementation prompt for your coding agent.</span>
+            <button class="copy-button agent-copy" type="button" data-copy="${escape(schemaAgentPrompt)}">Copy for AI/Agent</button>
+          </div>
           ${renderCodeBlock('Structured data JSON-LD', assets.schema_json_ld, 'html', 'schema-json-ld')}
         </div>
 
         <article class="asset-panel asset-pane" data-asset-pane="pitch">
           <div class="asset-meta">
             <span class="asset-status">Needs human review</span>
-            <button class="copy-button" type="button" data-copy="${escape(`${assets.citation_pitch?.subject || 'Pitch'}\n\n${assets.citation_pitch?.body || ''}`)}">Copy pitch</button>
+            <span class="asset-buttons">
+              <button class="copy-button" type="button" data-copy="${escape(pitchCopy)}">Copy pitch</button>
+              <button class="copy-button agent-copy" type="button" data-copy="${escape(pitchAgentPrompt)}">Copy for AI/Agent</button>
+            </span>
           </div>
           <h3>Citation pitch</h3>
           <p><strong>${escape(assets.citation_pitch?.subject || 'Pitch')}</strong></p>
@@ -457,6 +580,10 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         </article>
 
         <div class="asset-pane" data-asset-pane="implementation">
+          <div class="agent-bar">
+            <span>Implementation prompt for your coding agent.</span>
+            <button class="copy-button agent-copy" type="button" data-copy="${escape(implementationAgentPrompt)}">Copy for AI/Agent</button>
+          </div>
           <div class="snippet-list">${snippets}</div>
         </div>
       `;
