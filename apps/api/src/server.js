@@ -675,7 +675,16 @@ async function upsertAccount({ userId, website, plan, status }) {
 
 async function getPrimaryAccount(userId) {
   const { rows } = await pool.query(
-    `select * from accounts where user_id = $1 order by updated_at desc limit 1`,
+    `select * from accounts
+     where user_id = $1
+     order by
+       case
+         when status in ('active', 'trialing', 'paid_diagnostic') then 0
+         when status in ('checkout_started', 'pending') then 1
+         else 2
+       end,
+       updated_at desc
+     limit 1`,
     [userId],
   );
   return rows[0] ? serializeAccount(rows[0]) : null;

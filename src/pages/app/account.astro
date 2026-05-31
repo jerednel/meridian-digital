@@ -6,14 +6,14 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
 
 <AppLayout title="Account - Meridian" description="Manage your Meridian AI Search account and billing.">
   <div class="app-kicker">account</div>
-  <h1 class="app-title">Manage your monitor.</h1>
+  <h1 class="app-title">Billing and monitor health.</h1>
   <p class="app-subtitle">
-    Review your account details, subscription status, and billing settings.
+    Check the plan, active domain, and the usage limits that shape your recurring brief.
   </p>
 
   <section class="app-grid">
     <div class="app-card">
-      <h2>Subscription</h2>
+      <h2>Current monitor</h2>
       <div class="key-value">
         <div><strong>Email</strong><span id="email">Loading...</span></div>
         <div><strong>Plan</strong><span id="plan">Loading...</span></div>
@@ -25,20 +25,21 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       </div>
       <p class="app-muted">Billing is managed through Stripe so payment method changes, invoices, and cancellations stay secure.</p>
       <button id="portal-button" class="app-button" type="button">Open billing portal</button>
+      <a class="app-secondary" href="/app">View latest brief</a>
       <div id="status" class="app-status"></div>
     </div>
 
     <aside class="app-card">
-      <h2>Plan ladder</h2>
+      <h2>Useful account actions</h2>
       <ul>
-        <li>Starter: $49/mo for one monthly brief and 10 buyer questions.</li>
-        <li>Monitor: $99/mo for 25 questions, five competitors, and fresh reruns.</li>
-        <li>Growth: $249/mo for weekly monitoring and deeper source analysis.</li>
-        <li>Operator: $1,000/mo when you want implementation-ready fixes.</li>
+        <li>Edit the category, competitors, and buyer questions Meridian monitors.</li>
+        <li>Run a fresh brief after publishing a recommended asset.</li>
+        <li>Use Stripe for payment method changes, invoices, and cancellations.</li>
+        <li>Compare plans only when you need more prompts, competitors, or refresh cadence.</li>
       </ul>
       <div class="app-actions">
-        <a class="app-secondary" href="/app/onboarding">Update brief</a>
-        <a class="app-secondary" href="/ai-search#plans">Compare plans</a>
+        <a class="app-secondary" href="/app/onboarding">Edit inputs</a>
+        <a class="app-secondary" href="/ai-search#plans">Change plan</a>
       </div>
     </aside>
   </section>

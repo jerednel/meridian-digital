@@ -6,84 +6,70 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
 
 <AppLayout title="Dashboard - Meridian" description="Your Meridian AI Search dashboard.">
   <div id="loading">
-    <div class="app-kicker">dashboard</div>
-    <h1 class="app-title">Loading your monitor.</h1>
-    <p class="app-subtitle">Checking your subscription and latest scorecard.</p>
+    <div class="app-kicker">brief</div>
+    <h1 class="app-title">Loading your answer-market brief.</h1>
+    <p class="app-subtitle">Checking subscription, latest evidence, and generated assets.</p>
   </div>
 
   <div id="dashboard" class="hidden">
-    <div class="app-kicker">AI Search monitor</div>
-    <h1 class="app-title" id="dashboard-title">Your answer market.</h1>
-    <p class="app-subtitle" id="dashboard-subtitle"></p>
-    <div class="app-actions">
-      <button id="run-report" class="app-button" type="button">Run fresh brief</button>
-      <button id="export-report" class="app-secondary" type="button">Export brief</button>
-      <a class="app-secondary" href="/app/onboarding">Edit inputs</a>
-    </div>
+    <section class="brief-hero app-card">
+      <div class="brief-copy">
+        <div class="app-kicker">AI Search brief</div>
+        <h1 class="brief-title" id="dashboard-title">Your answer market.</h1>
+        <p class="brief-subtitle" id="dashboard-subtitle"></p>
+      </div>
+      <div class="brief-actions">
+        <a id="primary-asset-link" class="app-button" href="#generated-assets">Review recommended asset</a>
+        <button id="run-report" class="app-secondary" type="button">Run fresh brief</button>
+        <button id="export-report" class="app-secondary quiet" type="button">Export JSON</button>
+      </div>
+    </section>
     <div id="run-status" class="app-status"></div>
 
-    <section id="admin-panel" class="app-card hidden">
-      <div class="section-head">
-        <h2>Admin tier preview</h2>
-        <span class="pill">Jeremy only</span>
+    <section class="verdict-grid">
+      <div class="verdict-card primary">
+        <span class="verdict-label">What is happening</span>
+        <strong id="visibility-verdict">Loading visibility verdict.</strong>
+        <p id="visibility-score"></p>
       </div>
-      <p class="app-muted">Switch this workspace between SaaS tiers to inspect plan limits, dashboard copy, and onboarding behavior.</p>
-      <form id="admin-plan-form" class="app-form compact-form">
-        <label>
-          Preview tier
-          <select name="plan">
-            <option value="starter">Starter - $49/mo</option>
-            <option value="monitor">Monitor - $99/mo</option>
-            <option value="growth">Growth - $249/mo</option>
-            <option value="diagnostic">Diagnostic - $750 one-time</option>
-            <option value="operator">Operator - $1,000/mo</option>
-            <option value="partner">Partner - $2,500/mo</option>
-          </select>
-        </label>
-        <button class="app-secondary" type="submit">Apply preview tier</button>
-      </form>
-      <div id="admin-status" class="app-status"></div>
-    </section>
-
-    <section class="app-grid-three">
-      <div class="app-card metric">
-        <span class="app-muted">Visibility</span>
-        <strong id="visibility-score">--</strong>
-        <span class="app-muted">Do AI answers mention you?</span>
+      <div class="verdict-card">
+        <span class="verdict-label">Citation strength</span>
+        <strong id="citation-verdict">Loading source signal.</strong>
+        <p id="citation-score"></p>
       </div>
-      <div class="app-card metric">
-        <span class="app-muted">Citation Strength</span>
-        <strong id="citation-score">--</strong>
-        <span class="app-muted">Are the cited sources helping?</span>
-      </div>
-      <div class="app-card metric">
-        <span class="app-muted">Competitor Pressure</span>
-        <strong id="pressure-score">--</strong>
-        <span class="app-muted">How often competitors shape the answer.</span>
+      <div class="verdict-card">
+        <span class="verdict-label">Competitor pressure</span>
+        <strong id="pressure-verdict">Loading pressure signal.</strong>
+        <p id="pressure-score"></p>
       </div>
     </section>
 
-    <section class="app-grid">
-      <div class="app-card">
+    <section class="app-grid brief-grid">
+      <div class="app-card next-action-card">
         <div class="section-head">
-          <h2 id="report-title">Current operating brief</h2>
-          <span id="evidence-status" class="pill">pending</span>
+          <h2>Recommended next action</h2>
+          <span id="evidence-status" class="pill">evidence pending</span>
         </div>
+        <h3 id="report-fix">Loading recommended asset.</h3>
         <p id="report-summary"></p>
+        <div class="why-box">
+          <strong>Why this is first</strong>
+          <span id="report-gap"></span>
+        </div>
+        <div class="app-actions">
+          <a class="app-button" href="#generated-assets">Open generated asset</a>
+          <a class="app-secondary" href="/app/onboarding">Tune inputs</a>
+        </div>
+      </div>
+
+      <aside class="app-card evidence-card">
+        <div class="section-head">
+          <h2>Evidence</h2>
+          <span id="run-date" class="pill muted-pill">first run</span>
+        </div>
         <div class="key-value">
           <div><strong>Lead prompt</strong><span id="report-question"></span></div>
           <div><strong>Answer surface</strong><span id="report-answer"></span></div>
-          <div><strong>Priority gap</strong><span id="report-gap"></span></div>
-          <div><strong>Next asset</strong><span id="report-fix"></span></div>
-        </div>
-      </div>
-
-      <aside class="app-card">
-        <h2>Account</h2>
-        <div class="key-value">
-          <div><strong>Plan</strong><span id="account-plan"></span></div>
-          <div><strong>Status</strong><span id="account-status"></span></div>
-          <div><strong>Domain</strong><span id="account-domain"></span></div>
           <div><strong>Prompts</strong><span id="account-prompts"></span></div>
           <div><strong>Competitors</strong><span id="account-competitors"></span></div>
         </div>
@@ -91,11 +77,22 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       </aside>
     </section>
 
+    <section id="generated-assets" class="app-card solution-assets">
+      <div class="section-head">
+        <div>
+          <h2>Generated asset workbench</h2>
+          <p class="app-muted">Copy-ready fixes ranked from the current evidence. Start with the recommended tab, then ship the support assets.</p>
+        </div>
+        <span id="solution-status" class="pill">copy ready</span>
+      </div>
+      <div id="solution-assets"></div>
+    </section>
+
     <section class="app-grid">
       <div class="app-card">
         <div class="section-head">
-          <h2>Priority queue</h2>
-          <span class="pill">sellable output</span>
+          <h2>Action queue</h2>
+          <span class="pill">ranked fixes</span>
         </div>
         <div id="action-queue" class="stack-list"></div>
       </div>
@@ -109,14 +106,6 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       </div>
     </section>
 
-    <section class="app-card solution-assets">
-      <div class="section-head">
-        <h2>Generated solution assets</h2>
-        <span id="solution-status" class="pill">copy ready</span>
-      </div>
-      <div id="solution-assets"></div>
-    </section>
-
     <section class="app-grid">
       <div class="app-card">
         <h2>Prompt map</h2>
@@ -128,6 +117,32 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         <div id="competitor-rows" class="table-list"></div>
       </div>
     </section>
+
+    <details id="admin-panel" class="admin-drawer hidden">
+      <summary>Admin tier preview</summary>
+      <section class="app-card">
+        <div class="section-head">
+          <h2>Tier preview</h2>
+          <span class="pill">Jeremy only</span>
+        </div>
+        <p class="app-muted">Switch this workspace between SaaS tiers to inspect plan limits, dashboard copy, and onboarding behavior.</p>
+        <form id="admin-plan-form" class="app-form compact-form">
+          <label>
+            Preview tier
+            <select name="plan">
+              <option value="starter">Starter - $49/mo</option>
+              <option value="monitor">Monitor - $99/mo</option>
+              <option value="growth">Growth - $249/mo</option>
+              <option value="diagnostic">Diagnostic - $750 one-time</option>
+              <option value="operator">Operator - $1,000/mo</option>
+              <option value="partner">Partner - $2,500/mo</option>
+            </select>
+          </label>
+          <button class="app-secondary" type="submit">Apply preview tier</button>
+        </form>
+        <div id="admin-status" class="app-status"></div>
+      </section>
+    </details>
   </div>
 
   <div id="empty" class="hidden">
@@ -143,7 +158,8 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     let currentReport = null;
 
     const text = (id, value) => {
-      document.getElementById(id).textContent = value || 'Not set';
+      const element = document.getElementById(id);
+      if (element) element.textContent = value || 'Not set';
     };
 
     const escape = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
@@ -154,13 +170,50 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       "'": '&#39;',
     })[char]);
 
+    const number = (value) => Number.isFinite(Number(value)) ? Number(value) : 0;
+
+    function scoreTone(score, goodLabel, mixedLabel, weakLabel) {
+      if (score >= 70) return goodLabel;
+      if (score >= 45) return mixedLabel;
+      return weakLabel;
+    }
+
+    function renderVerdicts(report) {
+      const promptCount = report.prompt_map?.length || report.plan_features?.prompts || 0;
+      const competitorCount = report.competitor_rows?.filter((row) => row.domain !== report.website).length || report.competitors?.length || 0;
+      const sourceCount = report.data_sources?.length || report.source_gaps?.length || 0;
+      const visibility = number(report.visibility_score);
+      const citation = number(report.citation_score);
+      const pressure = number(report.competitor_pressure);
+
+      text('visibility-verdict', scoreTone(
+        visibility,
+        `Strong visibility in ${promptCount || 'tracked'} buyer prompts.`,
+        `Partial visibility in ${promptCount || 'tracked'} buyer prompts.`,
+        `Buyers can miss you in ${promptCount || 'tracked'} AI prompts.`,
+      ));
+      text('visibility-score', `${visibility}/100 answer-market visibility`);
+      text('citation-verdict', scoreTone(
+        citation,
+        `${sourceCount || 'Enough'} source signals support the answer.`,
+        'Citations are present but not yet durable.',
+        'Citation support is thin for AI answers.',
+      ));
+      text('citation-score', `${citation}/100 citation strength`);
+      text('pressure-verdict', scoreTone(
+        100 - pressure,
+        'Competitors are not dominating the answer surface.',
+        `${competitorCount || 'Tracked'} competitors still shape the shortlist.`,
+        'Competitors are likely shaping buyer shortlists.',
+      ));
+      text('pressure-score', `${pressure}/100 competitor pressure`);
+      text('run-date', report.generated_at ? `run ${new Date(report.generated_at).toLocaleDateString()}` : 'first run');
+    }
+
     function renderReport(report) {
       if (!report) return;
       currentReport = report;
-      text('visibility-score', report.visibility_score);
-      text('citation-score', report.citation_score);
-      text('pressure-score', report.competitor_pressure);
-      text('report-title', report.title);
+      renderVerdicts(report);
       text('report-summary', report.summary);
       text('report-question', report.question);
       text('report-answer', report.answer_surface);
@@ -256,42 +309,69 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       const snippets = (assets.implementation_snippets || [])
         .map((snippet, index) => renderCodeBlock(snippet.label, snippet.code, snippet.language, `snippet-${index}`))
         .join('');
+      const pageCopy = [
+        page.title,
+        page.meta_description,
+        page.h1,
+        page.intro,
+        ...(page.sections || []).map((section) => `${section.heading}\n${section.body}`),
+        page.cta,
+      ].filter(Boolean).join('\n\n');
 
       target.innerHTML = `
-        <div class="asset-grid">
-          <article class="asset-panel">
-            <div class="asset-meta">
-              <span>${escape(page.slug || '/comparison')}</span>
-              <button class="copy-button" type="button" data-copy="${escape([page.title, page.meta_description, page.h1, page.intro].join('\n\n'))}">Copy page open</button>
-            </div>
-            <h3>${escape(page.title || 'Comparison page draft')}</h3>
-            <p class="asset-description">${escape(page.meta_description || '')}</p>
-            <h4>${escape(page.h1 || '')}</h4>
-            <p class="asset-copy">${escape(page.intro || '')}</p>
-            <div class="asset-section-list">${sections}</div>
-            <div class="asset-table">${table}</div>
-            <p class="asset-cta">${escape(page.cta || '')}</p>
-          </article>
-
-          <article class="asset-panel">
-            <h3>FAQ copy</h3>
-            <div class="faq-list">${faq}</div>
-          </article>
+        <div class="asset-tabs" role="tablist" aria-label="Generated assets">
+          <button class="asset-tab active" type="button" data-asset-tab="comparison">Comparison page</button>
+          <button class="asset-tab" type="button" data-asset-tab="faq">FAQ</button>
+          <button class="asset-tab" type="button" data-asset-tab="schema">Schema</button>
+          <button class="asset-tab" type="button" data-asset-tab="pitch">Citation pitch</button>
+          <button class="asset-tab" type="button" data-asset-tab="implementation">Implementation</button>
         </div>
 
-        ${renderCodeBlock('Structured data JSON-LD', assets.schema_json_ld, 'html', 'schema-json-ld')}
-        <div class="snippet-list">${snippets}</div>
+        <article class="asset-panel asset-pane active" data-asset-pane="comparison">
+          <div class="asset-meta">
+            <span class="asset-status">Ready to publish · ${escape(page.slug || '/comparison')}</span>
+            <button class="copy-button" type="button" data-copy="${escape(pageCopy)}">Copy page draft</button>
+          </div>
+          <h3>${escape(page.title || 'Comparison page draft')}</h3>
+          <p class="asset-description">${escape(page.meta_description || '')}</p>
+          <div class="asset-why">
+            <strong>Why this asset is first</strong>
+            <span>It creates comparison-friendly source material AI systems can cite when buyers ask vendor-shortlist questions.</span>
+          </div>
+          <h4>${escape(page.h1 || '')}</h4>
+          <p class="asset-copy">${escape(page.intro || '')}</p>
+          <div class="asset-section-list">${sections}</div>
+          <div class="asset-table">${table}</div>
+          <p class="asset-cta">${escape(page.cta || '')}</p>
+        </article>
 
-        <div class="asset-grid">
-          <article class="asset-panel">
-            <h3>Citation pitch</h3>
-            <p><strong>${escape(assets.citation_pitch?.subject || 'Pitch')}</strong></p>
-            <p>${escape(assets.citation_pitch?.body || '')}</p>
-          </article>
-          <article class="asset-panel">
-            <h3>Editorial notes</h3>
-            <ul>${(assets.editorial_notes || []).map((note) => `<li>${escape(note)}</li>`).join('')}</ul>
-          </article>
+        <article class="asset-panel asset-pane" data-asset-pane="faq">
+          <div class="asset-meta">
+            <span class="asset-status">Ready for page support</span>
+            <button class="copy-button" type="button" data-copy="${escape((assets.faq || []).map((item) => `${item.question}\n${item.answer}`).join('\n\n'))}">Copy FAQ</button>
+          </div>
+          <h3>FAQ copy</h3>
+          <div class="faq-list">${faq}</div>
+        </article>
+
+        <div class="asset-pane" data-asset-pane="schema">
+          ${renderCodeBlock('Structured data JSON-LD', assets.schema_json_ld, 'html', 'schema-json-ld')}
+        </div>
+
+        <article class="asset-panel asset-pane" data-asset-pane="pitch">
+          <div class="asset-meta">
+            <span class="asset-status">Needs human review</span>
+            <button class="copy-button" type="button" data-copy="${escape(`${assets.citation_pitch?.subject || 'Pitch'}\n\n${assets.citation_pitch?.body || ''}`)}">Copy pitch</button>
+          </div>
+          <h3>Citation pitch</h3>
+          <p><strong>${escape(assets.citation_pitch?.subject || 'Pitch')}</strong></p>
+          <p>${escape(assets.citation_pitch?.body || '')}</p>
+          <h3>Editorial notes</h3>
+          <ul>${(assets.editorial_notes || []).map((note) => `<li>${escape(note)}</li>`).join('')}</ul>
+        </article>
+
+        <div class="asset-pane" data-asset-pane="implementation">
+          <div class="snippet-list">${snippets}</div>
         </div>
       `;
     }
@@ -330,8 +410,8 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         }
         if (data.access_required) {
           text('empty-kicker', 'checkout required');
-          text('empty-title', 'Complete checkout to generate the first brief.');
-          text('empty-copy', 'The product value is unlocked after Stripe confirms payment or an active subscription.');
+          text('empty-title', `Checkout is not complete for ${data.account.website || 'this monitor'}.`);
+          text('empty-copy', 'Complete billing to generate the first AI Search brief, or choose another account with an active monitor.');
           document.getElementById('empty').classList.remove('hidden');
           return;
         }
@@ -342,7 +422,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
           document.querySelector('#admin-plan-form select[name="plan"]').value = data.account.plan || 'monitor';
         }
         text('dashboard-title', data.account.company_name || data.account.website);
-        text('dashboard-subtitle', `Monitoring ${data.account.website} for AI answer visibility and competitor drift.`);
+        text('dashboard-subtitle', `Monitoring ${data.account.website} for AI answer visibility, source gaps, and competitor drift.`);
         text('account-plan', data.account.plan_label || data.account.plan);
         text('account-status', data.account.status);
         text('account-domain', data.account.website);
@@ -430,6 +510,18 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       } catch {
         button.textContent = 'Copy failed';
       }
+    });
+
+    document.addEventListener('click', (event) => {
+      const tab = event.target.closest('[data-asset-tab]');
+      if (!tab) return;
+      const name = tab.dataset.assetTab;
+      document.querySelectorAll('[data-asset-tab]').forEach((button) => {
+        button.classList.toggle('active', button === tab);
+      });
+      document.querySelectorAll('[data-asset-pane]').forEach((pane) => {
+        pane.classList.toggle('active', pane.dataset.assetPane === name);
+      });
     });
 
     loadDashboard();

@@ -64,14 +64,20 @@ const { title, description } = Astro.props;
       .app-nav-links a,
       .app-nav-links button {
         border: 0;
+        border-radius: 999px;
         background: transparent;
         color: inherit;
         font: inherit;
         text-decoration: none;
         cursor: pointer;
+        padding: 7px 10px;
       }
       .app-nav-links a:hover,
       .app-nav-links button:hover { color: #fff; }
+      .app-nav-links a.active {
+        background: rgba(139, 233, 168, 0.1);
+        color: #8be9a8;
+      }
       .app-main {
         box-sizing: border-box;
         width: 100%;
@@ -155,6 +161,15 @@ const { title, description } = Astro.props;
         color: #c9d1d9;
         font-size: 0.9rem;
         font-weight: 700;
+      }
+      .field-hint {
+        color: #8b949e;
+        font-size: 0.82rem;
+        font-weight: 500;
+        line-height: 1.45;
+      }
+      .field-hint.warning {
+        color: #ffcf7a;
       }
       .app-form input,
       .app-form textarea {
@@ -251,6 +266,110 @@ const { title, description } = Astro.props;
         background: rgba(255, 154, 154, 0.12);
         border: 1px solid rgba(255, 154, 154, 0.45);
         color: #ff9a9a;
+      }
+      .brief-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 24px;
+        align-items: end;
+        background: linear-gradient(135deg, rgba(139, 233, 168, 0.12), rgba(143, 211, 255, 0.08) 42%, rgba(255,255,255,0.02));
+      }
+      .brief-title {
+        margin: 12px 0 0;
+        max-width: 860px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: clamp(2rem, 4.5vw, 4.1rem);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+      .brief-subtitle {
+        max-width: 760px;
+        color: #b4c0ca;
+        font-size: 1rem;
+        line-height: 1.7;
+        margin-bottom: 0;
+      }
+      .brief-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+      .app-secondary.quiet {
+        color: #8b949e;
+      }
+      .verdict-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) repeat(2, minmax(0, 0.95fr));
+        gap: 14px;
+        margin-top: 18px;
+      }
+      .verdict-card {
+        min-height: 154px;
+        display: grid;
+        align-content: space-between;
+        gap: 12px;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        background: rgba(8, 13, 19, 0.58);
+        padding: 18px;
+      }
+      .verdict-card.primary {
+        border-color: rgba(139, 233, 168, 0.42);
+        background: rgba(139, 233, 168, 0.08);
+      }
+      .verdict-label {
+        color: #8fd3ff;
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.76rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+      .verdict-card strong {
+        color: #e6edf3;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 1.2rem;
+        line-height: 1.25;
+      }
+      .verdict-card p {
+        margin: 0;
+        color: #8b949e;
+        font-weight: 700;
+      }
+      .brief-grid {
+        grid-template-columns: minmax(0, 1.12fr) minmax(330px, 0.88fr);
+      }
+      .next-action-card h3 {
+        margin: 10px 0 12px;
+        color: #fff;
+        font-size: 1.55rem;
+        line-height: 1.25;
+      }
+      .why-box,
+      .asset-why {
+        display: grid;
+        gap: 6px;
+        border: 1px solid rgba(139, 233, 168, 0.26);
+        border-radius: 8px;
+        background: rgba(139, 233, 168, 0.08);
+        margin-top: 16px;
+        padding: 14px;
+      }
+      .why-box strong,
+      .asset-why strong {
+        color: #8be9a8;
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+      }
+      .why-box span,
+      .asset-why span {
+        color: #c9d1d9;
+        line-height: 1.55;
+      }
+      .muted-pill {
+        border-color: rgba(143, 211, 255, 0.32);
+        color: #8fd3ff;
       }
       .metric {
         display: grid;
@@ -365,6 +484,39 @@ const { title, description } = Astro.props;
       .solution-assets {
         margin-top: 28px;
       }
+      .asset-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+      }
+      .asset-tab {
+        min-height: 38px;
+        border: 1px solid rgba(143, 211, 255, 0.34);
+        border-radius: 999px;
+        background: rgba(8, 16, 25, 0.66);
+        color: #c9d1d9;
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.86rem;
+        font-weight: 800;
+        padding: 8px 12px;
+      }
+      .asset-tab.active {
+        border-color: rgba(139, 233, 168, 0.52);
+        background: rgba(139, 233, 168, 0.14);
+        color: #8be9a8;
+      }
+      .asset-pane {
+        display: none;
+        margin-top: 16px;
+      }
+      .asset-pane.active {
+        display: block;
+      }
+      .asset-status {
+        color: #8be9a8;
+      }
       .asset-grid {
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(300px, 0.72fr);
@@ -462,6 +614,9 @@ const { title, description } = Astro.props;
       .code-panel {
         margin-top: 16px;
       }
+      .asset-pane .code-panel {
+        margin-top: 0;
+      }
       .code-panel pre {
         max-height: 440px;
         overflow: auto;
@@ -478,10 +633,21 @@ const { title, description } = Astro.props;
         white-space: pre;
       }
       .hidden { display: none !important; }
+      .admin-drawer {
+        margin-top: 28px;
+      }
+      .admin-drawer summary {
+        color: #8b949e;
+        cursor: pointer;
+        font-weight: 800;
+      }
+      .admin-drawer .app-card {
+        margin-top: 12px;
+      }
       @media (max-width: 820px) {
         .app-main {
-          max-width: 350px;
-          margin: 0;
+          max-width: none;
+          margin: 0 auto;
           padding-left: 20px;
           padding-right: 20px;
         }
@@ -493,8 +659,17 @@ const { title, description } = Astro.props;
           max-width: 320px;
         }
         .app-grid,
-        .app-grid-three {
+        .app-grid-three,
+        .verdict-grid,
+        .brief-hero {
           grid-template-columns: 1fr;
+        }
+        .brief-actions {
+          justify-content: stretch;
+        }
+        .brief-actions .app-button,
+        .brief-actions .app-secondary {
+          width: 100%;
         }
         .compact-form {
           grid-template-columns: 1fr;
@@ -538,10 +713,10 @@ const { title, description } = Astro.props;
       <nav class="app-nav">
         <a class="app-brand" href="/app">Meridian</a>
         <div class="app-nav-links">
-          <a href="/app">Dashboard</a>
-          <a href="/app/onboarding">Onboarding</a>
-          <a href="/app/account">Account</a>
-          <a href="/ai-search">Product</a>
+          <a href="/app" data-nav-path="/app">Brief</a>
+          <a href="/app/onboarding" data-nav-path="/app/onboarding">Inputs</a>
+          <a href="/app#generated-assets" data-nav-path="/app#generated-assets">Assets</a>
+          <a href="/app/account" data-nav-path="/app/account">Billing</a>
           <button id="logout-button" class="hidden" type="button">Log out</button>
         </div>
       </nav>
@@ -558,6 +733,12 @@ const { title, description } = Astro.props;
           window.location.href = '/app/login';
         });
       }
+      document.querySelectorAll('[data-nav-path]').forEach((link) => {
+        const path = link.getAttribute('href');
+        if (path === window.location.pathname || (path === '/app#generated-assets' && window.location.hash === '#generated-assets')) {
+          link.classList.add('active');
+        }
+      });
     </script>
   </body>
 </html>

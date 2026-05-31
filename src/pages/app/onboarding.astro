@@ -6,9 +6,9 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
 
 <AppLayout title="Onboarding - Meridian" description="Set up your Meridian AI Search monitoring brief.">
   <div class="app-kicker">monitoring brief</div>
-  <h1 class="app-title">Set up your AI Search monitor.</h1>
+  <h1 class="app-title">Tune the buyer questions Meridian should monitor.</h1>
   <p class="app-subtitle">
-    Add the domain, category, competitors, and buyer questions Meridian should track. Meridian will generate the first answer-market operating brief as soon as you save.
+    Give Meridian the category, competitors, and questions buyers actually ask before shortlisting vendors. Better inputs make the brief sharper.
   </p>
   <p id="plan-limits" class="app-muted">Loading your plan limits...</p>
 
@@ -26,27 +26,30 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         <label>
           Category / buyer problem
           <input name="category" required placeholder="AI governance platform for financial services" />
+          <span class="field-hint">Use the phrase a buyer would use, not your internal positioning.</span>
         </label>
         <label>
           Competitors or adjacent firms
           <textarea name="competitors" placeholder="List 3-5 competitors, one per line."></textarea>
+          <span class="field-hint" id="competitor-count">0 competitors added.</span>
         </label>
         <label>
           Buyer questions to track
           <textarea name="prompts" placeholder="What would a buyer ask ChatGPT, Perplexity, Gemini, or Google AI before comparing vendors?"></textarea>
+          <span class="field-hint" id="prompt-count">0 buyer questions added.</span>
         </label>
-        <button class="app-button" type="submit">Generate first brief</button>
+        <button class="app-button" type="submit">Save inputs and generate brief</button>
         <div id="status" class="app-status"></div>
       </form>
     </section>
 
     <aside class="app-card">
-      <h2>What happens next</h2>
+      <h2>Strong examples</h2>
       <ul>
-        <li>Meridian creates a buyer-question map from your category and examples.</li>
-        <li>The first brief checks your site, competitor pages, and configured AI visibility data.</li>
-        <li>You get a prioritized asset queue, source gaps, and answer-readiness scores.</li>
-        <li>Operator and Partner tiers turn the highest-leverage fixes into shipped pages and citations.</li>
+        <li>Which AI search monitoring tools should a B2B SaaS team compare?</li>
+        <li>What are the best alternatives to Otterly, Peec, and AthenaHQ?</li>
+        <li>How should a marketing team measure visibility in ChatGPT and Perplexity?</li>
+        <li>What implementation risks matter before buying an AI-search visibility tool?</li>
       </ul>
     </aside>
   </div>
@@ -57,8 +60,23 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     const form = document.getElementById('brief-form');
     const status = document.getElementById('status');
     const planLimits = document.getElementById('plan-limits');
+    const competitorCount = document.getElementById('competitor-count');
+    const promptCount = document.getElementById('prompt-count');
 
     let token = localStorage.getItem('meridian_session');
+    let maxCompetitors = 0;
+    let maxPrompts = 0;
+
+    const countLines = (value) => String(value || '').split(/\n|,/).map((item) => item.trim()).filter(Boolean).length;
+
+    function updateCounts() {
+      const competitors = countLines(form.competitors.value);
+      const prompts = countLines(form.prompts.value);
+      competitorCount.textContent = maxCompetitors ? `${competitors}/${maxCompetitors} competitors added.` : `${competitors} competitors added.`;
+      promptCount.textContent = maxPrompts ? `${prompts}/${maxPrompts} buyer questions added.` : `${prompts} buyer questions added.`;
+      competitorCount.classList.toggle('warning', Boolean(maxCompetitors && competitors > maxCompetitors));
+      promptCount.classList.toggle('warning', Boolean(maxPrompts && prompts > maxPrompts));
+    }
 
     async function attachCheckoutSession() {
       if (!sessionId) return;
@@ -85,11 +103,14 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       if (data.account?.website) form.website.value = data.account.website;
       if (data.account?.company_name) form.company_name.value = data.account.company_name;
       if (data.account?.plan_features) {
+        maxCompetitors = data.account.plan_features.competitors || 0;
+        maxPrompts = data.account.plan_features.prompts || 0;
         planLimits.textContent = `${data.account.plan_label || data.account.plan} includes up to ${data.account.plan_features.prompts} buyer questions and ${data.account.plan_features.competitors} competitors.`;
       }
       if (data.brief?.category) form.category.value = data.brief.category;
       if (data.brief?.competitors) form.competitors.value = data.brief.competitors;
       if (data.brief?.prompts) form.prompts.value = data.brief.prompts;
+      updateCounts();
     }
 
     async function init() {
@@ -130,6 +151,9 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         status.className = 'app-status error visible';
       }
     });
+
+    form.competitors.addEventListener('input', updateCounts);
+    form.prompts.addEventListener('input', updateCounts);
 
     init();
   </script>
