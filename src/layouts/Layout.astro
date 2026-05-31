@@ -6,9 +6,11 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description: string;
+  canonical?: string;
+  structuredData?: Record<string, unknown>;
 }
 
-const { title, description } = Astro.props;
+const { title, description, canonical, structuredData } = Astro.props;
 ---
 
 <!doctype html>
@@ -20,8 +22,11 @@ const { title, description } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
       rel="stylesheet"
