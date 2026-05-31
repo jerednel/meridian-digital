@@ -22,6 +22,29 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     </div>
     <div id="run-status" class="app-status"></div>
 
+    <section id="admin-panel" class="app-card hidden">
+      <div class="section-head">
+        <h2>Admin tier preview</h2>
+        <span class="pill">Jeremy only</span>
+      </div>
+      <p class="app-muted">Switch this workspace between SaaS tiers to inspect plan limits, dashboard copy, and onboarding behavior.</p>
+      <form id="admin-plan-form" class="app-form compact-form">
+        <label>
+          Preview tier
+          <select name="plan">
+            <option value="starter">Starter - $49/mo</option>
+            <option value="monitor">Monitor - $99/mo</option>
+            <option value="growth">Growth - $249/mo</option>
+            <option value="diagnostic">Diagnostic - $750 one-time</option>
+            <option value="operator">Operator - $1,000/mo</option>
+            <option value="partner">Partner - $2,500/mo</option>
+          </select>
+        </label>
+        <button class="app-secondary" type="submit">Apply preview tier</button>
+      </form>
+      <div id="admin-status" class="app-status"></div>
+    </section>
+
     <section class="app-grid-three">
       <div class="app-card metric">
         <span class="app-muted">Visibility</span>
@@ -215,6 +238,10 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         }
 
         document.getElementById('dashboard').classList.remove('hidden');
+        if (data.user?.is_admin) {
+          document.getElementById('admin-panel').classList.remove('hidden');
+          document.querySelector('#admin-plan-form select[name="plan"]').value = data.account.plan || 'monitor';
+        }
         text('dashboard-title', data.account.company_name || data.account.website);
         text('dashboard-subtitle', `Monitoring ${data.account.website} for AI answer visibility and competitor drift.`);
         text('account-plan', data.account.plan_label || data.account.plan);
@@ -264,6 +291,31 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       anchor.download = `meridian-answer-market-brief-${currentReport.website || 'report'}.json`;
       anchor.click();
       URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('admin-plan-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const status = document.getElementById('admin-status');
+      const plan = new FormData(event.currentTarget).get('plan');
+      status.textContent = 'Switching preview tier...';
+      status.className = 'app-status ok visible';
+      try {
+        const resp = await fetch(`${apiUrl}/admin/plan`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ plan }),
+        });
+        const json = await resp.json();
+        if (!resp.ok) throw new Error(json.error || 'Could not switch tier.');
+        status.textContent = `Previewing ${json.account.plan_label}.`;
+        await loadDashboard();
+      } catch (error) {
+        status.textContent = error.message || 'Could not switch tier.';
+        status.className = 'app-status error visible';
+      }
     });
 
     loadDashboard();

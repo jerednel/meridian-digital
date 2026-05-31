@@ -16,6 +16,10 @@ const STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY');
 const STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET', '');
 const RESEND_API_KEY = env('RESEND_API_KEY', '');
 const DATAFORSEO_AUTH = env('DATAFORSEO_AUTH', '');
+const ADMIN_EMAILS = env('ADMIN_EMAILS', 'jeremy@bymeridian.com')
+  .split(',')
+  .map((email) => email.trim().toLowerCase())
+  .filter(Boolean);
 
 const PRICE_LOOKUPS = {
   starter: 'ai_search_starter_49',
@@ -138,6 +142,7 @@ app.post('/auth/request-link', async (req, res) => {
   if (!email) return res.status(400).json({ error: 'A valid email is required.' });
 
   const user = await upsertUser({ email, name });
+  if (isAdminEmail(email)) await ensureAdminWorkspace(user);
   const rawToken = randomToken();
   await pool.query(
     `insert into magic_links (token_hash, user_id, email, expires_at)
@@ -157,7 +162,7 @@ app.post('/auth/verify', async (req, res) => {
 
   const tokenHash = hashToken(rawToken);
   const { rows } = await pool.query(
-    `select ml.id, ml.user_id, ml.expires_at, ml.used_at, u.email, u.name
+    `select ml.id, ml.user_id, ml.expires_at, ml.used_at, u.email, u.name, u.role
      from magic_links ml
      join users u on u.id = ml.user_id
      where ml.token_hash = $1`,
@@ -169,6 +174,9 @@ app.post('/auth/verify', async (req, res) => {
   }
 
   await pool.query('update magic_links set used_at = now() where id = $1', [link.id]);
+  if (link.role === 'admin' || isAdminEmail(link.email)) {
+    await ensureAdminWorkspace({ id: link.user_id, email: link.email, name: link.name, role: 'admin' });
+  }
   const sessionToken = randomToken();
   await pool.query(
     `insert into sessions (token_hash, user_id, expires_at)
@@ -178,7 +186,7 @@ app.post('/auth/verify', async (req, res) => {
 
   res.json({
     token: sessionToken,
-    user: { id: link.user_id, email: link.email, name: link.name },
+    user: serializeUser({ id: link.user_id, email: link.email, name: link.name, role: link.role }),
   });
 });
 
@@ -358,6 +366,29 @@ app.post('/billing/portal', requireAuth, async (req, res) => {
   res.json({ url: session.url });
 });
 
+app.post('/admin/plan', requireAuth, async (req, res) => {
+  if (!req.user.is_admin) return res.status(403).json({ error: 'Admin access required.' });
+
+  const plan = clean(req.body.plan || '').toLowerCase();
+  if (!PLAN_FEATURES[plan]) return res.status(400).json({ error: `Unknown plan: ${plan}` });
+
+  const account = await getPrimaryAccount(req.user.id);
+  if (!account) return res.status(404).json({ error: 'No admin workspace found.' });
+
+  const status = isOneTimePlan(plan) ? 'paid_diagnostic' : 'active';
+  const { rows } = await pool.query(
+    `update accounts
+        set plan = $1,
+            status = $2,
+            updated_at = now()
+      where id = $3
+      returning *`,
+    [plan, status, account.id],
+  );
+
+  res.json({ ok: true, account: serializeAccount(rows[0]) });
+});
+
 app.post('/logout', requireAuth, async (req, res) => {
   await pool.query('delete from sessions where token_hash = $1', [req.sessionHash]);
   res.json({ ok: true });
@@ -380,9 +411,12 @@ async function migrate() {
       id uuid primary key default gen_random_uuid(),
       email text unique not null,
       name text,
+      role text not null default 'customer',
       created_at timestamptz not null default now(),
       updated_at timestamptz not null default now()
     );
+
+    alter table users add column if not exists role text not null default 'customer';
 
     create table if not exists accounts (
       id uuid primary key default gen_random_uuid(),
@@ -458,7 +492,7 @@ async function requireAuth(req, res, next) {
 
   const sessionHash = hashToken(token);
   const { rows } = await pool.query(
-    `select s.user_id, s.expires_at, u.email, u.name
+    `select s.user_id, s.expires_at, u.email, u.name, u.role
      from sessions s
      join users u on u.id = s.user_id
      where s.token_hash = $1`,
@@ -469,7 +503,7 @@ async function requireAuth(req, res, next) {
     return res.status(401).json({ error: 'Session expired.' });
   }
   req.sessionHash = sessionHash;
-  req.user = { id: session.user_id, email: session.email, name: session.name };
+  req.user = serializeUser({ id: session.user_id, email: session.email, name: session.name, role: session.role });
   return next();
 }
 
@@ -512,16 +546,60 @@ async function handleStripeEvent(event) {
 }
 
 async function upsertUser({ email, name }) {
+  const role = isAdminEmail(email) ? 'admin' : 'customer';
   const { rows } = await pool.query(
-    `insert into users (email, name)
-     values ($1, nullif($2, ''))
+    `insert into users (email, name, role)
+     values ($1, nullif($2, ''), $3)
      on conflict (email) do update
        set name = coalesce(nullif(excluded.name, ''), users.name),
+           role = case when $3 = 'admin' then 'admin' else users.role end,
            updated_at = now()
      returning *`,
-    [email, name],
+    [email, name, role],
   );
   return rows[0];
+}
+
+async function ensureAdminWorkspace(user) {
+  await pool.query(`update users set role = 'admin', updated_at = now() where id = $1`, [user.id]);
+  const website = 'bymeridian.com';
+  let account = await pool.query(
+    `select * from accounts where user_id = $1 and website = $2 order by created_at desc limit 1`,
+    [user.id, website],
+  );
+  if (!account.rows[0]) {
+    account = await pool.query(
+      `insert into accounts (user_id, company_name, website, plan, status)
+       values ($1, 'Meridian Admin Demo', $2, 'monitor', 'active')
+       returning *`,
+      [user.id, website],
+    );
+  } else if (!hasPaidAccess(account.rows[0])) {
+    account = await pool.query(
+      `update accounts
+          set company_name = coalesce(company_name, 'Meridian Admin Demo'),
+              plan = 'monitor',
+              status = 'active',
+              updated_at = now()
+        where id = $1
+        returning *`,
+      [account.rows[0].id],
+    );
+  }
+
+  const latestBrief = await getLatestBrief(account.rows[0].id);
+  if (!latestBrief) {
+    await pool.query(
+      `insert into briefs (account_id, category, competitors, prompts)
+       values ($1, $2, $3, $4)`,
+      [
+        account.rows[0].id,
+        'AI search visibility monitoring for B2B SaaS',
+        'otterly.ai\npeec.ai\nathenahq.ai',
+        'Which AI search visibility tools should a B2B SaaS team compare?\nHow does Meridian compare with AI search monitoring dashboards?',
+      ],
+    );
+  }
 }
 
 async function upsertAccount({ userId, website, plan, status }) {
@@ -1088,6 +1166,22 @@ function serializeAccount(row) {
     stripe_subscription_id: row.stripe_subscription_id,
     current_period_end: row.current_period_end,
   };
+}
+
+function serializeUser(row) {
+  const email = cleanEmail(row.email);
+  const role = row.role === 'admin' || isAdminEmail(email) ? 'admin' : 'customer';
+  return {
+    id: row.id || row.user_id,
+    email,
+    name: row.name,
+    role,
+    is_admin: role === 'admin',
+  };
+}
+
+function isAdminEmail(email) {
+  return ADMIN_EMAILS.includes(cleanEmail(email));
 }
 
 function hasPaidAccess(account) {
