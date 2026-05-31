@@ -1,13 +1,11 @@
 ---
 const currentPath = Astro.url.pathname;
 const links = [
-  { href: '/ai-search', label: 'AI Search' },
-  { href: '/services', label: 'SEO Services' },
-  { href: '/google-ads', label: 'Google Ads' },
-  { href: '/pricing', label: 'Pricing' },
-  { href: '/process', label: 'Process' },
+  { href: '/ai-search', label: 'Product' },
+  { href: '/ai-search-sample', label: 'Sample' },
+  { href: '/ai-search#system', label: 'System' },
+  { href: '/ai-search#plans', label: 'Plans' },
   { href: '/blog', label: 'Writing' },
-  { href: '/about', label: 'About' },
 ];
 ---
 
@@ -79,12 +77,6 @@ const links = [
         class="inline-flex items-center justify-center px-4 py-3 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg transition-colors"
       >
         Start Monitor
-      </a>
-      <a
-        href="/agency"
-        class="inline-flex items-center justify-center px-4 py-3 border border-dark-border text-body-muted hover:text-white hover:border-white/20 text-sm font-medium rounded-lg transition-colors"
-      >
-        Agency Services
       </a>
     </div>
   </div>

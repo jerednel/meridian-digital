@@ -1,0 +1,347 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Sample AI Search Scorecard - Meridian"
+  description="A sample Meridian AI Search scorecard showing buyer questions, answer visibility, cited sources, competitive gaps, and prioritized fixes."
+>
+  <style>
+    .sample-page {
+      --ink: #e6edf3;
+      --muted: #8b949e;
+      --line: #30363d;
+      --green: #8be9a8;
+      --blue: #8fd3ff;
+      background: linear-gradient(180deg, #080d13 0%, #0d1117 48%, #080d13 100%);
+      color: var(--ink);
+      font-family: Inter, sans-serif;
+    }
+
+    .sample-wrap {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .sample-hero {
+      min-height: 72vh;
+      display: grid;
+      align-items: end;
+      background-image:
+        linear-gradient(90deg, rgba(8, 13, 19, 0.98) 0%, rgba(8, 13, 19, 0.82) 52%, rgba(8, 13, 19, 0.32) 100%),
+        url('/images/ai-search-hero.png');
+      background-size: cover;
+      background-position: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .sample-hero-inner {
+      max-width: 800px;
+      padding: 128px 0 72px;
+    }
+
+    .sample-kicker,
+    .sample-label {
+      color: var(--green);
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      margin-top: 18px;
+      max-width: 10ch;
+      font-size: clamp(3rem, 7vw, 6.2rem);
+      line-height: 0.94;
+    }
+
+    .sample-hero p,
+    .sample-copy p,
+    .sample-card p,
+    .sample-card li {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .sample-hero p {
+      max-width: 660px;
+      margin-top: 22px;
+      font-size: 1.08rem;
+    }
+
+    .sample-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .sample-primary,
+    .sample-secondary {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .sample-primary {
+      background: var(--green);
+      color: #081019;
+    }
+
+    .sample-secondary {
+      color: var(--ink);
+      border: 1px solid rgba(143, 211, 255, 0.42);
+      background: rgba(8, 16, 25, 0.66);
+    }
+
+    .sample-band {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .sample-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 18px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .sample-card,
+    .sample-score {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.012));
+      padding: 22px;
+    }
+
+    .sample-card h2 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1;
+    }
+
+    .sample-card h3 {
+      color: var(--ink);
+      font-size: 1.15rem;
+    }
+
+    .sample-card ul {
+      display: grid;
+      gap: 10px;
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sample-card li::before {
+      content: "•";
+      color: var(--green);
+      margin-right: 8px;
+    }
+
+    .sample-score {
+      display: grid;
+      gap: 16px;
+    }
+
+    .sample-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 18px;
+      border-bottom: 1px solid rgba(48, 54, 61, 0.72);
+      padding-bottom: 16px;
+    }
+
+    .sample-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .sample-row strong {
+      color: var(--blue);
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+    }
+
+    .sample-row span {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .sample-meter {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .sample-meter div {
+      display: grid;
+      grid-template-columns: 150px 1fr 44px;
+      gap: 12px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .sample-meter span {
+      height: 10px;
+      border-radius: 999px;
+      background: #161b22;
+      overflow: hidden;
+    }
+
+    .sample-meter span::before {
+      content: "";
+      display: block;
+      width: var(--value);
+      height: 100%;
+      background: var(--green);
+    }
+
+    @media (max-width: 820px) {
+      .sample-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .sample-hero {
+        min-height: auto;
+        background-position: 62% center;
+      }
+
+      .sample-hero-inner {
+        padding: 104px 0 54px;
+      }
+
+      h1 {
+        max-width: 8.5ch;
+        font-size: clamp(2.55rem, 10.4vw, 3.15rem);
+      }
+
+      .sample-hero p,
+      .sample-actions {
+        max-width: 320px;
+      }
+
+      .sample-actions {
+        display: grid;
+        width: min(320px, calc(100vw - 72px));
+      }
+
+      .sample-actions a {
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      .sample-row,
+      .sample-meter div {
+        grid-template-columns: 1fr;
+      }
+
+      .sample-card h2 {
+        max-width: 9.5ch;
+        font-size: clamp(1.8rem, 7.4vw, 2.1rem);
+      }
+    }
+  </style>
+
+  <div class="sample-page">
+    <section class="sample-hero">
+      <div class="sample-wrap">
+        <div class="sample-hero-inner">
+          <div class="sample-kicker">Sample scorecard</div>
+          <h1>See what the monitor sends back.</h1>
+          <p>
+            A Meridian AI Search run converts buyer questions into a compact readout: whether you appear, who does, which sources shaped the answer, and what to fix first.
+          </p>
+          <div class="sample-actions">
+            <a class="sample-primary" href="/ai-search#plans">Start monitor</a>
+            <a class="sample-secondary" href="/ai-search">Back to product</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sample-band">
+      <div class="sample-wrap sample-grid">
+        <div class="sample-card">
+          <div class="sample-label">category run</div>
+          <h2>AI governance software for financial services</h2>
+          <p>
+            This sample uses a fictional B2B software company. The structure is the point: high-intent prompts, answer visibility, source trail, competitor movement, and prioritized fixes.
+          </p>
+          <div class="sample-meter">
+            <div><b>Visibility</b><span style="--value: 24%;"></span><em>24</em></div>
+            <div><b>Citation strength</b><span style="--value: 38%;"></span><em>38</em></div>
+            <div><b>Competitor pressure</b><span style="--value: 78%;"></span><em>78</em></div>
+          </div>
+        </div>
+
+        <div class="sample-score">
+          <div class="sample-row">
+            <strong>Question</strong>
+            <span>Which AI governance platforms should a financial services team compare before buying?</span>
+          </div>
+          <div class="sample-row">
+            <strong>Answer</strong>
+            <span>You are omitted. Competitor A is recommended directly. Competitor B appears through a cited third-party guide.</span>
+          </div>
+          <div class="sample-row">
+            <strong>Sources</strong>
+            <span>AI systems lean on neutral comparison pages, implementation checklists, analyst roundups, and documentation with explicit risk language.</span>
+          </div>
+          <div class="sample-row">
+            <strong>Gap</strong>
+            <span>Your integration page is strong, but it does not answer buyer-risk questions in the language AI systems are citing.</span>
+          </div>
+          <div class="sample-row">
+            <strong>Fix</strong>
+            <span>Publish a financial-services comparison page, add implementation-risk schema, and earn two neutral category references.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sample-band">
+      <div class="sample-wrap sample-grid">
+        <div class="sample-card">
+          <h3>What a recurring run tracks</h3>
+          <ul>
+            <li>Prompt coverage across buyer research, comparison, implementation, and risk questions.</li>
+            <li>Competitor mentions and whether they are direct recommendations or cited indirectly.</li>
+            <li>Source patterns that shape the answer: your site, competitor sites, neutral third parties, docs, and media.</li>
+            <li>Fixes ranked by answer impact and implementation effort.</li>
+          </ul>
+        </div>
+        <div class="sample-card">
+          <h3>What this is not</h3>
+          <ul>
+            <li>Not a keyword-rank dashboard with a new label.</li>
+            <li>Not a pile of screenshots without interpretation.</li>
+            <li>Not a consulting retainer where every improvement requires a meeting.</li>
+            <li>Not a guarantee that AI systems will cite you after one content change.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
