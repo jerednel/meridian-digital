@@ -33,6 +33,7 @@ const PLAN_FEATURES = {
     cadence: 'Monthly brief',
     prompts: 10,
     competitors: 3,
+    refresh_days: 30,
     reruns: 'Monthly self-serve rerun',
     support: 'Email support',
   },
@@ -42,6 +43,7 @@ const PLAN_FEATURES = {
     cadence: 'Fresh brief reruns',
     prompts: 25,
     competitors: 5,
+    refresh_days: 14,
     reruns: 'On-demand brief reruns',
     support: 'Priority email support',
   },
@@ -51,6 +53,7 @@ const PLAN_FEATURES = {
     cadence: 'Weekly monitoring loop',
     prompts: 50,
     competitors: 8,
+    refresh_days: 7,
     reruns: 'Weekly refresh plus on-demand reruns',
     support: 'Priority support and exports',
   },
@@ -60,6 +63,7 @@ const PLAN_FEATURES = {
     cadence: 'One-time teardown',
     prompts: 10,
     competitors: 3,
+    refresh_days: null,
     reruns: 'One diagnostic brief',
     support: 'Email handoff',
   },
@@ -69,6 +73,7 @@ const PLAN_FEATURES = {
     cadence: 'Weekly monitoring plus implementation briefs',
     prompts: 75,
     competitors: 10,
+    refresh_days: 7,
     reruns: 'Weekly refresh plus priority reruns',
     support: 'Implementation-ready content and schema briefs',
   },
@@ -78,6 +83,7 @@ const PLAN_FEATURES = {
     cadence: 'Weekly monitoring plus direct strategy',
     prompts: 100,
     competitors: 15,
+    refresh_days: 7,
     reruns: 'Priority refreshes',
     support: 'Monthly strategy review with Jeremy',
   },
@@ -354,6 +360,7 @@ app.post('/logout', requireAuth, async (req, res) => {
 app.use((_req, res) => res.status(404).json({ error: 'Not found' }));
 
 await migrate();
+startReportScheduler();
 app.listen(PORT, () => {
   console.log(`Meridian AI Search API listening on ${PORT}`);
 });
@@ -551,6 +558,55 @@ async function getLatestReport(accountId, brief) {
   );
   if (rows[0]) return serializeReport(rows[0]);
   return brief ? buildStarterReport(brief) : null;
+}
+
+function startReportScheduler() {
+  if (!pool) return;
+  setTimeout(() => refreshDueReports().catch((error) => console.error('Scheduled report refresh failed', error)), 15000);
+  setInterval(() => refreshDueReports().catch((error) => console.error('Scheduled report refresh failed', error)), 6 * 60 * 60 * 1000);
+}
+
+async function refreshDueReports() {
+  const { rows } = await pool.query(
+    `select a.*,
+            b.id as brief_id,
+            b.category,
+            b.competitors,
+            b.prompts,
+            b.created_at as brief_created_at,
+            r.created_at as latest_report_at
+       from accounts a
+       join lateral (
+         select * from briefs where account_id = a.id order by created_at desc limit 1
+       ) b on true
+       left join lateral (
+         select created_at from reports where account_id = a.id order by created_at desc limit 1
+       ) r on true
+      where a.status in ('active', 'trialing')
+      order by coalesce(r.created_at, b.created_at) asc
+      limit 25`,
+  );
+
+  let refreshed = 0;
+  for (const row of rows) {
+    const features = getPlanFeatures(row.plan);
+    if (!features.refresh_days) continue;
+    const latest = row.latest_report_at ? new Date(row.latest_report_at) : null;
+    const dueAt = latest ? latest.getTime() + features.refresh_days * 24 * 60 * 60 * 1000 : 0;
+    if (latest && dueAt > Date.now()) continue;
+    await generateAndStoreReport(serializeAccount(row), {
+      id: row.brief_id,
+      account_id: row.id,
+      category: row.category,
+      competitors: row.competitors,
+      prompts: row.prompts,
+      created_at: row.brief_created_at,
+    });
+    refreshed += 1;
+    if (refreshed >= 10) break;
+  }
+
+  if (refreshed) console.log(`Refreshed ${refreshed} scheduled AI Search reports`);
 }
 
 async function generateAndStoreReport(account, brief) {
