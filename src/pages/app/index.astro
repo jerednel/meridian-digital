@@ -28,17 +28,29 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
 
     <section class="verdict-grid">
       <div class="verdict-card primary">
-        <span class="verdict-label">What is happening</span>
+        <span class="verdict-label help-label">
+          <span>What is happening</span>
+          <button class="help-dot" type="button" aria-label="What is happening explanation">i</button>
+          <span class="help-tip" role="tooltip">Plain-English summary of your current AI-search risk. This is not a live ranking position. It combines the site crawl, prompt map, competitor set, source gaps, and available DataForSEO evidence into a directional read.</span>
+        </span>
         <strong id="visibility-verdict">Loading visibility verdict.</strong>
         <p id="visibility-score"></p>
       </div>
       <div class="verdict-card">
-        <span class="verdict-label">Citation strength</span>
+        <span class="verdict-label help-label">
+          <span>Citation strength</span>
+          <button class="help-dot" type="button" aria-label="Citation strength explanation">i</button>
+          <span class="help-tip" role="tooltip">How much supporting evidence exists for AI tools to confidently mention or cite you. Strong signals include clear page titles, descriptions, comparison language, schema, FAQs, and neutral third-party references.</span>
+        </span>
         <strong id="citation-verdict">Loading source signal.</strong>
         <p id="citation-score"></p>
       </div>
       <div class="verdict-card">
-        <span class="verdict-label">Competitor pressure</span>
+        <span class="verdict-label help-label right-tip">
+          <span>Competitor pressure</span>
+          <button class="help-dot" type="button" aria-label="Competitor pressure explanation">i</button>
+          <span class="help-tip" role="tooltip">How likely competitors are to shape the shortlist when buyers ask AI tools for recommendations. Higher pressure means competitors have clearer comparison, implementation, citation, or category signals than you do.</span>
+        </span>
         <strong id="pressure-verdict">Loading pressure signal.</strong>
         <p id="pressure-score"></p>
       </div>
@@ -47,13 +59,25 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     <section class="app-grid brief-grid">
       <div class="app-card next-action-card">
         <div class="section-head">
-          <h2>Recommended next action</h2>
-          <span id="evidence-status" class="pill">evidence pending</span>
+          <h2 class="help-label">
+            <span>Recommended next action</span>
+            <button class="help-dot" type="button" aria-label="Recommended next action explanation">i</button>
+            <span class="help-tip" role="tooltip">The one page, schema fix, citation target, or asset Meridian believes is most likely to improve your AI-search visibility next. It is ranked from current gaps, not guessed from a generic SEO checklist.</span>
+          </h2>
+          <span class="pill help-label right-tip">
+            <span id="evidence-status">evidence pending</span>
+            <button class="help-dot" type="button" aria-label="Evidence status explanation">i</button>
+            <span class="help-tip" role="tooltip">Shows whether the brief used collected evidence, such as crawled pages and configured AI visibility data, or whether it is still a strategy-only draft.</span>
+          </span>
         </div>
         <h3 id="report-fix">Loading recommended asset.</h3>
         <p id="report-summary"></p>
         <div class="why-box">
-          <strong>Why this is first</strong>
+          <strong class="help-label">
+            <span>Why this is first</span>
+            <button class="help-dot" type="button" aria-label="Why this is first explanation">i</button>
+            <span class="help-tip" role="tooltip">The reason this fix is ranked ahead of the others. A fix can be first because it fills a missing comparison page, adds proof AI systems can read, or gives buyers a clearer reason to shortlist you.</span>
+          </strong>
           <span id="report-gap"></span>
         </div>
         <div class="app-actions">
@@ -64,14 +88,22 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
 
       <aside class="app-card evidence-card">
         <div class="section-head">
-          <h2>Evidence</h2>
-          <span id="run-date" class="pill muted-pill">first run</span>
+          <h2 class="help-label">
+            <span>Evidence</span>
+            <button class="help-dot" type="button" aria-label="Evidence explanation">i</button>
+            <span class="help-tip" role="tooltip">The inputs Meridian used for this brief: your site, competitor sites, custom buyer questions, generated prompt-map entries, and any configured AI visibility data sources.</span>
+          </h2>
+          <span class="pill muted-pill help-label right-tip">
+            <span id="run-date">first run</span>
+            <button class="help-dot" type="button" aria-label="Run date explanation">i</button>
+            <span class="help-tip" role="tooltip">When this brief was generated. Future runs should be compared against this date to see whether visibility, sources, and competitor pressure are moving.</span>
+          </span>
         </div>
         <div class="key-value">
-          <div><strong>Lead prompt</strong><span id="report-question"></span></div>
-          <div><strong>Answer surface</strong><span id="report-answer"></span></div>
-          <div><strong>Prompt map</strong><span id="account-prompts"></span></div>
-          <div><strong>Competitors</strong><span id="account-competitors"></span></div>
+          <div><strong class="help-label"><span>Lead prompt</span><button class="help-dot" type="button" aria-label="Lead prompt explanation">i</button><span class="help-tip" role="tooltip">The most important buyer question Meridian is using as the anchor for this brief. Think of it as the question a prospect might ask ChatGPT before building a vendor shortlist.</span></strong><span id="report-question"></span></div>
+          <div><strong class="help-label"><span>AI answer snapshot</span><button class="help-dot" type="button" aria-label="AI answer snapshot explanation">i</button><span class="help-tip" role="tooltip">A human-readable summary of how Meridian thinks the answer market currently frames you, competitors, and the available evidence. It is a diagnosis, not a verbatim AI answer transcript.</span></strong><span id="report-answer"></span></div>
+          <div><strong class="help-label"><span>Prompt map</span><button class="help-dot" type="button" aria-label="Prompt map explanation">i</button><span class="help-tip" role="tooltip">The full set of buyer questions Meridian monitors. It includes your custom questions plus default shortlist, comparison, risk, technical-fit, and procurement questions.</span></strong><span id="account-prompts"></span></div>
+          <div><strong class="help-label"><span>Competitors</span><button class="help-dot" type="button" aria-label="Competitors explanation">i</button><span class="help-tip" role="tooltip">The comparison set Meridian uses to judge whether other vendors are easier for AI tools to recommend, compare, or cite.</span></strong><span id="account-competitors"></span></div>
         </div>
         <div class="source-list" id="data-sources"></div>
       </aside>
@@ -80,10 +112,18 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     <section id="generated-assets" class="app-card solution-assets">
       <div class="section-head">
         <div>
-          <h2>Generated asset workbench</h2>
+          <h2 class="help-label">
+            <span>Generated asset workbench</span>
+            <button class="help-dot" type="button" aria-label="Generated asset workbench explanation">i</button>
+            <span class="help-tip" role="tooltip">Drafts and implementation snippets created from the brief. These are meant to become pages, FAQs, schema, or outreach copy that make your company easier for buyers and AI systems to understand.</span>
+          </h2>
           <p class="app-muted">Copy-ready fixes ranked from the current evidence. Start with the recommended tab, then ship the support assets.</p>
         </div>
-        <span id="solution-status" class="pill">copy ready</span>
+        <span class="pill help-label right-tip">
+          <span id="solution-status">copy ready</span>
+          <button class="help-dot" type="button" aria-label="Asset status explanation">i</button>
+          <span class="help-tip" role="tooltip">Shows whether Meridian generated usable asset drafts. Copy-ready means the draft is ready for human review and publishing workflow, not that it should bypass editorial approval.</span>
+        </span>
       </div>
       <div id="solution-assets"></div>
     </section>
@@ -91,16 +131,24 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     <section class="app-grid">
       <div class="app-card">
         <div class="section-head">
-          <h2>Action queue</h2>
-          <span class="pill">ranked fixes</span>
+          <h2 class="help-label">
+            <span>Action queue</span>
+            <button class="help-dot" type="button" aria-label="Action queue explanation">i</button>
+            <span class="help-tip" role="tooltip">A prioritized list of fixes to make your company easier to mention, compare, or cite in AI-assisted buyer research.</span>
+          </h2>
+          <span class="pill help-label right-tip"><span>ranked fixes</span><button class="help-dot" type="button" aria-label="Ranked fixes explanation">i</button><span class="help-tip" role="tooltip">Ranked by likely usefulness based on current gaps. The list is directional until prompt-level live answer tracking is expanded.</span></span>
         </div>
         <div id="action-queue" class="stack-list"></div>
       </div>
 
       <div class="app-card">
         <div class="section-head">
-          <h2>Source gaps</h2>
-          <span class="pill">why AI skips you</span>
+          <h2 class="help-label">
+            <span>Source gaps</span>
+            <button class="help-dot" type="button" aria-label="Source gaps explanation">i</button>
+            <span class="help-tip" role="tooltip">Missing proof that makes it harder for AI tools to confidently describe or recommend you. Examples: no comparison page, weak schema, thin FAQs, or not enough neutral third-party sources.</span>
+          </h2>
+          <span class="pill help-label right-tip"><span>why AI skips you</span><button class="help-dot" type="button" aria-label="Why AI skips you explanation">i</button><span class="help-tip" role="tooltip">AI systems often avoid naming a vendor when the public web does not clearly explain what it does, how it compares, or where neutral sources validate it.</span></span>
         </div>
         <div id="source-gaps" class="stack-list"></div>
       </div>
@@ -108,12 +156,20 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
 
     <section class="app-grid">
       <div class="app-card">
-        <h2>Prompt map</h2>
+        <h2 class="help-label">
+          <span>Prompt map</span>
+          <button class="help-dot" type="button" aria-label="Prompt map section explanation">i</button>
+          <span class="help-tip" role="tooltip">The buyer questions Meridian uses to simulate how prospects research your category. These are not keywords; they are full questions someone might ask an AI assistant.</span>
+        </h2>
         <div id="prompt-map" class="prompt-grid"></div>
       </div>
 
       <div class="app-card">
-        <h2>Competitive answer surface</h2>
+        <h2 class="help-label">
+          <span>Competitive answer surface</span>
+          <button class="help-dot" type="button" aria-label="Competitive answer surface explanation">i</button>
+          <span class="help-tip" role="tooltip">How easy each tracked company is for AI systems to understand and compare from public evidence. It is a readiness diagnostic, not proof of live ranking position.</span>
+        </h2>
         <div id="competitor-rows" class="table-list"></div>
       </div>
     </section>
@@ -162,6 +218,11 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       if (element) element.textContent = value || 'Not set';
     };
 
+    const html = (id, value) => {
+      const element = document.getElementById(id);
+      if (element) element.innerHTML = value || 'Not set';
+    };
+
     const escape = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
       '&': '&amp;',
       '<': '&lt;',
@@ -171,6 +232,25 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     })[char]);
 
     const number = (value) => Number.isFinite(Number(value)) ? Number(value) : 0;
+
+    function help(label, body, position = '') {
+      return `
+        <span class="help-label ${position}">
+          <span>${escape(label)}</span>
+          <button class="help-dot" type="button" aria-label="${escape(label)} explanation">i</button>
+          <span class="help-tip" role="tooltip">${escape(body)}</span>
+        </span>
+      `;
+    }
+
+    function iconHelp(body, position = '') {
+      return `
+        <span class="help-label ${position}">
+          <button class="help-dot" type="button" aria-label="Explanation">i</button>
+          <span class="help-tip" role="tooltip">${escape(body)}</span>
+        </span>
+      `;
+    }
 
     function scoreTone(score, goodLabel, mixedLabel, weakLabel) {
       if (score >= 70) return goodLabel;
@@ -192,21 +272,21 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         `Partial answer-readiness for the tracked prompt set.`,
         `Buyers can miss you across the tracked prompt set.`,
       ));
-      text('visibility-score', `${visibility}/100 modeled readiness · ${promptCount || 0} prompt-map entries`);
+      html('visibility-score', `${escape(`${visibility}/100 modeled readiness · ${promptCount || 0} prompt-map entries`)} ${iconHelp('This score is a model Meridian calculates from page readiness, source gaps, competitor count, and available AI-visibility evidence. It is directional and should be read with the recommended action, not as a live ranking report.', 'right-tip')}`);
       text('citation-verdict', scoreTone(
         citation,
         `${sourceCount || 'Enough'} source signals support the answer.`,
         'Citations are present but not yet durable.',
         'Citation support is thin for AI answers.',
       ));
-      text('citation-score', `${citation}/100 citation strength`);
+      html('citation-score', `${escape(`${citation}/100 citation strength`)} ${iconHelp('A low citation score means the public web may not give AI systems enough trustworthy material to cite you. Publishing clear pages, schema, FAQs, and earning neutral mentions should raise this over time.', 'right-tip')}`);
       text('pressure-verdict', scoreTone(
         100 - pressure,
         'Competitors are not dominating the answer surface.',
         `${competitorCount || 'Tracked'} competitors still shape the shortlist.`,
         'Competitors are likely shaping buyer shortlists.',
       ));
-      text('pressure-score', `${pressure}/100 competitor pressure`);
+      html('pressure-score', `${escape(`${pressure}/100 competitor pressure`)} ${iconHelp('Higher pressure means competitors look easier to recommend from public evidence. This score rises when there are more tracked competitors or when their pages look clearer than yours.', 'right-tip')}`);
       text('run-date', report.generated_at ? `run ${new Date(report.generated_at).toLocaleDateString()}` : 'first run');
     }
 
@@ -228,7 +308,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       text('evidence-status', (report.evidence_status || 'starter').replaceAll('_', ' '));
 
       document.getElementById('data-sources').innerHTML = (report.data_sources || [])
-        .map((source) => `<div><span>${escape(source.label)}</span><strong>${escape(source.status)}</strong></div>`)
+        .map((source) => `<div><span>${escape(source.label)}</span><strong>${help(source.status, 'Collected means this evidence source was available for the current brief. Unavailable or not configured means Meridian used the other available evidence and marked the gap.', 'right-tip')}</strong></div>`)
         .join('') || '<p class="app-muted">No evidence sources have been collected yet.</p>';
 
       document.getElementById('action-queue').innerHTML = (report.action_queue || [])
@@ -236,7 +316,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
           <article>
             <span class="rank">${escape(item.priority)}</span>
             <div>
-              <h3>${escape(item.asset_type || 'Action')}</h3>
+              <h3>${help(item.asset_type || 'Action', 'The kind of fix Meridian recommends shipping. Examples include comparison pages, implementation guides, schema, or citation outreach.')}</h3>
               <p>${escape(item.action)}</p>
               <small>${escape(item.expected_effect || '')}</small>
             </div>
@@ -259,7 +339,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       document.getElementById('prompt-map').innerHTML = (report.prompt_map || [])
         .map((prompt) => `
           <div class="prompt-card">
-            <span>${escape(prompt.priority || 'medium')}</span>
+            <span>${help(prompt.priority || 'medium', 'Priority reflects how important this buyer question is for shortlist formation. High-priority prompts are the questions most likely to affect whether you are considered.')}</span>
             <p>${escape(prompt.question)}</p>
             <small>${escape(prompt.intent || 'buyer intent')}</small>
           </div>
@@ -271,7 +351,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
           <div>
             <strong>${escape(row.domain)}</strong>
             <span>${escape(row.role)}</span>
-            <span>${escape(row.answer_readiness)}/100</span>
+            <span>${help(`${escape(row.answer_readiness)}/100`, 'Answer-readiness is a modeled score for how easy this company is to understand, compare, and cite from public evidence. It is not a live AI ranking.')}</span>
             <p>${escape(row.likely_strength)}. ${escape(row.missing_asset)}</p>
           </div>
         `)

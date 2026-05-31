@@ -238,6 +238,64 @@ const { title, description } = Astro.props;
         gap: 12px;
         margin-bottom: 12px;
       }
+      .help-label {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        max-width: 100%;
+      }
+      .help-dot {
+        flex: 0 0 auto;
+        width: 18px;
+        height: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(143, 211, 255, 0.42);
+        border-radius: 999px;
+        background: rgba(143, 211, 255, 0.08);
+        color: #8fd3ff;
+        cursor: help;
+        font-family: Inter, sans-serif;
+        font-size: 0.72rem;
+        font-weight: 900;
+        line-height: 1;
+        text-transform: none;
+      }
+      .help-tip {
+        position: absolute;
+        z-index: 10;
+        left: 0;
+        top: calc(100% + 8px);
+        width: min(340px, calc(100vw - 48px));
+        display: none;
+        border: 1px solid rgba(143, 211, 255, 0.3);
+        border-radius: 8px;
+        background: #0d131b;
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.36);
+        color: #c9d1d9;
+        font-family: Inter, sans-serif;
+        font-size: 0.84rem;
+        font-weight: 500;
+        line-height: 1.55;
+        padding: 12px;
+        text-transform: none;
+      }
+      .help-label:hover .help-tip,
+      .help-label:focus-within .help-tip {
+        display: block;
+      }
+      .help-label.right-tip .help-tip {
+        left: auto;
+        right: 0;
+      }
+      .help-copy {
+        color: #8b949e;
+        font-size: 0.86rem;
+        line-height: 1.55;
+        margin: 6px 0 0;
+      }
       .pill {
         display: inline-flex;
         align-items: center;
@@ -392,6 +450,7 @@ const { title, description } = Astro.props;
         padding-bottom: 12px;
       }
       .key-value strong {
+        align-items: center;
         color: #8fd3ff;
         font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
         font-size: 0.8rem;
@@ -471,6 +530,26 @@ const { title, description } = Astro.props;
         font-size: 0.76rem;
         font-weight: 800;
         text-transform: uppercase;
+      }
+      .prompt-card .help-tip,
+      .table-list .help-tip,
+      .source-list .help-tip,
+      .key-value .help-tip {
+        display: none;
+        color: #c9d1d9;
+        font-size: 0.84rem;
+        font-weight: 500;
+        text-transform: none;
+      }
+      .prompt-card .help-label:hover .help-tip,
+      .prompt-card .help-label:focus-within .help-tip,
+      .table-list .help-label:hover .help-tip,
+      .table-list .help-label:focus-within .help-tip,
+      .source-list .help-label:hover .help-tip,
+      .source-list .help-label:focus-within .help-tip,
+      .key-value .help-label:hover .help-tip,
+      .key-value .help-label:focus-within .help-tip {
+        display: block;
       }
       .table-list div {
         display: grid;
@@ -691,6 +770,10 @@ const { title, description } = Astro.props;
         .source-list div {
           align-items: flex-start;
           flex-direction: column;
+        }
+        .help-label.right-tip .help-tip {
+          left: 0;
+          right: auto;
         }
         .prompt-grid,
         .table-list div,

@@ -13,15 +13,19 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
 
   <section class="app-grid">
     <div class="app-card">
-      <h2>Current monitor</h2>
+      <h2 class="help-label">
+        <span>Current monitor</span>
+        <button class="help-dot" type="button" aria-label="Current monitor explanation">i</button>
+        <span class="help-tip" role="tooltip">The active AI Search monitor connected to this account. A monitor is the recurring setup for one domain, its category, buyer questions, competitors, and brief cadence.</span>
+      </h2>
       <div class="key-value">
         <div><strong>Email</strong><span id="email">Loading...</span></div>
         <div><strong>Plan</strong><span id="plan">Loading...</span></div>
         <div><strong>Status</strong><span id="status-text">Loading...</span></div>
         <div><strong>Domain</strong><span id="website">Loading...</span></div>
-        <div><strong>Brief Cadence</strong><span id="cadence">Loading...</span></div>
-        <div><strong>Prompt Cap</strong><span id="prompts">Loading...</span></div>
-        <div><strong>Competitors</strong><span id="competitors">Loading...</span></div>
+        <div><strong class="help-label"><span>Brief cadence</span><button class="help-dot" type="button" aria-label="Brief cadence explanation">i</button><span class="help-tip" role="tooltip">How often Meridian should refresh the diagnosis and generated action plan for this monitor.</span></strong><span id="cadence">Loading...</span></div>
+        <div><strong class="help-label"><span>Prompt cap</span><button class="help-dot" type="button" aria-label="Prompt cap explanation">i</button><span class="help-tip" role="tooltip">The maximum number of custom buyer questions your plan allows. Meridian can expand custom questions into a broader prompt map in the dashboard.</span></strong><span id="prompts">Loading...</span></div>
+        <div><strong class="help-label"><span>Competitors</span><button class="help-dot" type="button" aria-label="Competitors cap explanation">i</button><span class="help-tip" role="tooltip">The number of competitor or adjacent vendor domains Meridian will compare against your domain.</span></strong><span id="competitors">Loading...</span></div>
       </div>
       <p class="app-muted">Billing is managed through Stripe so payment method changes, invoices, and cancellations stay secure.</p>
       <button id="portal-button" class="app-button" type="button">Open billing portal</button>
@@ -30,7 +34,11 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     </div>
 
     <aside class="app-card">
-      <h2>Useful account actions</h2>
+      <h2 class="help-label">
+        <span>Useful account actions</span>
+        <button class="help-dot" type="button" aria-label="Useful account actions explanation">i</button>
+        <span class="help-tip" role="tooltip">The operational actions that keep the monitor useful: adjust inputs, run a fresh brief after changes, and manage billing when the plan needs to change.</span>
+      </h2>
       <ul>
         <li>Edit the category, competitors, and buyer questions Meridian monitors.</li>
         <li>Run a fresh brief after publishing a recommended asset.</li>

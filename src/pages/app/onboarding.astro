@@ -10,7 +10,13 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
   <p class="app-subtitle">
     Give Meridian the category, competitors, and questions buyers actually ask before shortlisting vendors. Better inputs make the brief sharper.
   </p>
-  <p id="plan-limits" class="app-muted">Loading your plan limits...</p>
+  <p class="app-muted">
+    <span id="plan-limits">Loading your plan limits...</span>
+    <span class="help-label">
+      <button class="help-dot" type="button" aria-label="Plan limits explanation">i</button>
+      <span class="help-tip" role="tooltip">Your plan limits how many custom questions and competitors you can enter. Meridian may expand your custom questions into a broader prompt map so it can cover common buyer research patterns.</span>
+    </span>
+  </p>
 
   <div class="app-grid">
     <section class="app-card">
@@ -26,17 +32,17 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         <label>
           Category / buyer problem
           <input name="category" required placeholder="AI governance platform for financial services" />
-          <span class="field-hint">Use the phrase a buyer would use, not your internal positioning.</span>
+          <span class="field-hint">Use the phrase a buyer would use, not your internal positioning. <span class="help-label"><button class="help-dot" type="button" aria-label="Category explanation">i</button><span class="help-tip" role="tooltip">This becomes the category Meridian tests in buyer questions. Good: "AI search visibility monitoring for B2B SaaS." Less useful: "next-generation answer intelligence platform."</span></span></span>
         </label>
         <label>
           Competitors or adjacent firms
           <textarea name="competitors" placeholder="List 3-5 competitors, one per line."></textarea>
-          <span class="field-hint" id="competitor-count">0 competitors added.</span>
+          <span class="field-hint"><span id="competitor-count">0 competitors added.</span> <span class="help-label"><button class="help-dot" type="button" aria-label="Competitors input explanation">i</button><span class="help-tip" role="tooltip">These are the companies a buyer might compare you against. They do not have to be identical products; adjacent alternatives can still shape AI recommendations.</span></span></span>
         </label>
         <label>
           Buyer questions to track
           <textarea name="prompts" placeholder="What would a buyer ask ChatGPT, Perplexity, Gemini, or Google AI before comparing vendors?"></textarea>
-          <span class="field-hint" id="prompt-count">0 custom buyer questions added.</span>
+          <span class="field-hint"><span id="prompt-count">0 custom buyer questions added.</span> <span class="help-label"><button class="help-dot" type="button" aria-label="Buyer questions explanation">i</button><span class="help-tip" role="tooltip">Write full questions, not keywords. Example: "Which AI search monitoring tools should a B2B SaaS team compare?" Meridian uses these as seeds and adds common buying questions around shortlists, risk, and procurement.</span></span></span>
         </label>
         <button class="app-button" type="submit">Save inputs and generate brief</button>
         <div id="status" class="app-status"></div>
@@ -44,7 +50,11 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     </section>
 
     <aside class="app-card">
-      <h2>Strong examples</h2>
+      <h2 class="help-label">
+        <span>Strong examples</span>
+        <button class="help-dot" type="button" aria-label="Strong examples explanation">i</button>
+        <span class="help-tip" role="tooltip">These are examples of useful buyer questions because they match how prospects ask AI assistants for vendor recommendations, comparisons, and risk checks.</span>
+      </h2>
       <ul>
         <li>Which AI search monitoring tools should a B2B SaaS team compare?</li>
         <li>What are the best alternatives to Otterly, Peec, and AthenaHQ?</li>
