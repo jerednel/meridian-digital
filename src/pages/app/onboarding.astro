@@ -36,7 +36,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         <label>
           Buyer questions to track
           <textarea name="prompts" placeholder="What would a buyer ask ChatGPT, Perplexity, Gemini, or Google AI before comparing vendors?"></textarea>
-          <span class="field-hint" id="prompt-count">0 buyer questions added.</span>
+          <span class="field-hint" id="prompt-count">0 custom buyer questions added.</span>
         </label>
         <button class="app-button" type="submit">Save inputs and generate brief</button>
         <div id="status" class="app-status"></div>
@@ -73,7 +73,9 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       const competitors = countLines(form.competitors.value);
       const prompts = countLines(form.prompts.value);
       competitorCount.textContent = maxCompetitors ? `${competitors}/${maxCompetitors} competitors added.` : `${competitors} competitors added.`;
-      promptCount.textContent = maxPrompts ? `${prompts}/${maxPrompts} buyer questions added.` : `${prompts} buyer questions added.`;
+      promptCount.textContent = maxPrompts
+        ? `${prompts}/${maxPrompts} custom buyer questions added. Meridian adds default shortlist, comparison, risk, and procurement prompts to the tracked map.`
+        : `${prompts} custom buyer questions added.`;
       competitorCount.classList.toggle('warning', Boolean(maxCompetitors && competitors > maxCompetitors));
       promptCount.classList.toggle('warning', Boolean(maxPrompts && prompts > maxPrompts));
     }
@@ -105,7 +107,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       if (data.account?.plan_features) {
         maxCompetitors = data.account.plan_features.competitors || 0;
         maxPrompts = data.account.plan_features.prompts || 0;
-        planLimits.textContent = `${data.account.plan_label || data.account.plan} includes up to ${data.account.plan_features.prompts} buyer questions and ${data.account.plan_features.competitors} competitors.`;
+        planLimits.textContent = `${data.account.plan_label || data.account.plan} includes up to ${data.account.plan_features.prompts} custom buyer questions and ${data.account.plan_features.competitors} competitors. Meridian may expand them into a broader tracked prompt map.`;
       }
       if (data.brief?.category) form.category.value = data.brief.category;
       if (data.brief?.competitors) form.competitors.value = data.brief.competitors;

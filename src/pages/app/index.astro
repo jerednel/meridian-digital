@@ -70,7 +70,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         <div class="key-value">
           <div><strong>Lead prompt</strong><span id="report-question"></span></div>
           <div><strong>Answer surface</strong><span id="report-answer"></span></div>
-          <div><strong>Prompts</strong><span id="account-prompts"></span></div>
+          <div><strong>Prompt map</strong><span id="account-prompts"></span></div>
           <div><strong>Competitors</strong><span id="account-competitors"></span></div>
         </div>
         <div class="source-list" id="data-sources"></div>
@@ -192,7 +192,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         `Partial answer-readiness for the tracked prompt set.`,
         `Buyers can miss you across the tracked prompt set.`,
       ));
-      text('visibility-score', `${visibility}/100 modeled readiness · ${promptCount || 0} prompts tracked`);
+      text('visibility-score', `${visibility}/100 modeled readiness · ${promptCount || 0} prompt-map entries`);
       text('citation-verdict', scoreTone(
         citation,
         `${sourceCount || 'Enough'} source signals support the answer.`,
@@ -209,6 +209,12 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       text('pressure-score', `${pressure}/100 competitor pressure`);
       text('run-date', report.generated_at ? `run ${new Date(report.generated_at).toLocaleDateString()}` : 'first run');
     }
+
+    const countList = (value) => String(value || '')
+      .split(/\n|,/)
+      .map((item) => item.trim())
+      .filter(Boolean)
+      .length;
 
     function renderReport(report) {
       if (!report) return;
@@ -426,7 +432,9 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         text('account-plan', data.account.plan_label || data.account.plan);
         text('account-status', data.account.status);
         text('account-domain', data.account.website);
-        text('account-prompts', `${data.account.plan_features?.prompts || 0} buyer questions`);
+        const seedPrompts = countList(data.brief?.prompts);
+        const promptMapCount = data.report?.prompt_map?.length || seedPrompts;
+        text('account-prompts', `${promptMapCount} prompt-map entries · ${seedPrompts} from inputs`);
         text('account-competitors', `${data.account.plan_features?.competitors || 0} tracked competitors`);
 
         renderReport(data.report);
