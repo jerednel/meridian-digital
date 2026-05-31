@@ -10,6 +10,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
   <p class="app-subtitle">
     Add the domain, category, competitors, and buyer questions Meridian should track. Meridian will generate the first answer-market operating brief as soon as you save.
   </p>
+  <p id="plan-limits" class="app-muted">Loading your plan limits...</p>
 
   <div class="app-grid">
     <section class="app-card">
@@ -55,6 +56,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     const sessionId = params.get('session_id');
     const form = document.getElementById('brief-form');
     const status = document.getElementById('status');
+    const planLimits = document.getElementById('plan-limits');
 
     let token = localStorage.getItem('meridian_session');
 
@@ -82,6 +84,9 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       if (!resp.ok) return;
       if (data.account?.website) form.website.value = data.account.website;
       if (data.account?.company_name) form.company_name.value = data.account.company_name;
+      if (data.account?.plan_features) {
+        planLimits.textContent = `${data.account.plan_label || data.account.plan} includes up to ${data.account.plan_features.prompts} buyer questions and ${data.account.plan_features.competitors} competitors.`;
+      }
       if (data.brief?.category) form.category.value = data.brief.category;
       if (data.brief?.competitors) form.competitors.value = data.brief.competitors;
       if (data.brief?.prompts) form.prompts.value = data.brief.prompts;

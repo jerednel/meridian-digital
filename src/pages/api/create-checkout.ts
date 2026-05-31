@@ -15,8 +15,10 @@ const PLAN_PRICE_MAP: Record<string, string> = {
 };
 
 const PLAN_LOOKUP_MAP: Record<string, string> = {
+  starter: 'ai_search_starter_49',
+  monitor: 'ai_search_monitor_99',
+  growth: 'ai_search_growth_249',
   diagnostic: 'ai_search_diagnostic',
-  monitor: 'ai_search_monitor',
   operator: 'ai_search_operator',
   partner: 'ai_search_partner',
 };

@@ -202,7 +202,7 @@ import Layout from '../layouts/Layout.astro';
 
     .ai-plans {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
       margin-top: 22px;
     }
@@ -382,7 +382,7 @@ import Layout from '../layouts/Layout.astro';
             Meridian turns buyer questions into answer-market operating briefs: which prompts matter, who AI systems name, what sources shape the answer, and which asset to publish next.
           </p>
           <div class="ai-actions">
-            <a class="ai-primary" href="#plans">Start with a diagnostic</a>
+            <a class="ai-primary" href="#plans">Start at $49/mo</a>
             <a class="ai-secondary" href="#system">See the system</a>
             <a class="ai-secondary" href="#sample">See the brief</a>
           </div>
@@ -430,9 +430,60 @@ import Layout from '../layouts/Layout.astro';
       <div class="ai-wrap">
         <div class="ai-label">plans</div>
         <div class="ai-plans">
+          <form class="ai-plan checkout-card" data-plan="starter">
+            <h3>Starter</h3>
+            <p>Low-friction entry for teams that want one clear AI search brief each month.</p>
+            <div class="price">$49 <small>/mo</small></div>
+            <ul>
+              <li>1 brand</li>
+              <li>10 buyer questions</li>
+              <li>3 competitors</li>
+              <li>Monthly operating brief</li>
+            </ul>
+            <input name="name" required placeholder="Name" />
+            <input name="email" required type="email" placeholder="Work email" />
+            <input name="website" required type="url" placeholder="https://company.com" />
+            <button type="submit">Start starter</button>
+            <p class="checkout-error"></p>
+          </form>
+
+          <form class="ai-plan checkout-card featured" data-plan="monitor">
+            <h3>Monitor</h3>
+            <p>Recommended self-serve plan for teams that want the brief refreshed as the answer surface moves.</p>
+            <div class="price">$99 <small>/mo</small></div>
+            <ul>
+              <li>25 buyer questions</li>
+              <li>5 competitors</li>
+              <li>Source-gap watchlist</li>
+              <li>Fresh brief reruns</li>
+            </ul>
+            <input name="name" required placeholder="Name" />
+            <input name="email" required type="email" placeholder="Work email" />
+            <input name="website" required type="url" placeholder="https://company.com" />
+            <button type="submit">Start monitor</button>
+            <p class="checkout-error"></p>
+          </form>
+
+          <form class="ai-plan checkout-card" data-plan="growth">
+            <h3>Growth</h3>
+            <p>For teams that want weekly monitoring and enough coverage to manage real category movement.</p>
+            <div class="price">$249 <small>/mo</small></div>
+            <ul>
+              <li>50 buyer questions</li>
+              <li>8 competitors</li>
+              <li>Weekly answer-market refresh</li>
+              <li>Exportable source and asset queue</li>
+            </ul>
+            <input name="name" required placeholder="Name" />
+            <input name="email" required type="email" placeholder="Work email" />
+            <input name="website" required type="url" placeholder="https://company.com" />
+            <button type="submit">Start growth</button>
+            <p class="checkout-error"></p>
+          </form>
+
           <form class="ai-plan checkout-card" data-plan="diagnostic">
             <h3>Diagnostic</h3>
-            <p>Paid entry point for teams that want a useful answer-market brief before recurring spend.</p>
+            <p>Done-for-you strategic teardown before committing to recurring monitoring.</p>
             <div class="price">$750 <small>one-time</small></div>
             <ul>
               <li>10 buyer questions</li>
@@ -447,26 +498,9 @@ import Layout from '../layouts/Layout.astro';
             <p class="checkout-error"></p>
           </form>
 
-          <form class="ai-plan checkout-card featured" data-plan="monitor">
-            <h3>Monitor</h3>
-            <p>Self-serve recurring monitoring for teams that want the brief refreshed as the answer surface moves.</p>
-            <div class="price">$500 <small>/mo</small></div>
-            <ul>
-              <li>Weekly AI answer checks</li>
-              <li>Prompt and competitor drift</li>
-              <li>Source-gap watchlist</li>
-              <li>Monthly asset queue</li>
-            </ul>
-            <input name="name" required placeholder="Name" />
-            <input name="email" required type="email" placeholder="Work email" />
-            <input name="website" required type="url" placeholder="https://company.com" />
-            <button type="submit">Start monitor</button>
-            <p class="checkout-error"></p>
-          </form>
-
           <form class="ai-plan checkout-card" data-plan="operator">
             <h3>Operator</h3>
-            <p>Productized execution guidance without open-ended consulting.</p>
+            <p>Premium tier for teams that want implementation-ready fixes, not just diagnosis.</p>
             <div class="price">$1,000 <small>/mo</small></div>
             <ul>
               <li>Deeper prompt library</li>
@@ -480,25 +514,8 @@ import Layout from '../layouts/Layout.astro';
             <button type="submit">Start operator</button>
             <p class="checkout-error"></p>
           </form>
-
-          <form class="ai-plan checkout-card" data-plan="partner">
-            <h3>Partner</h3>
-            <p>Premium tier for when direct operator work is worth the constraint.</p>
-            <div class="price">$2,500 <small>/mo</small></div>
-            <ul>
-              <li>Everything in Operator</li>
-              <li>Monthly strategy review</li>
-              <li>Implementation prioritization</li>
-              <li>Limited availability</li>
-            </ul>
-            <input name="name" required placeholder="Name" />
-            <input name="email" required type="email" placeholder="Work email" />
-            <input name="website" required type="url" placeholder="https://company.com" />
-            <button type="submit">Apply for partner</button>
-            <p class="checkout-error"></p>
-          </form>
         </div>
-        <p class="ai-small">Checkout is live through Stripe. The first brief is generated after onboarding; recurring plans keep the brief fresh as sources and competitors move.</p>
+        <p class="ai-small">Checkout is live through Stripe. The first brief is generated after onboarding; recurring plans keep the brief fresh as sources and competitors move. Partner work is available by referral once Operator demand is proven.</p>
       </div>
     </section>
 
@@ -515,7 +532,7 @@ import Layout from '../layouts/Layout.astro';
           <li>Customer submits domain, category, competitors, and buyer questions on the onboarding page.</li>
           <li>Meridian runs the category through the same answer-market pipeline each cycle.</li>
           <li>The output is a compact operating brief: prompts, competitors, sources, gaps, and fixes.</li>
-          <li>Only Partner customers get direct operator involvement; everyone else improves the product data set.</li>
+          <li>Operator customers get implementation-ready fixes; self-serve customers improve the product data set.</li>
         </ul>
       </div>
     </section>

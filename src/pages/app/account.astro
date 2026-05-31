@@ -19,6 +19,9 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         <div><strong>Plan</strong><span id="plan">Loading...</span></div>
         <div><strong>Status</strong><span id="status-text">Loading...</span></div>
         <div><strong>Domain</strong><span id="website">Loading...</span></div>
+        <div><strong>Brief Cadence</strong><span id="cadence">Loading...</span></div>
+        <div><strong>Prompt Cap</strong><span id="prompts">Loading...</span></div>
+        <div><strong>Competitors</strong><span id="competitors">Loading...</span></div>
       </div>
       <p class="app-muted">Billing is managed through Stripe so payment method changes, invoices, and cancellations stay secure.</p>
       <button id="portal-button" class="app-button" type="button">Open billing portal</button>
@@ -26,13 +29,17 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     </div>
 
     <aside class="app-card">
-      <h2>Need a different monitor?</h2>
+      <h2>Plan ladder</h2>
       <ul>
-        <li>Use onboarding to change category, competitors, and buyer questions.</li>
-        <li>Start another plan from the product page for a second domain.</li>
-        <li>Reply to any Meridian email if your account needs manual help.</li>
+        <li>Starter: $49/mo for one monthly brief and 10 buyer questions.</li>
+        <li>Monitor: $99/mo for 25 questions, five competitors, and fresh reruns.</li>
+        <li>Growth: $249/mo for weekly monitoring and deeper source analysis.</li>
+        <li>Operator: $1,000/mo when you want implementation-ready fixes.</li>
       </ul>
-      <a class="app-secondary" href="/app/onboarding">Update monitoring brief</a>
+      <div class="app-actions">
+        <a class="app-secondary" href="/app/onboarding">Update brief</a>
+        <a class="app-secondary" href="/ai-search#plans">Change plan</a>
+      </div>
     </aside>
   </section>
 
@@ -58,9 +65,13 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       }
       if (!resp.ok) throw new Error(data.error || 'Could not load account.');
       text('email', data.user.email);
-      text('plan', data.account?.plan);
+      const features = data.account?.plan_features || {};
+      text('plan', data.account?.plan_label || data.account?.plan);
       text('status-text', data.account?.status);
       text('website', data.account?.website);
+      text('cadence', features.cadence);
+      text('prompts', features.prompts ? `${features.prompts} buyer questions` : '');
+      text('competitors', features.competitors ? `${features.competitors} competitors` : '');
     }
 
     portalButton.addEventListener('click', async () => {

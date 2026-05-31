@@ -1,6 +1,6 @@
 # Meridian AI Search Product System
 
-Updated: 2026-05-30
+Updated: 2026-05-31
 
 ## Goal
 
@@ -9,30 +9,42 @@ depend on Jeremy doing custom work for every customer.
 
 ## Product Ladder
 
-1. Diagnostic: `$750` one-time
+1. Starter: `$49/mo`
+   - Low-friction self-serve entry.
+   - One domain, ten buyer questions, three competitors, monthly operating
+     brief.
+
+2. Monitor: `$99/mo`
+   - Recommended self-serve product.
+   - One domain, twenty-five buyer questions, five competitors, source gaps,
+     on-demand brief reruns.
+
+3. Growth: `$249/mo`
+   - Higher-coverage SaaS tier.
+   - Fifty buyer questions, eight competitors, weekly monitoring loop, exportable
+     source and asset queue.
+
+4. Diagnostic: `$750` one-time
    - Paid entry product.
    - One domain, ten buyer questions, three competitors, source trail, 30-day
      action plan.
 
-2. Monitor: `$500/mo`
-   - Core self-serve product.
-   - One domain, weekly answer/citation checks, three competitors, monthly fix
-     queue.
-
-3. Operator: `$1,000/mo`
+5. Operator: `$1,000/mo`
    - Productized execution guidance.
    - More prompts, content/schema briefs, implementation-ready fixes.
 
-4. Partner: `$2,500/mo`
+6. Partner: `$2,500/mo`
    - Limited manual tier.
    - Monthly operator review from Jeremy and prioritized implementation support.
 
 ## MRR Paths
 
-- 10 Monitor customers at `$500/mo`.
+- 102 Starter customers at `$49/mo`.
+- 51 Monitor customers at `$99/mo`.
+- 21 Growth customers at `$249/mo`.
 - 5 Operator customers at `$1,000/mo`.
 - 2 Partner customers at `$2,500/mo`.
-- Practical mix: 1 Partner + 5 Monitor = `$5,000/mo`.
+- Practical mix: 20 Monitor + 12 Starter + 10 Growth = `$5,058/mo`.
 
 ## Live Assets
 
@@ -46,7 +58,9 @@ depend on Jeremy doing custom work for every customer.
 - Backend API service: `apps/api`
 - Stripe lookup keys:
   - `ai_search_diagnostic`
-  - `ai_search_monitor`
+  - `ai_search_starter_49`
+  - `ai_search_monitor_99`
+  - `ai_search_growth_249`
   - `ai_search_operator`
   - `ai_search_partner`
 
@@ -59,7 +73,8 @@ depend on Jeremy doing custom work for every customer.
 4. Stripe redirects the buyer to `/app/onboarding?session_id=...`.
 5. The app exchanges the checkout session id for a customer session token, then
    saves the monitoring brief.
-6. `/app` shows account status, subscription plan, and the current scorecard.
+6. `/app` shows account status, plan entitlements, and the current operating
+   brief.
 7. `/app/account` opens the Stripe billing portal for invoices, cards, and
    cancellation.
 

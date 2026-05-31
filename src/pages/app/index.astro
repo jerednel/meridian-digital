@@ -17,6 +17,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
     <p class="app-subtitle" id="dashboard-subtitle"></p>
     <div class="app-actions">
       <button id="run-report" class="app-button" type="button">Run fresh brief</button>
+      <button id="export-report" class="app-secondary" type="button">Export brief</button>
       <a class="app-secondary" href="/app/onboarding">Edit inputs</a>
     </div>
     <div id="run-status" class="app-status"></div>
@@ -60,6 +61,8 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
           <div><strong>Plan</strong><span id="account-plan"></span></div>
           <div><strong>Status</strong><span id="account-status"></span></div>
           <div><strong>Domain</strong><span id="account-domain"></span></div>
+          <div><strong>Prompts</strong><span id="account-prompts"></span></div>
+          <div><strong>Competitors</strong><span id="account-competitors"></span></div>
         </div>
         <div class="source-list" id="data-sources"></div>
       </aside>
@@ -106,6 +109,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
   <script define:vars={{ apiUrl }}>
     const token = localStorage.getItem('meridian_session');
     if (!token) window.location.href = '/app/login';
+    let currentReport = null;
 
     const text = (id, value) => {
       document.getElementById(id).textContent = value || 'Not set';
@@ -121,6 +125,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
 
     function renderReport(report) {
       if (!report) return;
+      currentReport = report;
       text('visibility-score', report.visibility_score);
       text('citation-score', report.citation_score);
       text('pressure-score', report.competitor_pressure);
@@ -212,9 +217,11 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         document.getElementById('dashboard').classList.remove('hidden');
         text('dashboard-title', data.account.company_name || data.account.website);
         text('dashboard-subtitle', `Monitoring ${data.account.website} for AI answer visibility and competitor drift.`);
-        text('account-plan', data.account.plan);
+        text('account-plan', data.account.plan_label || data.account.plan);
         text('account-status', data.account.status);
         text('account-domain', data.account.website);
+        text('account-prompts', `${data.account.plan_features?.prompts || 0} buyer questions`);
+        text('account-competitors', `${data.account.plan_features?.competitors || 0} tracked competitors`);
 
         renderReport(data.report);
       } catch (error) {
@@ -246,6 +253,17 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         button.disabled = false;
         button.textContent = 'Run fresh brief';
       }
+    });
+
+    document.getElementById('export-report').addEventListener('click', () => {
+      if (!currentReport) return;
+      const blob = new Blob([JSON.stringify(currentReport, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `meridian-answer-market-brief-${currentReport.website || 'report'}.json`;
+      anchor.click();
+      URL.revokeObjectURL(url);
     });
 
     loadDashboard();

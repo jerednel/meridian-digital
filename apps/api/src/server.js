@@ -18,10 +18,69 @@ const RESEND_API_KEY = env('RESEND_API_KEY', '');
 const DATAFORSEO_AUTH = env('DATAFORSEO_AUTH', '');
 
 const PRICE_LOOKUPS = {
+  starter: 'ai_search_starter_49',
+  monitor: 'ai_search_monitor_99',
+  growth: 'ai_search_growth_249',
   diagnostic: 'ai_search_diagnostic',
-  monitor: 'ai_search_monitor',
   operator: 'ai_search_operator',
   partner: 'ai_search_partner',
+};
+
+const PLAN_FEATURES = {
+  starter: {
+    label: 'Starter',
+    price: '$49/mo',
+    cadence: 'Monthly brief',
+    prompts: 10,
+    competitors: 3,
+    reruns: 'Monthly self-serve rerun',
+    support: 'Email support',
+  },
+  monitor: {
+    label: 'Monitor',
+    price: '$99/mo',
+    cadence: 'Fresh brief reruns',
+    prompts: 25,
+    competitors: 5,
+    reruns: 'On-demand brief reruns',
+    support: 'Priority email support',
+  },
+  growth: {
+    label: 'Growth',
+    price: '$249/mo',
+    cadence: 'Weekly monitoring loop',
+    prompts: 50,
+    competitors: 8,
+    reruns: 'Weekly refresh plus on-demand reruns',
+    support: 'Priority support and exports',
+  },
+  diagnostic: {
+    label: 'Diagnostic',
+    price: '$750 one-time',
+    cadence: 'One-time teardown',
+    prompts: 10,
+    competitors: 3,
+    reruns: 'One diagnostic brief',
+    support: 'Email handoff',
+  },
+  operator: {
+    label: 'Operator',
+    price: '$1,000/mo',
+    cadence: 'Weekly monitoring plus implementation briefs',
+    prompts: 75,
+    competitors: 10,
+    reruns: 'Weekly refresh plus priority reruns',
+    support: 'Implementation-ready content and schema briefs',
+  },
+  partner: {
+    label: 'Partner',
+    price: '$2,500/mo',
+    cadence: 'Weekly monitoring plus direct strategy',
+    prompts: 100,
+    competitors: 15,
+    reruns: 'Priority refreshes',
+    support: 'Monthly strategy review with Jeremy',
+  },
 };
 
 const pool = DATABASE_URL
@@ -138,7 +197,7 @@ app.post('/checkout', async (req, res) => {
   const user = await upsertUser({ email, name });
   const account = await upsertAccount({ userId: user.id, website, plan, status: 'checkout_started' });
   const price = await lookupPrice(plan);
-  const mode = plan === 'diagnostic' ? 'payment' : 'subscription';
+  const mode = isOneTimePlan(plan) ? 'payment' : 'subscription';
 
   const session = await stripe.checkout.sessions.create({
     mode,
@@ -171,7 +230,7 @@ app.post('/checkout/session-login', async (req, res) => {
   if (!sessionId) return res.status(400).json({ error: 'Session id is required.' });
 
   const session = await stripe.checkout.sessions.retrieve(sessionId);
-  if (session.status !== 'complete' && session.payment_status !== 'paid') {
+  if (session.status !== 'complete' || !['paid', 'no_payment_required'].includes(session.payment_status)) {
     return res.status(402).json({ error: 'Checkout is not complete yet.' });
   }
   const accountId = session.metadata?.account_id || session.client_reference_id;
@@ -247,8 +306,15 @@ app.post('/onboarding', requireAuth, async (req, res) => {
   const competitors = clean(req.body.competitors);
   const prompts = clean(req.body.prompts);
   const companyName = clean(req.body.company_name);
+  const features = getPlanFeatures(account.plan);
 
   if (!website || !category) return res.status(400).json({ error: 'Website and category are required.' });
+  if (parseList(competitors).length > features.competitors) {
+    return res.status(400).json({ error: `${features.label} supports up to ${features.competitors} competitors. Remove a few or upgrade your plan.` });
+  }
+  if (parseList(prompts).length > features.prompts) {
+    return res.status(400).json({ error: `${features.label} supports up to ${features.prompts} buyer questions. Remove a few or upgrade your plan.` });
+  }
 
   await pool.query(
     `update accounts set website = $1, company_name = nullif($2, ''), updated_at = now() where id = $3`,
@@ -526,9 +592,10 @@ function buildStarterReport(brief) {
 
 async function buildStrategicReport(account, brief) {
   const website = normalizeDomain(account.website);
-  const competitors = parseList(brief.competitors).slice(0, 5);
+  const features = getPlanFeatures(account.plan);
+  const competitors = parseList(brief.competitors).slice(0, features.competitors);
   const category = brief.category || 'your category';
-  const promptMap = buildPromptMap(category, website, competitors, brief.prompts);
+  const promptMap = buildPromptMap(category, website, competitors, brief.prompts, features.prompts);
   const evidence = await gatherEvidence({ website, competitors, category, promptMap });
   const competitorRows = buildCompetitorRows({ website, competitors, evidence });
   const sourceGaps = buildSourceGaps({ website, category, competitors, evidence });
@@ -551,6 +618,8 @@ async function buildStrategicReport(account, brief) {
     evidence_status: evidence.status,
     website,
     category,
+    plan: account.plan,
+    plan_features: features,
     competitors,
     prompt_map: promptMap,
     competitor_rows: competitorRows,
@@ -698,7 +767,7 @@ async function fetchPageSummary(url) {
   }
 }
 
-function buildPromptMap(category, website, competitors, userPrompts) {
+function buildPromptMap(category, website, competitors, userPrompts, limit = 10) {
   const custom = parseList(userPrompts).map((question) => ({ question, intent: 'customer-specified', priority: 'high' }));
   const competitorText = competitors.length ? competitors.slice(0, 3).join(', ') : 'the known alternatives';
   const defaults = [
@@ -709,7 +778,7 @@ function buildPromptMap(category, website, competitors, userPrompts) {
     { question: `Which ${category} vendors are strongest for technical teams?`, intent: 'technical-fit', priority: 'medium' },
     { question: `What questions should procurement ask before buying ${category}?`, intent: 'procurement', priority: 'medium' },
   ];
-  return [...custom, ...defaults].slice(0, 10);
+  return [...custom, ...defaults].slice(0, limit);
 }
 
 function buildCompetitorRows({ website, competitors, evidence }) {
@@ -939,11 +1008,14 @@ async function sendInternalIntake({ user, account, brief }) {
 }
 
 function serializeAccount(row) {
+  const features = getPlanFeatures(row.plan);
   return {
     id: row.id,
     company_name: row.company_name,
     website: row.website,
     plan: row.plan,
+    plan_label: features.label,
+    plan_features: features,
     status: row.status,
     stripe_customer_id: row.stripe_customer_id,
     stripe_subscription_id: row.stripe_subscription_id,
@@ -953,6 +1025,14 @@ function serializeAccount(row) {
 
 function hasPaidAccess(account) {
   return ['active', 'trialing', 'paid_diagnostic'].includes(account.status);
+}
+
+function isOneTimePlan(plan) {
+  return plan === 'diagnostic';
+}
+
+function getPlanFeatures(plan) {
+  return PLAN_FEATURES[plan] || PLAN_FEATURES.monitor;
 }
 
 function env(name, fallback = '') {
