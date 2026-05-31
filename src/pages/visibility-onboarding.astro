@@ -1,0 +1,123 @@
+---
+const title = "Set up AI Search Monitoring — Meridian";
+const description = "Submit the domain, category, competitors, and buyer questions Meridian should monitor after checkout.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, sans-serif; background: linear-gradient(180deg, #080d13 0%, #0d1117 100%); color: #0F172A; min-height: 100vh; padding: 40px 20px; overflow-x: hidden; }
+    .wrap { width: 100%; max-width: 860px; margin: 0 auto; }
+    .logo { display: inline-block; color: #F8FAFC; text-decoration: none; font-weight: 800; font-family: "Plus Jakarta Sans", sans-serif; margin-bottom: 32px; }
+    .panel { background: #fff; border-radius: 8px; padding: 36px; box-shadow: 0 24px 80px rgba(0,0,0,.25); }
+    .eyebrow { color: #0E8A4A; text-transform: uppercase; letter-spacing: .08em; font-size: 12px; font-weight: 700; }
+    h1 { font-family: "Plus Jakarta Sans", sans-serif; font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.05; letter-spacing: 0; margin: 12px 0 16px; }
+    p { color: #475569; line-height: 1.7; }
+    form { margin-top: 28px; display: grid; gap: 16px; }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    label { display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 6px; }
+    input, textarea { width: 100%; border: 1px solid #CBD5E1; border-radius: 8px; padding: 13px 14px; font: inherit; color: #0F172A; }
+    textarea { min-height: 110px; resize: vertical; }
+    button { border: 0; border-radius: 8px; background: #0E8A4A; color: #fff; padding: 15px 20px; font-weight: 800; font-family: "Plus Jakarta Sans", sans-serif; cursor: pointer; }
+    button:disabled { opacity: .65; cursor: wait; }
+    .note { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px; font-size: 14px; }
+    .success, .error { display: none; margin-top: 16px; border-radius: 8px; padding: 16px; font-weight: 600; }
+    .success { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+    .error { background: #FEF2F2; color: #B91C1C; border: 1px solid #FECACA; }
+    @media (max-width: 720px) { .wrap { max-width: 350px; margin: 0; } .grid { grid-template-columns: 1fr; } .panel { padding: 24px; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="logo" href="/">Meridian</a>
+    <div class="panel">
+      <div class="eyebrow">Checkout complete</div>
+      <h1>Set up your AI search monitor.</h1>
+      <p>
+        Add the domain, category, competitors, and buyer questions Meridian should check. This creates the operating brief for your first AI-search visibility run.
+      </p>
+
+      <form id="intake-form">
+        <div class="grid">
+          <div>
+            <label for="name">Name</label>
+            <input id="name" name="name" required autocomplete="name" />
+          </div>
+          <div>
+            <label for="email">Work email</label>
+            <input id="email" name="email" required type="email" autocomplete="email" />
+          </div>
+        </div>
+        <div class="grid">
+          <div>
+            <label for="website">Domain to monitor</label>
+            <input id="website" name="website" required type="url" placeholder="https://company.com" />
+          </div>
+          <div>
+            <label for="category">Category / buyer problem</label>
+            <input id="category" name="category" required placeholder="AI governance platform, data consultancy, private market software..." />
+          </div>
+        </div>
+        <div>
+          <label for="competitors">Competitors or adjacent firms</label>
+          <textarea id="competitors" name="competitors" placeholder="List 3-5 competitors, one per line."></textarea>
+        </div>
+        <div>
+          <label for="prompts">Buyer questions you care about</label>
+          <textarea id="prompts" name="prompts" placeholder="What would a buyer ask ChatGPT, Perplexity, or Google AI before they compare vendors?"></textarea>
+        </div>
+        <div class="note">
+          If you leave competitors or prompts blank, Meridian will start with a default buyer-question map for your category. Diagnostic customers receive a one-time report; Monitor, Operator, and Partner customers enter the recurring cycle.
+        </div>
+        <button id="submit-btn" type="submit">Submit monitoring brief</button>
+        <div id="success" class="success">Brief received. Your first AI search visibility run is queued.</div>
+        <div id="error" class="error">Could not submit the brief. Email jeremy@bymeridian.com and include your domain.</div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const form = document.getElementById('intake-form');
+    const success = document.getElementById('success');
+    const error = document.getElementById('error');
+    const button = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      success.style.display = 'none';
+      error.style.display = 'none';
+      button.disabled = true;
+      button.textContent = 'Submitting...';
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.plan = params.get('plan') || 'monitor';
+      data.session_id = params.get('session_id') || '';
+
+      try {
+        const resp = await fetch('/api/visibility-intake', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!resp.ok) throw new Error('Submit failed');
+        success.style.display = 'block';
+        form.reset();
+      } catch (_) {
+        error.style.display = 'block';
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Submit monitoring brief';
+      }
+    });
+  </script>
+</body>
+</html>

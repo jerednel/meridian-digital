@@ -1,0 +1,585 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Meridian AI Search — Revenue Search Intelligence"
+  description="AI search visibility monitoring and implementation plans for B2B companies whose buyers ask AI before they talk to sales."
+>
+  <style>
+    .ai-page {
+      --ink: #e6edf3;
+      --muted: #8b949e;
+      --line: #30363d;
+      --panel: rgba(21, 25, 34, 0.86);
+      --panel-strong: rgba(13, 17, 23, 0.92);
+      --green: #8be9a8;
+      --blue: #8fd3ff;
+      --purple: #d7b7ff;
+      --orange: #ffbe89;
+      background: linear-gradient(180deg, #080d13 0%, #0d1117 44%, #080d13 100%);
+      color: var(--ink);
+      font-family: Inter, sans-serif;
+    }
+
+    .ai-wrap {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .ai-hero {
+      min-height: calc(100vh - 64px);
+      display: grid;
+      align-items: end;
+      background-image:
+        linear-gradient(90deg, rgba(8, 13, 19, 0.98) 0%, rgba(8, 13, 19, 0.86) 48%, rgba(8, 13, 19, 0.24) 100%),
+        url('/images/ai-search-hero.png');
+      background-size: cover;
+      background-position: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .ai-hero-inner {
+      padding: 120px 0 72px;
+      max-width: 760px;
+    }
+
+    .ai-kicker,
+    .ai-label {
+      color: var(--green);
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .ai-hero h1 {
+      margin: 18px 0 0;
+      max-width: 11.5ch;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: clamp(3rem, 8vw, 6.8rem);
+      line-height: 0.92;
+      letter-spacing: 0;
+    }
+
+    .ai-hero p {
+      margin-top: 24px;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .ai-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .ai-primary,
+    .ai-secondary,
+    .ai-plan button {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .ai-primary,
+    .ai-plan button {
+      background: var(--green);
+      color: #081019;
+      border: 0;
+    }
+
+    .ai-primary:hover,
+    .ai-plan button:hover {
+      background: #b6f4c8;
+    }
+
+    .ai-secondary {
+      color: var(--ink);
+      border: 1px solid rgba(143, 211, 255, 0.42);
+      background: rgba(8, 16, 25, 0.66);
+    }
+
+    .ai-band {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .ai-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .ai-panel,
+    .ai-plan,
+    .ai-proof {
+      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.012));
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+    }
+
+    .ai-panel h3,
+    .ai-plan h3,
+    .ai-proof h2,
+    .ai-system h2,
+    .ai-sample h2 {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      letter-spacing: 0;
+    }
+
+    .ai-panel p,
+    .ai-plan p,
+    .ai-proof p,
+    .ai-system p,
+    .ai-sample p,
+    .ai-plan li {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .ai-proof {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .ai-proof h2 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1;
+    }
+
+    .ai-system h2,
+    .ai-sample h2 {
+      margin-top: 10px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1;
+    }
+
+    .ai-math {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .ai-metric {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      background: rgba(8, 13, 19, 0.48);
+    }
+
+    .ai-metric strong {
+      display: block;
+      color: var(--blue);
+      font-size: 1.7rem;
+      line-height: 1;
+    }
+
+    .ai-metric span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .ai-plans {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .ai-plan {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .ai-plan.featured {
+      border-color: rgba(139, 233, 168, 0.8);
+      box-shadow: 0 0 0 1px rgba(139, 233, 168, 0.25), 0 24px 80px rgba(0, 0, 0, 0.22);
+    }
+
+    .ai-plan .price {
+      margin: 16px 0 4px;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .ai-plan .price small {
+      color: var(--muted);
+      font-size: 0.95rem;
+      letter-spacing: 0;
+    }
+
+    .ai-plan ul {
+      margin: 18px 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      flex: 1;
+      font-size: 0.94rem;
+    }
+
+    .ai-plan li::before {
+      content: "•";
+      color: var(--green);
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      margin-right: 8px;
+    }
+
+    .ai-plan input {
+      width: 100%;
+      margin-bottom: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(8, 13, 19, 0.78);
+      color: var(--ink);
+      padding: 12px;
+    }
+
+    .ai-plan input::placeholder {
+      color: #6e7681;
+    }
+
+    .checkout-error {
+      display: none;
+      color: #ff9a9a;
+      font-size: 0.88rem;
+      margin-top: 8px;
+    }
+
+    .checkout-error.visible {
+      display: block;
+    }
+
+    .ai-system,
+    .ai-sample {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .ai-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .ai-list li {
+      color: var(--muted);
+      border-bottom: 1px solid rgba(48, 54, 61, 0.72);
+      padding-bottom: 12px;
+    }
+
+    .ai-sample pre {
+      margin: 0;
+      min-height: 100%;
+      white-space: pre-wrap;
+      color: var(--blue);
+      background: rgba(8, 13, 19, 0.78);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      line-height: 1.6;
+      font-size: 0.9rem;
+      overflow: auto;
+    }
+
+    .ai-small {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 980px) {
+      .ai-grid,
+      .ai-plans,
+      .ai-math {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .ai-proof,
+      .ai-system,
+      .ai-sample {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .ai-hero {
+        min-height: auto;
+        background-position: 62% center;
+      }
+
+      .ai-hero-inner {
+        padding: 104px 0 54px;
+      }
+
+      .ai-hero h1 {
+        max-width: 8.5ch;
+        font-size: clamp(2.55rem, 10.4vw, 3.15rem);
+      }
+
+      .ai-hero p,
+      .ai-actions {
+        max-width: 320px;
+      }
+
+      .ai-actions {
+        width: min(320px, calc(100vw - 72px));
+      }
+
+      .ai-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .ai-actions a {
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      .ai-grid,
+      .ai-plans,
+      .ai-math {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <div class="ai-page">
+    <section class="ai-hero">
+      <div class="ai-wrap">
+        <div class="ai-hero-inner">
+          <div class="ai-kicker">Meridian AI Search</div>
+          <h1>Own the answers before buyers reach your site.</h1>
+          <p>
+            Meridian tests the buyer questions that matter, tracks where competitors are mentioned or cited, and turns answer gaps into a monthly revenue-search operating system for B2B teams.
+          </p>
+          <div class="ai-actions">
+            <a class="ai-primary" href="#plans">Start with a diagnostic</a>
+            <a class="ai-secondary" href="#system">See the system</a>
+            <a class="ai-secondary" href="#sample">See the output</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="system" class="ai-band">
+      <div class="ai-wrap">
+        <div class="ai-label">product thesis</div>
+        <div class="ai-grid">
+          <div class="ai-panel">
+            <h3>Not cheap SEO software</h3>
+            <p>AI answers now shape vendor shortlists before the visitor reaches your site. This is executive-grade answer intelligence for teams where one deal is worth thousands.</p>
+          </div>
+          <div class="ai-panel">
+            <h3>Productized by default</h3>
+            <p>Every customer runs through the same prompt map, competitor table, citation trail, and action queue. You get repeatable monitoring instead of open-ended consulting.</p>
+          </div>
+          <div class="ai-panel">
+            <h3>Built to compound</h3>
+            <p>Prompt sets, source patterns, content fixes, and category benchmarks compound across categories. The signal gets better as the system sees more answer surfaces.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ai-band">
+      <div class="ai-wrap">
+        <div class="ai-proof">
+          <h2>The expensive question is not "what is our rank?"</h2>
+          <div>
+            <p>
+              The expensive question is: when a buyer asks ChatGPT, Perplexity, Gemini, or Google AI which vendors to compare, do they see you, your competitors, or a source that frames the category without you?
+            </p>
+            <p>
+              Meridian packages that answer into a recurring system: prompt coverage, citations, source influence, competitor drift, and a prioritized fix queue. No dashboard ceremony. No monthly slide theater.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="plans" class="ai-band">
+      <div class="ai-wrap">
+        <div class="ai-label">plans</div>
+        <div class="ai-plans">
+          <form class="ai-plan checkout-card" data-plan="diagnostic">
+            <h3>Diagnostic</h3>
+            <p>Paid entry point for teams that want proof before recurring spend.</p>
+            <div class="price">$750 <small>one-time</small></div>
+            <ul>
+              <li>10 buyer questions</li>
+              <li>3 competitors</li>
+              <li>Citation and source trail</li>
+              <li>30-day action plan</li>
+            </ul>
+            <input name="name" required placeholder="Name" />
+            <input name="email" required type="email" placeholder="Work email" />
+            <input name="website" required type="url" placeholder="https://company.com" />
+            <button type="submit">Start diagnostic</button>
+            <p class="checkout-error"></p>
+          </form>
+
+          <form class="ai-plan checkout-card featured" data-plan="monitor">
+            <h3>Monitor</h3>
+            <p>Self-serve recurring monitoring for teams that want a monthly answer-market readout.</p>
+            <div class="price">$500 <small>/mo</small></div>
+            <ul>
+              <li>Weekly AI answer checks</li>
+              <li>Prompt and competitor drift</li>
+              <li>Citation/source gaps</li>
+              <li>Monthly fix queue</li>
+            </ul>
+            <input name="name" required placeholder="Name" />
+            <input name="email" required type="email" placeholder="Work email" />
+            <input name="website" required type="url" placeholder="https://company.com" />
+            <button type="submit">Start monitor</button>
+            <p class="checkout-error"></p>
+          </form>
+
+          <form class="ai-plan checkout-card" data-plan="operator">
+            <h3>Operator</h3>
+            <p>Productized execution guidance without open-ended consulting.</p>
+            <div class="price">$1,000 <small>/mo</small></div>
+            <ul>
+              <li>Deeper prompt library</li>
+              <li>Content and schema briefs</li>
+              <li>Implementation-ready fixes</li>
+              <li>Priority report turnaround</li>
+            </ul>
+            <input name="name" required placeholder="Name" />
+            <input name="email" required type="email" placeholder="Work email" />
+            <input name="website" required type="url" placeholder="https://company.com" />
+            <button type="submit">Start operator</button>
+            <p class="checkout-error"></p>
+          </form>
+
+          <form class="ai-plan checkout-card" data-plan="partner">
+            <h3>Partner</h3>
+            <p>Premium tier for when direct operator work is worth the constraint.</p>
+            <div class="price">$2,500 <small>/mo</small></div>
+            <ul>
+              <li>Everything in Operator</li>
+              <li>Monthly strategy review</li>
+              <li>Implementation prioritization</li>
+              <li>Limited availability</li>
+            </ul>
+            <input name="name" required placeholder="Name" />
+            <input name="email" required type="email" placeholder="Work email" />
+            <input name="website" required type="url" placeholder="https://company.com" />
+            <button type="submit">Apply for partner</button>
+            <p class="checkout-error"></p>
+          </form>
+        </div>
+        <p class="ai-small">Checkout is live through Stripe. Recurring plans start monitoring after the onboarding brief is submitted.</p>
+      </div>
+    </section>
+
+    <section class="ai-band">
+      <div class="ai-wrap ai-system">
+        <div>
+          <div class="ai-label">operating system</div>
+          <h2>What happens after checkout.</h2>
+          <p>
+            The product starts with your domain, category, competitors, and buyer questions. Meridian turns that into a repeatable monitoring run and a prioritized fix queue.
+          </p>
+        </div>
+        <ul class="ai-list">
+          <li>Customer submits domain, category, competitors, and buyer questions on the onboarding page.</li>
+          <li>Meridian runs the category through the same answer/citation pipeline each cycle.</li>
+          <li>The output is a compact scorecard: visibility, competitors, citations, sources, and fixes.</li>
+          <li>Only Partner customers get direct operator involvement; everyone else improves the product data set.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="sample" class="ai-band">
+      <div class="ai-wrap ai-sample">
+        <div>
+          <div class="ai-label">sample output</div>
+          <h2>A compact scorecard, not another dashboard to babysit.</h2>
+          <p>
+            Each run is built around buyer questions, answer mentions, cited sources, competitive gaps, and the fixes most likely to change what AI systems say next.
+          </p>
+        </div>
+        <pre>QUESTION
+Which AI governance platforms should a financial services team compare?
+
+ANSWER SURFACE
+You: omitted
+Competitor A: recommended
+Competitor B: cited by third-party guide
+
+SOURCE GAP
+Your integration page is strong, but AI systems cite neutral comparison pages and implementation checklists first.
+
+NEXT FIX
+Publish a comparison page with schema, add implementation-risk language, and earn two neutral category references.</pre>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    document.querySelectorAll('.checkout-card').forEach((form) => {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const el = event.currentTarget;
+        const error = el.querySelector('.checkout-error');
+        const button = el.querySelector('button');
+        const data = new FormData(el);
+        error.classList.remove('visible');
+        button.disabled = true;
+        button.textContent = 'Opening checkout...';
+
+        try {
+          const resp = await fetch('/api/create-checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              plan: el.dataset.plan,
+              name: data.get('name'),
+              email: data.get('email'),
+              website: data.get('website'),
+              source: 'ai-search',
+            }),
+          });
+          const json = await resp.json();
+          if (!json.url) throw new Error(json.error || 'Checkout failed');
+          window.location.href = json.url;
+        } catch (_) {
+          error.textContent = 'Checkout could not start. Email jeremy@bymeridian.com and I will fix it.';
+          error.classList.add('visible');
+          button.disabled = false;
+          button.textContent = 'Try again';
+        }
+      });
+    });
+  </script>
+</Layout>
