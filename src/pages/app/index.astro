@@ -313,6 +313,25 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       .filter(Boolean)
       .length;
 
+    const actionKey = (action, assetType) => `${String(assetType || 'action').toLowerCase()}::${String(action || '').toLowerCase().replace(/\s+/g, ' ').trim()}`;
+
+    function loggedAction(action, assetType) {
+      return (currentProgress.actions || []).find((item) => actionKey(item.action, item.asset_type) === actionKey(action, assetType));
+    }
+
+    function actionButton(action, assetType, label = 'Mark actioned') {
+      const logged = loggedAction(action, assetType);
+      return `
+        <button
+          class="copy-button action-log-button ${logged ? 'actioned' : ''}"
+          type="button"
+          data-log-action="${escape(action)}"
+          data-log-asset="${escape(assetType || 'action')}"
+          ${logged ? 'disabled aria-disabled="true"' : ''}
+        >${logged ? 'Actioned' : escape(label)}</button>
+      `;
+    }
+
     function buildAgentPrompt({ task, assetType, assetDraft, destination = 'the relevant website or CMS', checks = [] }) {
       const report = currentReport || {};
       const promptMap = (report.prompt_map || []).map((prompt) => `- ${prompt.question} (${prompt.intent || 'buyer intent'})`).join('\n');
@@ -385,12 +404,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
               <h3>${help(item.asset_type || 'Action', 'The kind of fix Meridian recommends shipping. Examples include comparison pages, implementation guides, schema, or citation outreach.')}</h3>
               <p>${escape(item.action)}</p>
               <small>${escape(item.expected_effect || '')}</small>
-              <button
-                class="copy-button action-log-button"
-                type="button"
-                data-log-action="${escape(item.action)}"
-                data-log-asset="${escape(item.asset_type || 'action')}"
-              >Mark actioned</button>
+              ${actionButton(item.action, item.asset_type || 'action')}
             </div>
           </article>
         `)
@@ -540,6 +554,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       const json = await resp.json();
       if (!resp.ok) throw new Error(json.error || 'Could not log action.');
       renderProgress(json.progress);
+      if (currentReport) renderReport(currentReport);
       return json.action_log;
     }
 
@@ -592,6 +607,15 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
       const implementationCopy = (assets.implementation_snippets || [])
         .map((snippet) => `${snippet.label || 'Implementation snippet'}${snippet.language ? ` (${snippet.language})` : ''}\n${snippet.code || ''}`)
         .join('\n\n---\n\n');
+      const pageAction = currentReport?.action_queue?.find((item) => item.asset_type === 'comparison page')?.action
+        || `Publish ${page.title || 'the recommended comparison page'}.`;
+      const faqAction = 'Add the generated FAQ answers to the most relevant product, comparison, or resource page and update FAQPage schema if present.';
+      const schemaAction = currentReport?.action_queue?.find((item) => item.asset_type === 'technical entity layer')?.action
+        || 'Add the generated Organization, Product/Service, FAQ, and Breadcrumb schema to the relevant pages.';
+      const pitchAction = currentReport?.action_queue?.find((item) => item.asset_type === 'third-party citation')?.action
+        || 'Prepare citation outreach for neutral category references.';
+      const implementationAction = currentReport?.action_queue?.find((item) => item.asset_type === 'implementation guide')?.action
+        || 'Implement the generated technical and content snippets.';
       const pageAgentPrompt = buildAgentPrompt({
         task: 'Create or update the recommended comparison page using the draft below.',
         assetType: 'comparison page',
@@ -663,6 +687,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
             <span class="asset-buttons">
               <button class="copy-button" type="button" data-copy="${escape(pageCopy)}">Copy page draft</button>
               <button class="copy-button agent-copy" type="button" data-copy="${escape(pageAgentPrompt)}">Copy for AI/Agent</button>
+              ${actionButton(pageAction, 'comparison page', 'Mark page shipped')}
             </span>
           </div>
           <h3>${escape(page.title || 'Comparison page draft')}</h3>
@@ -684,6 +709,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
             <span class="asset-buttons">
               <button class="copy-button" type="button" data-copy="${escape(faqCopy)}">Copy FAQ</button>
               <button class="copy-button agent-copy" type="button" data-copy="${escape(faqAgentPrompt)}">Copy for AI/Agent</button>
+              ${actionButton(faqAction, 'FAQ copy', 'Mark FAQ added')}
             </span>
           </div>
           <h3>FAQ copy</h3>
@@ -693,7 +719,10 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         <div class="asset-pane" data-asset-pane="schema">
           <div class="agent-bar">
             <span>Implementation prompt for your coding agent.</span>
-            <button class="copy-button agent-copy" type="button" data-copy="${escape(schemaAgentPrompt)}">Copy for AI/Agent</button>
+            <span class="asset-buttons">
+              <button class="copy-button agent-copy" type="button" data-copy="${escape(schemaAgentPrompt)}">Copy for AI/Agent</button>
+              ${actionButton(schemaAction, 'technical entity layer', 'Mark schema added')}
+            </span>
           </div>
           ${renderCodeBlock('Structured data JSON-LD', assets.schema_json_ld, 'html', 'schema-json-ld')}
         </div>
@@ -704,6 +733,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
             <span class="asset-buttons">
               <button class="copy-button" type="button" data-copy="${escape(pitchCopy)}">Copy pitch</button>
               <button class="copy-button agent-copy" type="button" data-copy="${escape(pitchAgentPrompt)}">Copy for AI/Agent</button>
+              ${actionButton(pitchAction, 'third-party citation', 'Mark outreach prepared')}
             </span>
           </div>
           <h3>Citation pitch</h3>
@@ -716,7 +746,10 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         <div class="asset-pane" data-asset-pane="implementation">
           <div class="agent-bar">
             <span>Implementation prompt for your coding agent.</span>
-            <button class="copy-button agent-copy" type="button" data-copy="${escape(implementationAgentPrompt)}">Copy for AI/Agent</button>
+            <span class="asset-buttons">
+              <button class="copy-button agent-copy" type="button" data-copy="${escape(implementationAgentPrompt)}">Copy for AI/Agent</button>
+              ${actionButton(implementationAction, 'implementation guide', 'Mark implemented')}
+            </span>
           </div>
           <div class="snippet-list">${snippets}</div>
         </div>
@@ -778,8 +811,9 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
         text('account-prompts', `${promptMapCount} prompt-map entries · ${seedPrompts} from inputs`);
         text('account-competitors', `${data.account.plan_features?.competitors || 0} tracked competitors`);
 
+        currentProgress = data.progress || { reports: [], actions: [] };
         renderReport(data.report);
-        renderProgress(data.progress);
+        renderProgress(currentProgress);
       } catch (error) {
         document.getElementById('loading').innerHTML = `<div class="app-card"><h2>Could not load dashboard</h2><p class="app-muted">${error.message}</p></div>`;
       }
@@ -884,6 +918,7 @@ const apiUrl = import.meta.env.PUBLIC_MERIDIAN_API_URL || 'http://127.0.0.1:3000
           const json = await resp.json();
           if (!resp.ok) throw new Error(json.error || 'Could not remove log.');
           renderProgress(json.progress);
+          if (currentReport) renderReport(currentReport);
           status.textContent = 'Logged change removed.';
         } catch (error) {
           status.textContent = error.message || 'Could not remove log.';
