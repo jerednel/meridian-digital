@@ -1,6 +1,8 @@
 # Meridian AI Search Product System
 
-Updated: 2026-05-31
+Updated: 2026-09-02
+
+Public commercial offer (marketing site): **AI Visibility Sprint** `$2,500` one-time / 30 days, then **Monitor** `$750/month` with no annual contract. The Sprint is the starting offer. Self-serve ladder below is the product/app catalog and is not the homepage CTA.
 
 ## Goal
 

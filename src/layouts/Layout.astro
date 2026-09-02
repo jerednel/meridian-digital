@@ -2,47 +2,82 @@
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, SITE } from '../lib/site';
 
 interface Props {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   canonical?: string;
-  structuredData?: Record<string, unknown>;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, canonical, structuredData } = Astro.props;
+const {
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESCRIPTION,
+  canonical,
+  ogType = 'website',
+  noindex = false,
+  structuredData,
+} = Astro.props;
+
+const path = Astro.url.pathname;
+const canonicalUrl =
+  canonical || (path === '/' ? `${SITE.url}/` : `${SITE.url}${path.replace(/\/$/, '')}`);
+const ogImage = `${SITE.url}/og.png`;
+const schemas = Array.isArray(structuredData) ? structuredData : structuredData ? [structuredData] : [];
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {canonical && <link rel="canonical" href={canonical} />}
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <meta name="robots" content="index, follow" />
+    )}
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <meta name="theme-color" content="#14120f" />
+    <meta name="color-scheme" content="light" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    {canonical && <meta property="og:url" content={canonical} />}
-    {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q8081KQ05Q"></script>
-    <script is:inline>
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Meridian — AI search visibility for B2B" />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    {schemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
+    <script is:inline define:vars={{ gaId: SITE.gaId }}>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = gtag;
       gtag('js', new Date());
-      gtag('config', 'G-Q8081KQ05Q');
+      gtag('config', gaId, { anonymize_ip: true });
     </script>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.gaId}`}></script>
   </head>
-  <body class="bg-white text-dark antialiased">
+  <body class="bg-paper text-ink antialiased">
+    <a class="skip-link" href="#main">Skip to content</a>
     <Nav />
-    <main class="relative z-0">
+    <main id="main">
       <slot />
     </main>
     <Footer />

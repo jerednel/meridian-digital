@@ -1,1 +1,23 @@
-{"framework": "astro"}
+{
+  "framework": "astro",
+  "redirects": [
+    { "source": "/ai-search", "destination": "/platform", "permanent": true },
+    { "source": "/ai-search-sample", "destination": "/sample", "permanent": true },
+    { "source": "/blog", "destination": "/insights", "permanent": true },
+    { "source": "/blog/:path*", "destination": "/insights", "permanent": true },
+    { "source": "/process", "destination": "/how-it-works", "permanent": true },
+    { "source": "/system", "destination": "/how-it-works", "permanent": true },
+    { "source": "/pricing", "destination": "/", "permanent": true },
+    { "source": "/services", "destination": "/", "permanent": true },
+    { "source": "/audit", "destination": "/", "permanent": true },
+    { "source": "/start", "destination": "/", "permanent": true },
+    { "source": "/agency", "destination": "/", "permanent": true },
+    { "source": "/saas", "destination": "/", "permanent": true },
+    { "source": "/for-saas", "destination": "/", "permanent": true },
+    { "source": "/google-ads", "destination": "/", "permanent": true },
+    { "source": "/ai-team", "destination": "/", "permanent": true },
+    { "source": "/roadmap", "destination": "/insights", "permanent": true },
+    { "source": "/visibility-onboarding", "destination": "/app/onboarding", "permanent": true },
+    { "source": "/ai-search-visibility-monitoring-for-b2b-saas-vendor-comparison", "destination": "/platform", "permanent": true }
+  ]
+}

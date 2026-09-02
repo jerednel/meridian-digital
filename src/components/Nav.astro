@@ -1,117 +1,115 @@
 ---
-const currentPath = Astro.url.pathname;
-const links = [
-  { href: '/ai-search', label: 'Product' },
-  { href: '/ai-search-sample', label: 'Sample' },
-  { href: '/ai-search#system', label: 'System' },
-  { href: '/ai-search#plans', label: 'Plans' },
-  { href: '/blog', label: 'Writing' },
-  { href: '/app/login', label: 'Log in' },
-];
+import { NAV_LINKS } from '../lib/site';
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+function isActive(href: string) {
+  const clean = href.replace(/\/$/, '') || '/';
+  if (clean === '/') return currentPath === '/';
+  return currentPath === clean || currentPath.startsWith(clean + '/');
+}
 ---
 
-<nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-dark/95 backdrop-blur-sm transition-colors duration-300">
-  <div class="mx-auto max-w-7xl px-6 flex items-center justify-between h-16">
-    <a href="/" class="block" aria-label="Meridian Digital home">
+<header class="fixed top-0 inset-x-0 z-50 border-b border-transparent bg-dark/95 text-on-dark backdrop-blur-sm">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-5">
+    <a href="/" class="flex items-center gap-3 shrink-0" aria-label="Meridian home">
       <img
-        src="/logos/logo-dark-transparent.jpg"
+        src="/logos/logo-dark-white.jpg"
         alt="Meridian Digital"
+        width="180"
+        height="36"
         class="h-8 w-auto"
         style="mix-blend-mode: screen;"
       />
     </a>
 
-    <!-- Desktop links -->
-    <div class="hidden lg:flex items-center gap-8">
-      {links.map(link => (
+    <nav aria-label="Primary" class="hidden md:flex items-center gap-7">
+      {NAV_LINKS.map((link) => (
         <a
           href={link.href}
           class:list={[
-            'text-sm font-medium transition-colors',
-            currentPath === link.href || currentPath === link.href + '/' || currentPath.startsWith(link.href + '/')
-              ? 'text-accent'
-              : 'text-body-muted hover:text-white',
+            'text-sm tracking-wide transition-colors',
+            isActive(link.href) ? 'text-on-dark' : 'text-on-dark-muted hover:text-on-dark',
           ]}
+          aria-current={isActive(link.href) ? 'page' : undefined}
         >
           {link.label}
         </a>
       ))}
       <a
-        href="/ai-search#plans"
-        class="ml-2 inline-flex items-center px-4 py-2 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg transition-colors"
+        href="/#missing"
+        class="btn btn-primary"
+        data-track="cta_see_where_click"
+        data-location="nav"
       >
-        Start Monitor
+        See where you're missing
       </a>
-    </div>
+    </nav>
 
-    <!-- Mobile hamburger -->
     <button
+      type="button"
       id="menu-toggle"
-      class="lg:hidden flex flex-col gap-1.5 p-2 -mr-2"
-      aria-label="Toggle menu"
+      class="md:hidden inline-flex h-10 w-10 items-center justify-center border border-white/20"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open menu"
     >
-      <span class="block w-5 h-0.5 bg-white transition-transform origin-center" id="bar1"></span>
-      <span class="block w-5 h-0.5 bg-white transition-opacity" id="bar2"></span>
-      <span class="block w-5 h-0.5 bg-white transition-transform origin-center" id="bar3"></span>
+      <span class="sr-only">Menu</span>
+      <span class="flex flex-col gap-1.5" aria-hidden="true">
+        <span class="block h-px w-5 bg-on-dark" id="bar1"></span>
+        <span class="block h-px w-5 bg-on-dark" id="bar2"></span>
+        <span class="block h-px w-5 bg-on-dark" id="bar3"></span>
+      </span>
     </button>
   </div>
 
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="lg:hidden hidden bg-dark border-t border-dark-border">
-    <div class="px-6 py-4 flex flex-col gap-4">
-      {links.map(link => (
+  <div id="mobile-menu" class="md:hidden hidden border-t border-white/10 bg-dark" hidden>
+    <nav aria-label="Mobile" class="flex flex-col gap-1 px-5 py-4">
+      {NAV_LINKS.map((link) => (
         <a
           href={link.href}
           class:list={[
-            'text-sm font-medium transition-colors py-2',
-            currentPath === link.href || currentPath === link.href + '/' || currentPath.startsWith(link.href + '/')
-              ? 'text-accent'
-              : 'text-body-muted hover:text-white',
+            'py-3 text-sm',
+            isActive(link.href) ? 'text-on-dark' : 'text-on-dark-muted',
           ]}
         >
           {link.label}
         </a>
       ))}
-      <hr class="border-dark-border my-2" />
       <a
-        href="/ai-search#plans"
-        class="inline-flex items-center justify-center px-4 py-3 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg transition-colors"
+        href="/#missing"
+        class="btn btn-primary mt-2"
+        data-track="cta_see_where_click"
+        data-location="nav-mobile"
       >
-        Start Monitor
+        See where you're missing
       </a>
-    </div>
+    </nav>
   </div>
-</nav>
+</header>
 
 <script>
-  const nav = document.getElementById('main-nav')!;
-  const toggle = document.getElementById('menu-toggle')!;
-  const mobileMenu = document.getElementById('mobile-menu')!;
-  const bar1 = document.getElementById('bar1')!;
-  const bar2 = document.getElementById('bar2')!;
-  const bar3 = document.getElementById('bar3')!;
-
-  // Scroll-based bg - now adds solid background on scroll
-  function updateNav() {
-    if (window.scrollY > 20) {
-      nav.classList.add('bg-dark', 'border-b', 'border-dark-border');
-      nav.classList.remove('bg-dark/95');
-    } else {
-      nav.classList.remove('bg-dark', 'border-b', 'border-dark-border');
-      nav.classList.add('bg-dark/95');
-    }
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  if (toggle && menu) {
+    toggle.addEventListener('click', () => {
+      const open = menu.hasAttribute('hidden');
+      menu.toggleAttribute('hidden', !open);
+      menu.classList.toggle('hidden', !open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    });
   }
-  window.addEventListener('scroll', updateNav, { passive: true });
-  updateNav();
 
-  // Mobile toggle
-  let open = false;
-  toggle.addEventListener('click', () => {
-    open = !open;
-    mobileMenu.classList.toggle('hidden', !open);
-    bar1.style.transform = open ? 'rotate(45deg) translate(2.5px, 2.5px)' : '';
-    bar2.style.opacity = open ? '0' : '1';
-    bar3.style.transform = open ? 'rotate(-45deg) translate(2.5px, -2.5px)' : '';
-    if (open) nav.classList.add('bg-dark');
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement | null;
+    const link = target?.closest<HTMLElement>('[data-track]');
+    if (!link) return;
+    const name = link.dataset.track;
+    const location = link.dataset.location || 'unknown';
+    const gtag = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag;
+    if (name && typeof gtag === 'function') {
+      gtag('event', name, { location });
+    }
   });
 </script>

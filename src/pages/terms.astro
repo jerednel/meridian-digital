@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { OFFER, SITE } from '../lib/site';
+
+export const prerender = true;
+---
+
+<Layout
+  title="Terms — Meridian"
+  description="Terms of use for bymeridian.com and commercial terms for the Meridian AI Visibility Sprint and Monitor."
+>
+  <header class="bg-dark text-on-dark pt-28 pb-14 md:pt-36">
+    <div class="mx-auto max-w-3xl px-5">
+      <p class="eyebrow eyebrow-dark">Legal</p>
+      <h1 class="mt-4 font-display text-4xl md:text-5xl">Terms</h1>
+      <p class="mt-4 text-on-dark-muted">Last updated: 2 September 2026</p>
+    </div>
+  </header>
+
+  <section class="bg-paper py-16 md:py-24">
+    <div class="prose prose-meridian mx-auto max-w-3xl px-5">
+      <p>
+        These terms govern use of {SITE.domain} and engagements with {SITE.legalName} (“Meridian,” “we”). By submitting an inquiry or using the site, you agree to them. Questions: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+
+      <h2>The site</h2>
+      <p>
+        The marketing site describes our services. Sample analyses and product visualizations are labeled demo data unless we say otherwise. They are not a report on your company. Nothing on the site is a guarantee of rankings, mentions, revenue, or a particular AI or search outcome.
+      </p>
+
+      <h2>Inquiries</h2>
+      <p>
+        Sending a website and work email is a request for us to look at publicly observable research surfaces in your category. It does not create a paid engagement. We may decline work, including when we do not see a meaningful opportunity.
+      </p>
+
+      <h2>Sprint</h2>
+      <p>
+        The {OFFER.sprintName} is a one-time, {OFFER.sprintDuration} engagement priced at {OFFER.sprintPriceLabel} unless a written statement of work says otherwise. Scope is one company, one category, and the buyer-question set we agree at kickoff. Deliverables are findings and recommended first moves — not implementation of those moves unless separately agreed.
+      </p>
+
+      <h2>Monitor</h2>
+      <p>
+        Monitor is {OFFER.monitorPriceLabel}{OFFER.monitorCadence} after a Sprint, with {OFFER.monitorContract.toLowerCase()}. Either party may cancel before the next billing period. Fees already paid are not refunded except where required by law or a written agreement.
+      </p>
+
+      <h2>Your materials</h2>
+      <p>
+        You confirm you have the right to share the domain, competitor names, and any materials you provide. You remain responsible for your public website and for any changes you choose to publish.
+      </p>
+
+      <h2>Limitation</h2>
+      <p>
+        Search and AI answers change without notice. We measure what we observe at the time of a run. To the extent permitted by law, Meridian is not liable for lost deals, lost profits, or indirect damages. Our aggregate liability for an engagement is limited to the fees you paid for that engagement in the prior three months.
+      </p>
+
+      <h2>Law</h2>
+      <p>
+        These terms are governed by the laws of the United States and the state in which {SITE.legalName} is organized, without regard to conflict-of-law rules. If a provision is unenforceable, the rest remains in effect.
+      </p>
+    </div>
+  </section>
+</Layout>

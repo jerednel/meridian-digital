@@ -1,0 +1,74 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { OFFER } from '../lib/site';
+import { graph, organizationSchema, serviceSchema } from '../lib/schema';
+
+export const prerender = true;
+
+const schema = graph([organizationSchema(), serviceSchema()]);
+---
+
+<Layout
+  title="Visibility Monitor — Meridian"
+  description="After a Sprint, monitor the same buyer questions month to month for $750. No annual contract. The Sprint is the starting offer."
+  structuredData={schema}
+>
+  <header class="bg-dark text-on-dark pt-28 pb-16 md:pt-36 md:pb-20">
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="eyebrow eyebrow-dark">After the Sprint</p>
+      <h1 class="mt-5 max-w-4xl font-display text-4xl leading-[1.05] md:text-6xl">
+        A standing view of the same questions. Not a second product to buy first.
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-on-dark-muted">
+        Monitor exists for teams that already saw a gap worth watching. If you have not done that work, start with the {OFFER.sprintPriceLabel} Sprint. This page is here so you know what continues after day 30 — not to compete with it.
+      </p>
+    </div>
+  </header>
+
+  <section class="bg-paper py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5 grid gap-12 lg:grid-cols-2">
+      <div>
+        <p class="eyebrow">What continues</p>
+        <h2 class="mt-4 font-display text-3xl md:text-4xl">The Sprint questions, re-run.</h2>
+        <p class="mt-5 text-lg leading-relaxed text-ink-soft">
+          Competitors publish. Directories update. A roundup that named you last month names someone else this month. Monitor re-runs the revenue-bearing question set and reports drift — who entered, who left, which sources changed.
+        </p>
+        <p class="mt-5 text-lg leading-relaxed text-ink-soft">
+          {OFFER.monitorPriceLabel}{OFFER.monitorCadence}. {OFFER.monitorContract}. Cancel when the gap is closed or no longer worth the cost of watching.
+        </p>
+      </div>
+      <aside class="border border-rule bg-white p-6 md:p-8">
+        <p class="eyebrow">It does not include</p>
+        <ul class="mt-6 space-y-4 text-ink-soft">
+          <li class="border-t border-rule pt-4">A prompt library for its own sake</li>
+          <li class="border-t border-rule pt-4">A content calendar or a volume of drafts</li>
+          <li class="border-t border-rule pt-4">An annual commitment to justify the dashboard</li>
+          <li class="border-t border-rule pt-4">A starting price of {OFFER.monitorPriceLabel} if you have not seen the Sprint evidence</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="bg-dark text-on-dark py-20">
+    <div class="mx-auto max-w-3xl px-5">
+      <h2 class="font-display text-3xl">Client access</h2>
+      <p class="mt-4 text-on-dark-muted leading-relaxed">
+        Teams already on Monitor can <a href="/app/login" class="underline underline-offset-4 text-on-dark">log in here</a>. New work still starts with a Sprint inquiry.
+      </p>
+    </div>
+  </section>
+
+  <section id="missing" class="bg-paper py-20">
+    <div class="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-2">
+      <div>
+        <p class="eyebrow">Primary offer</p>
+        <h2 class="mt-4 font-display text-3xl">See where you're missing</h2>
+        <p class="mt-4 text-ink-soft">The Sprint is {OFFER.sprintPriceLabel}, one-time, 30 days. Start there.</p>
+      </div>
+      <div class="border border-rule bg-white p-6 md:p-8">
+        <LeadForm source="platform" variant="light" id="platform-lead" />
+      </div>
+    </div>
+  </section>
+</Layout>
