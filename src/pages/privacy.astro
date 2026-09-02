@@ -1,75 +1,60 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { SITE } from '../lib/site';
+
+export const prerender = true;
 ---
 
-<Layout title="Privacy Policy — Meridian" description="How Meridian Digital collects, uses, and protects your information.">
+<Layout
+  title="Privacy — Meridian"
+  description="How Meridian Digital LLC collects, uses, and retains information submitted through bymeridian.com."
+>
+  <header class="bg-dark text-on-dark pt-28 pb-14 md:pt-36">
+    <div class="mx-auto max-w-3xl px-5">
+      <p class="eyebrow eyebrow-dark">Legal</p>
+      <h1 class="mt-4 font-display text-4xl md:text-5xl">Privacy</h1>
+      <p class="mt-4 text-on-dark-muted">Last updated: 2 September 2026</p>
+    </div>
+  </header>
 
-  <section class="bg-dark py-24 md:py-32">
-    <div class="mx-auto max-w-3xl px-6">
-      <p class="text-accent text-sm font-medium tracking-widest uppercase mb-4">Legal</p>
-      <h1 class="text-4xl md:text-6xl font-semibold text-hero-text leading-tight">Privacy Policy</h1>
-      <p class="mt-6 text-body-muted text-lg">Last updated: March 1, 2026</p>
+  <section class="bg-paper py-16 md:py-24">
+    <div class="prose prose-meridian mx-auto max-w-3xl px-5">
+      <h2>Who we are</h2>
+      <p>
+        {SITE.legalName} operates {SITE.domain} and related client tools. Questions: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+
+      <h2>What we collect</h2>
+      <ul>
+        <li><strong>Sprint and contact inquiries</strong> — company website, work email, and optional name, plus the page that sent the form.</li>
+        <li><strong>Client accounts</strong> — credentials and monitoring inputs for teams on Monitor. Passwords are hashed.</li>
+        <li><strong>Site analytics</strong> — page views and events (CTA clicks, form start/submit/success/error) via Google Analytics. We do not send the contents of form fields as event parameters except coarse metadata such as form source.</li>
+      </ul>
+
+      <h2>How we use it</h2>
+      <p>
+        To reply to your inquiry, to deliver a Sprint or Monitor engagement, to operate the client application, and to understand which pages help a buyer decide. We do not sell personal data. We share it with processors only as needed to send email and run the site (for example, email delivery and hosting).
+      </p>
+
+      <h2>Client research data</h2>
+      <p>
+        During a Sprint or Monitor we query public search and AI answer surfaces using your category, competitors, and buyer questions. That output is used for your engagement. It is not sold.
+      </p>
+
+      <h2>Cookies</h2>
+      <p>
+        The marketing site may set analytics cookies via Google Analytics. The client application uses a session cookie to keep you signed in.
+      </p>
+
+      <h2>Retention</h2>
+      <p>
+        Inquiry emails are kept as needed to respond and operate the business, typically up to 12 months unless a client relationship continues. You can request deletion at any time.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        You may request access, correction, or deletion of personal data we hold. Email {SITE.email}. We respond within five business days.
+      </p>
     </div>
   </section>
-
-  <section class="bg-white py-24">
-    <div class="mx-auto max-w-3xl px-6 prose prose-slate max-w-none">
-
-      <div class="space-y-12 text-light-text leading-relaxed">
-
-        <div>
-          <h2 class="text-xl font-semibold text-dark mb-3">Who we are</h2>
-          <p>Meridian Digital LLC operates bymeridian.com and the Meridian client platform. We provide AI-assisted SEO services to businesses. Questions about this policy can be sent to <a href="mailto:jeremy@bymeridian.com" class="text-accent hover:text-accent-hover">jeremy@bymeridian.com</a>.</p>
-        </div>
-
-        <div>
-          <h2 class="text-xl font-semibold text-dark mb-3">What we collect</h2>
-          <p class="mb-4">We collect only what we need to run our service:</p>
-          <ul class="space-y-2 list-disc list-inside">
-            <li><strong class="text-dark">Contact form submissions</strong> — name, email, and message when you reach out through our site</li>
-            <li><strong class="text-dark">Client account information</strong> — login credentials for the Meridian client platform (passwords are hashed and never stored in plain text)</li>
-            <li><strong class="text-dark">Site analytics</strong> — we may use basic analytics to understand how the site is used (page views, referral sources). No personally identifiable information is attached to this data.</li>
-          </ul>
-        </div>
-
-        <div>
-          <h2 class="text-xl font-semibold text-dark mb-3">How we use it</h2>
-          <ul class="space-y-2 list-disc list-inside">
-            <li>To respond to your inquiry</li>
-            <li>To provide you access to the client platform</li>
-            <li>To send you reports and communications related to your engagement</li>
-            <li>To improve the site and our services</li>
-          </ul>
-          <p class="mt-4">We do not sell your data. We do not share it with third parties except where required to deliver the service (e.g., email delivery).</p>
-        </div>
-
-        <div>
-          <h2 class="text-xl font-semibold text-dark mb-3">Client site data</h2>
-          <p>As part of delivering SEO services, we connect to your Google Search Console and Google Analytics 4 accounts. This data is used exclusively to produce reports and recommendations for your account. It is not shared, sold, or used for any other purpose.</p>
-        </div>
-
-        <div>
-          <h2 class="text-xl font-semibold text-dark mb-3">Cookies</h2>
-          <p>The public website does not use tracking cookies. The client platform uses a session cookie to keep you logged in. This cookie expires after 8 hours and contains no personally identifiable information beyond your client ID.</p>
-        </div>
-
-        <div>
-          <h2 class="text-xl font-semibold text-dark mb-3">Data retention</h2>
-          <p>We retain contact form submissions for up to 12 months. Client platform data is retained for the duration of your engagement plus 90 days. You can request deletion at any time.</p>
-        </div>
-
-        <div>
-          <h2 class="text-xl font-semibold text-dark mb-3">Your rights</h2>
-          <p>You can request access to, correction of, or deletion of any personal data we hold about you. Email <a href="mailto:jeremy@bymeridian.com" class="text-accent hover:text-accent-hover">jeremy@bymeridian.com</a> and we'll respond within 5 business days.</p>
-        </div>
-
-        <div>
-          <h2 class="text-xl font-semibold text-dark mb-3">Changes to this policy</h2>
-          <p>If we make material changes, we'll update the date at the top of this page. We won't notify you by email for minor edits.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
 </Layout>

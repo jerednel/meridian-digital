@@ -1,0 +1,137 @@
+---
+interface Props {
+  source: string;
+  submitLabel?: string;
+  variant?: 'dark' | 'light';
+  id?: string;
+}
+
+const {
+  source,
+  submitLabel = "See where you're missing",
+  variant = 'dark',
+  id = 'lead-form',
+} = Astro.props;
+
+const dark = variant === 'dark';
+---
+
+<form id={id} class="lead-form grid gap-4" data-source={source} novalidate>
+  <div class="hp" aria-hidden="true">
+    <label for={`${id}-fax`}>Company fax</label>
+    <input type="text" id={`${id}-fax`} name="company_fax" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <div class:list={['field', dark && 'field-dark']}>
+    <label for={`${id}-website`}>Company website</label>
+    <input
+      type="url"
+      id={`${id}-website`}
+      name="website"
+      required
+      autocomplete="url"
+      inputmode="url"
+      placeholder="https://yourcompany.com"
+    />
+  </div>
+
+  <div class:list={['field', dark && 'field-dark']}>
+    <label for={`${id}-email`}>Work email</label>
+    <input
+      type="email"
+      id={`${id}-email`}
+      name="email"
+      required
+      autocomplete="email"
+      inputmode="email"
+      placeholder="you@company.com"
+    />
+  </div>
+
+  <div class:list={['field', dark && 'field-dark']}>
+    <label for={`${id}-name`}>Name <span class="normal-case tracking-normal opacity-70">(optional)</span></label>
+    <input
+      type="text"
+      id={`${id}-name`}
+      name="name"
+      autocomplete="name"
+      placeholder="Your name"
+    />
+  </div>
+
+  <p class:list={['form-error text-sm', dark ? 'text-red-300' : 'text-warn']} hidden role="alert"></p>
+  <p class:list={['form-success text-sm leading-relaxed', dark ? 'text-on-dark' : 'text-ink']} hidden role="status">
+    Received. We'll look at the questions buyers ask in your category and come back with what we actually find — including if there isn't a meaningful gap.
+  </p>
+
+  <button type="submit" class="btn btn-primary w-full sm:w-auto">
+    {submitLabel}
+  </button>
+  <p class:list={['text-xs leading-relaxed', dark ? 'text-on-dark-muted' : 'text-muted']}>
+    No generic audit. No obligation. We'll reply with competitive findings for your category, or tell you there isn't a meaningful opportunity.
+  </p>
+</form>
+
+<script>
+  import { track } from '../lib/analytics';
+
+  function bindForm(form: HTMLFormElement) {
+    const source = form.dataset.source || 'site';
+    const errorEl = form.querySelector<HTMLElement>('.form-error');
+    const successEl = form.querySelector<HTMLElement>('.form-success');
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const originalLabel = submitBtn?.textContent || '';
+    let started = false;
+
+    form.addEventListener('focusin', () => {
+      if (started) return;
+      started = true;
+      track('lead_form_start', { source });
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!errorEl || !successEl || !submitBtn) return;
+      errorEl.hidden = true;
+      successEl.hidden = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      track('lead_form_submit', { source });
+
+      const data = new FormData(form);
+      const payload = {
+        website: String(data.get('website') || ''),
+        email: String(data.get('email') || ''),
+        name: String(data.get('name') || ''),
+        company_fax: String(data.get('company_fax') || ''),
+        source,
+      };
+
+      try {
+        const res = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const json = await res.json();
+        if (!res.ok || !json.success) {
+          throw new Error(json.error || 'Something went wrong. Please try again.');
+        }
+        form.querySelectorAll('input, button').forEach((el) => {
+          (el as HTMLInputElement).disabled = true;
+        });
+        successEl.hidden = false;
+        track('lead_form_success', { source });
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Something went wrong. Please try again.';
+        errorEl.textContent = message;
+        errorEl.hidden = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+        track('lead_form_error', { source, reason: message.slice(0, 80) });
+      }
+    });
+  }
+
+  document.querySelectorAll<HTMLFormElement>('form.lead-form').forEach(bindForm);
+</script>

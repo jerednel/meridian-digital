@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+export const prerender = true;
+---
+
+<Layout title="Page not found — Meridian" description="That page does not exist." noindex>
+  <section class="bg-paper pt-32 pb-24">
+    <div class="mx-auto max-w-3xl px-5">
+      <p class="eyebrow">404</p>
+      <h1 class="mt-4 font-display text-4xl md:text-5xl">That page isn't here.</h1>
+      <p class="mt-5 text-ink-soft leading-relaxed">The Sprint, a sample analysis, and how the work runs are still in the usual places.</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/" class="btn btn-primary">Home</a>
+        <a href="/sample" class="btn btn-ghost-ink">Sample analysis</a>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,62 +1,67 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { SITE } from '../lib/site';
+import { graph, organizationSchema } from '../lib/schema';
+
+export const prerender = true;
+
+const schema = graph([organizationSchema()]);
 ---
 
-<Layout title="About — Meridian" description="Meridian was built by a team of AI agents — a platform that delivers continuous SEO infrastructure, not monthly reports.">
-
-  <!-- Hero -->
-  <section class="bg-gradient-to-b from-dark to-dark-card pt-32 pb-20 md:pb-28">
-    <div class="mx-auto max-w-7xl px-6">
-      <h1 class="text-5xl md:text-7xl font-extrabold text-hero-text leading-[1.05] tracking-tight max-w-4xl">
-        Built by a team of AI agents.
+<Layout
+  title="About Meridian"
+  description="Meridian is a specialist firm that measures where B2B buyers discover vendors during research — across Google and AI search. Founded by Jeremy Nelson."
+  structuredData={schema}
+>
+  <header class="bg-dark text-on-dark pt-28 pb-16 md:pt-36 md:pb-20">
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="eyebrow eyebrow-dark">The firm</p>
+      <h1 class="mt-5 max-w-4xl font-display text-4xl leading-[1.05] md:text-6xl">
+        Built to measure the research that happens before a sales conversation.
       </h1>
-      <p class="mt-6 text-lg text-body-muted max-w-2xl leading-relaxed">
-        Meridian is a platform, not a person. Six specialized agents working together to deliver SEO infrastructure that runs continuously.
+    </div>
+  </header>
+
+  <section class="bg-paper py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-5 space-y-6 text-lg leading-relaxed text-ink-soft">
+      <p>
+        Meridian exists because buyer research moved and most measurement did not. Teams still report on traffic, rankings, and campaigns. Meanwhile a shortlist can form in an AI answer or a Google snapshot that never touches the website those reports describe.
+      </p>
+      <p>
+        We do not sell "AI SEO." We sell visibility during buyer research: which questions can turn into revenue, who is named when those questions are asked, and which sources put a competitor in the room instead of you.
+      </p>
+      <p>
+        The commercial offer is narrow on purpose. A 30-day Sprint. Then, only if the evidence supports it, a monthly Monitor with no annual contract. If there isn't a meaningful opportunity, we say so.
       </p>
     </div>
   </section>
 
-  <!-- Story -->
-  <section class="bg-white py-24 md:py-32">
-    <div class="mx-auto max-w-3xl px-6">
-      <div class="prose prose-lg max-w-none text-light-text leading-relaxed space-y-6">
-        <p>Most SEO agencies treat organic search as a creative problem. We treat it as a systems engineering problem.</p>
-        <p>Meridian was built by a team of AI agents — a platform that delivers continuous SEO infrastructure, not monthly reports. The system runs automated audits, rank tracking, content pipelines, and performance snapshots — and lets the data drive the strategy.</p>
-        <p>The result is an SEO operation that runs continuously, surfaces real opportunities, and creates content that's actually informed by what people are searching for this week — not what ranked two years ago.</p>
-        <p>We serve a growing community of businesses. You get priority support when you need it, and the platform delivers results every single day.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Values -->
-  <section class="bg-hero-text py-24 md:py-32">
-    <div class="mx-auto max-w-7xl px-6">
-      <div class="grid md:grid-cols-3 gap-12 md:gap-16">
-        <div>
-          <h3 class="text-xl font-bold text-dark mb-3">Show your work</h3>
-          <p class="text-light-text leading-relaxed">Every recommendation comes with the data behind it. The platform doesn't ask you to trust it. It shows you the numbers.</p>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold text-dark mb-3">Continuous beats periodic</h3>
-          <p class="text-light-text leading-relaxed">Monthly reporting is a relic. Your site is getting crawled every day. The platform's monitoring matches that pace.</p>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold text-dark mb-3">Built to scale</h3>
-          <p class="text-light-text leading-relaxed">We serve a growing community of businesses. The platform scales because it's automated, not because we hire more people.</p>
+  <section class="bg-white py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5 grid gap-12 md:grid-cols-[0.7fr_1.3fr]">
+      <p class="eyebrow">Founder</p>
+      <div>
+        <h2 class="font-display text-3xl md:text-5xl">{SITE.founder}</h2>
+        <div class="mt-6 space-y-5 text-lg leading-relaxed text-ink-soft">
+          <p>
+            Jeremy Nelson founded Meridian after years of measuring what companies believed they were doing in search against what buyers actually saw. The gap was rarely a missing blog post. It was a missing answer at the moment a buyer described a job, a risk, or a comparison.
+          </p>
+          <p>
+            His work sits on the measurement side of marketing: isolate the question, record the answer, explain the source, report the miss without theater. He runs client Sprints himself.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="bg-gradient-to-br from-dark to-dark-card py-24 md:py-32">
-    <div class="mx-auto max-w-3xl px-6 text-center">
-      <h2 class="text-3xl md:text-[44px] font-semibold text-hero-text leading-tight">Want to see how we'd approach your site?</h2>
-      <p class="mt-6 text-body-muted text-lg">No pitch deck. Just observations.</p>
-      <a href="/contact" class="mt-10 inline-flex items-center px-8 py-4 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors">
-        Get in touch
-      </a>
+  <section class="bg-dark text-on-dark py-20">
+    <div class="mx-auto max-w-3xl px-5">
+      <h2 class="font-display text-3xl">How we work</h2>
+      <ul class="mt-8 space-y-6 text-on-dark-muted leading-relaxed">
+        <li class="border-t border-white/15 pt-5"><strong class="text-on-dark">Show the evidence.</strong> Recommendations come with the question, the occupancy, and the source. We do not ask you to trust a score.</li>
+        <li class="border-t border-white/15 pt-5"><strong class="text-on-dark">Stay on revenue questions.</strong> We do not expand the prompt list to look busy. Discover, Evaluate, Compare, Validate, Buy.</li>
+        <li class="border-t border-white/15 pt-5"><strong class="text-on-dark">Tell you when to stop.</strong> If you already occupy the answers that matter, that is the finding.</li>
+      </ul>
+      <a href="/#missing" class="btn btn-primary mt-10" data-track="cta_see_where_click" data-location="about">See where you're missing</a>
     </div>
   </section>
-
 </Layout>

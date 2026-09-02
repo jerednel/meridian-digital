@@ -1,24 +1,54 @@
-<footer class="bg-dark border-t border-dark-border">
-  <div class="mx-auto max-w-7xl px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-body-muted">
-    <div class="flex flex-col items-center md:items-start gap-3">
-      <a href="/" aria-label="Meridian Digital home">
-        <img
-          src="/logos/logo-dark-transparent.jpg"
-          alt="Meridian Digital"
-          class="h-8 w-auto"
-          style="mix-blend-mode: screen;"
-        />
-      </a>
-      <p>&copy; 2026 Meridian Digital LLC &middot; bymeridian.com</p>
+---
+import { FOOTER_LINKS, LEGAL_LINKS, SITE } from '../lib/site';
+---
+
+<footer class="bg-dark text-on-dark-muted">
+  <div class="mx-auto max-w-6xl px-5 py-14">
+    <div class="grid gap-10 md:grid-cols-[1.2fr_1fr_1fr]">
+      <div>
+        <a href="/" aria-label="Meridian home">
+          <img
+            src="/logos/logo-dark-white.jpg"
+            alt="Meridian Digital"
+            width="180"
+            height="36"
+            class="h-8 w-auto"
+          />
+        </a>
+        <p class="mt-5 max-w-sm text-sm leading-relaxed">
+          Find where buyers are discovering your competitors instead of you — across Google and AI search.
+        </p>
+      </div>
+      <div>
+        <p class="eyebrow eyebrow-dark mb-4">Site</p>
+        <ul class="space-y-2 text-sm">
+          {FOOTER_LINKS.map((link) => (
+            <li>
+              <a href={link.href} class="hover:text-on-dark">{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <p class="eyebrow eyebrow-dark mb-4">Firm</p>
+        <ul class="space-y-2 text-sm">
+          {LEGAL_LINKS.map((link) => (
+            <li>
+              <a href={link.href} class="hover:text-on-dark">{link.label}</a>
+            </li>
+          ))}
+          <li>
+            <a href="/app/login" class="hover:text-on-dark">Client login</a>
+          </li>
+          <li>
+            <a href={`mailto:${SITE.email}`} class="hover:text-on-dark">{SITE.email}</a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="flex flex-wrap items-center justify-center gap-6">
-      <a href="/ai-search" class="hover:text-white transition-colors">AI Search</a>
-      <a href="/ai-search-sample" class="hover:text-white transition-colors">Sample</a>
-      <a href="/ai-search#plans" class="hover:text-white transition-colors">Plans</a>
-      <a href="/blog" class="hover:text-white transition-colors">Writing</a>
-      <a href="/app/login" class="hover:text-white transition-colors">Log in</a>
-      <a href="/privacy" class="hover:text-white transition-colors">Privacy</a>
-      <a href="/contact" class="hover:text-white transition-colors">Contact</a>
-    </div>
+    <hr class="rule mt-12 opacity-30" />
+    <p class="mt-6 text-xs tracking-wide">
+      &copy; {new Date().getFullYear()} {SITE.legalName} &middot; {SITE.domain}
+    </p>
   </div>
 </footer>

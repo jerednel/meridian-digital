@@ -1,0 +1,66 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+import { articleSchema, graph, organizationSchema } from '../../lib/schema';
+import { SITE } from '../../lib/site';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await getCollection('insights');
+  return posts.map((post) => ({ params: { slug: post.id } }));
+}
+
+const { slug } = Astro.params;
+const posts = await getCollection('insights');
+const post = posts.find((entry) => entry.id === slug);
+
+if (!post) {
+  return Astro.redirect('/insights');
+}
+
+const { Content } = await render(post);
+const url = `${SITE.url}/insights/${post.id}`;
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+const schema = graph([
+  organizationSchema(),
+  articleSchema({
+    title: post.data.title,
+    description: post.data.description,
+    url,
+    datePublished: post.data.pubDate.toISOString(),
+  }),
+]);
+---
+
+<Layout
+  title={`${post.data.title} — Meridian`}
+  description={post.data.description}
+  ogType="article"
+  structuredData={schema}
+>
+  <article>
+    <header class="bg-dark text-on-dark pt-28 pb-16 md:pt-36 md:pb-20">
+      <div class="mx-auto max-w-3xl px-5">
+        <a href="/insights" class="text-sm text-on-dark-muted hover:text-on-dark">← Insights</a>
+        <h1 class="mt-6 font-display text-4xl leading-tight md:text-5xl">{post.data.title}</h1>
+        <p class="mt-5 text-lg text-on-dark-muted leading-relaxed">{post.data.description}</p>
+        <p class="mt-6 font-mono text-xs uppercase tracking-widest text-on-dark-muted">
+          {post.data.author} · <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        </p>
+      </div>
+    </header>
+    <section class="bg-paper py-16 md:py-24">
+      <div class="prose prose-meridian mx-auto px-5">
+        <Content />
+      </div>
+      <p class="mx-auto mt-16 max-w-3xl px-5">
+        <a href="/#missing" class="btn btn-primary" data-track="cta_see_where_click" data-location="insight">See where you're missing</a>
+      </p>
+    </section>
+  </article>
+</Layout>

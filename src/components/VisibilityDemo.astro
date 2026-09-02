@@ -1,0 +1,52 @@
+---
+const rows = [
+  { name: 'Competitor A', score: 4, note: 'Named in shortlist answers; cited via a data-center access guide.' },
+  { name: 'Competitor B', score: 3, note: 'Appears through integrator roundups, not always as the primary vendor.' },
+  { name: 'Your company', score: 1, note: 'Omitted from AI shortlists. One Google result on a generic capabilities page.' },
+];
+---
+
+<figure class="border border-rule bg-white text-ink">
+  <figcaption class="flex flex-wrap items-center justify-between gap-3 border-b border-rule px-5 py-3">
+    <span class="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-accent">Demo data — illustrative, not a live client</span>
+    <span class="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-muted">Google · ChatGPT · Perplexity · Gemini</span>
+  </figcaption>
+
+  <div class="grid gap-0 md:grid-cols-[1.1fr_0.9fr]">
+    <div class="px-5 py-6">
+      <p class="eyebrow">Buyer question</p>
+      <p class="mt-3 font-display text-2xl leading-snug md:text-[1.85rem]">
+        How do we stop tailgating at a data center?
+      </p>
+      <p class="mt-4 text-sm leading-relaxed text-muted">
+        An operations lead researching a controlled-facility problem. Not a branded search. Not a visit to a vendor homepage.
+      </p>
+
+      <ol class="mt-8 space-y-5" aria-label="Competitive presence scores">
+        {rows.map((row) => (
+          <li>
+            <div class="flex items-baseline justify-between gap-4">
+              <span class="text-sm font-medium">{row.name}</span>
+              <span class="font-mono text-xs text-muted">{row.score}/5</span>
+            </div>
+            <div class="mt-2 h-1.5 w-full bg-paper-2" role="img" aria-label={`${row.name} scored ${row.score} out of 5`}>
+              <div class="h-full bg-ink" style={`width: ${row.score * 20}%`}></div>
+            </div>
+            <p class="mt-2 text-sm text-muted">{row.note}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="border-t border-rule bg-paper px-5 py-6 md:border-l md:border-t-0">
+      <p class="eyebrow">Why these sources</p>
+      <p class="mt-3 text-sm leading-relaxed text-ink-soft">
+        AI answers cite an integrator roundup and Competitor A's "data center access" guide. Your product page describes platform modules. It does not name the tailgating job, the facility type, or the failure mode the buyer is trying to avoid.
+      </p>
+      <p class="eyebrow mt-8">What to do</p>
+      <p class="mt-3 text-sm leading-relaxed text-ink-soft">
+        Publish a scenario page that answers this question in the buyer's language. Earn one independent mention in a data-center operations source. Then re-measure the same question — not a new list of seventy.
+      </p>
+    </div>
+  </div>
+</figure>

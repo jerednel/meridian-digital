@@ -1,3 +1,320 @@
 ---
-return Astro.redirect('/ai-search', 302);
+import Layout from '../layouts/Layout.astro';
+import LeadForm from '../components/LeadForm.astro';
+import VisibilityDemo from '../components/VisibilityDemo.astro';
+import { DELIVERABLES, FIT, JOURNEY, OFFER, SITE, SPRINT_WEEKS } from '../lib/site';
+import { graph, organizationSchema, serviceSchema, websiteSchema } from '../lib/schema';
+
+export const prerender = true;
+
+const schema = graph([organizationSchema(), websiteSchema(), serviceSchema()]);
 ---
+
+<Layout
+  title="AI search visibility for B2B — Meridian"
+  description="Your buyers are asking AI who to shortlist. Meridian finds where they discover your competitors instead of you — across Google and AI search. 30-day Sprint, $2,500."
+  structuredData={schema}
+>
+  <!-- 1. Hero -->
+  <section class="relative bg-dark text-on-dark pt-28 pb-20 md:pt-36 md:pb-28">
+    <div class="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+      <div>
+        <p class="eyebrow eyebrow-dark">AI search visibility for B2B</p>
+        <h1 class="mt-5 max-w-xl font-display text-[2.6rem] leading-[1.05] tracking-tight md:text-6xl lg:text-[4.25rem]">
+          Your buyers are asking AI who to shortlist.
+          <span class="block mt-3">Make sure you're in the answer.</span>
+        </h1>
+        <p class="mt-7 max-w-xl text-lg leading-relaxed text-on-dark-muted">
+          Buyers no longer start on your website. They ask ChatGPT, Perplexity, Gemini, and Google who belongs on the list. If that answer names your competitors and not you, the deal is already leaning away before sales hears about it.
+        </p>
+        <p class="mt-4 max-w-xl text-lg leading-relaxed text-on-dark-muted">
+          Meridian maps the questions that precede a purchase, records who gets named, and shows you the sources that put someone else in the room. This is not a generic SEO audit. You get actual competitive findings — or we tell you there isn't a meaningful gap.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#missing" class="btn btn-primary" data-track="cta_see_where_click" data-location="hero">
+            See where you're missing
+          </a>
+          <a href="/sample" class="btn btn-ghost" data-track="cta_sample_click" data-location="hero">
+            See a sample analysis
+          </a>
+        </div>
+      </div>
+      <div class="border border-white/10 bg-dark-2 p-6 md:p-8">
+        <p class="eyebrow eyebrow-dark">Start here</p>
+        <h2 class="mt-3 font-display text-2xl text-on-dark">See where you're missing</h2>
+        <p class="mt-3 mb-6 text-sm leading-relaxed text-on-dark-muted">
+          Company website and work email. We'll look at the questions buyers ask in your category. No obligation.
+        </p>
+        <LeadForm source="homepage-hero" variant="dark" id="hero-lead" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Problem -->
+  <section class="bg-paper py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="eyebrow">The problem</p>
+      <h2 class="mt-4 max-w-3xl font-display text-3xl leading-tight md:text-5xl">
+        Search changed before most marketing teams did.
+      </h2>
+      <div class="mt-10 grid gap-12 lg:grid-cols-2">
+        <div class="space-y-5 text-lg leading-relaxed text-ink-soft">
+          <p>
+            An operations lead trying to stop tailgating at a data center does not type the name of an enterprise physical security company. They ask how to keep unauthorized people from walking in behind a badge-holder. Google and AI systems answer with the vendors, integrators, and roundups already associated with that job.
+          </p>
+          <p>
+            The shortlist forms there. Vendor websites get visited later, if at all. Most marketing teams still measure the visit. They do not measure the conversation that decided who was worth visiting.
+          </p>
+        </div>
+        <aside class="border border-rule bg-white p-6 md:p-8">
+          <p class="eyebrow">How the journey actually starts</p>
+          <ol class="mt-6 space-y-5">
+            <li class="grid grid-cols-[4.5rem_1fr] gap-4 border-b border-rule pb-4">
+              <span class="font-mono text-xs uppercase tracking-widest text-muted">Ask</span>
+              <span>How do we stop tailgating at a data center?</span>
+            </li>
+            <li class="grid grid-cols-[4.5rem_1fr] gap-4 border-b border-rule pb-4">
+              <span class="font-mono text-xs uppercase tracking-widest text-muted">Answer</span>
+              <span>AI and Google name two specialists and an integrator. Your company is not in the list.</span>
+            </li>
+            <li class="grid grid-cols-[4.5rem_1fr] gap-4">
+              <span class="font-mono text-xs uppercase tracking-widest text-muted">Visit</span>
+              <span>The buyer opens the named vendors' sites. Yours never enters the research set.</span>
+            </li>
+          </ol>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Commercial -->
+  <section class="bg-dark text-on-dark py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="eyebrow eyebrow-dark">What we actually track</p>
+      <h2 class="mt-4 max-w-3xl font-display text-3xl leading-tight md:text-5xl">
+        We don't track prompts because AI is interesting. We track questions that can turn into revenue.
+      </h2>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-on-dark-muted">
+        Awareness chatter is cheap to measure and expensive to chase. Meridian stays on the path from first research to a purchase decision.
+      </p>
+      <ol class="mt-12 grid gap-px bg-white/10 sm:grid-cols-2 lg:grid-cols-5">
+        {JOURNEY.map((step, i) => (
+          <li class="bg-dark p-5 md:p-6">
+            <p class="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-accent">
+              {String(i + 1).padStart(2, '0')} {step.stage}
+            </p>
+            <p class="mt-4 font-display text-xl leading-snug">{step.question}</p>
+            <p class="mt-3 text-sm leading-relaxed text-on-dark-muted">{step.why}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4. Product viz -->
+  <section class="bg-paper py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="eyebrow">What a finding looks like</p>
+      <h2 class="mt-4 max-w-3xl font-display text-3xl leading-tight md:text-5xl">
+        A named question. Who occupies it. Why. What to do.
+      </h2>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
+        The example below is labeled demo data for a tailgating query in enterprise physical security. A Sprint produces this for your category, with your competitors.
+      </p>
+      <div class="mt-10">
+        <VisibilityDemo />
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 30-Day Sprint -->
+  <section id="sprint" class="bg-dark text-on-dark py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="eyebrow eyebrow-dark">The offer</p>
+      <h2 class="mt-4 max-w-3xl font-display text-3xl leading-tight md:text-5xl">
+        The 30-day Meridian AI Visibility Sprint
+      </h2>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-on-dark-muted">
+        One category. Thirty days. A brief you can act on — not a slide deck that restates what you already suspected.
+      </p>
+      <ol class="mt-12 grid gap-8 md:grid-cols-2">
+        {SPRINT_WEEKS.map((week) => (
+          <li class="border-t border-white/15 pt-6">
+            <p class="font-mono text-xs uppercase tracking-[0.16em] text-accent">{week.week}</p>
+            <h3 class="mt-3 font-display text-2xl">{week.title}</h3>
+            <p class="mt-3 text-on-dark-muted leading-relaxed">{week.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 6. Deliverables -->
+  <section class="bg-paper py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="eyebrow">What you leave with</p>
+      <h2 class="mt-4 max-w-3xl font-display text-3xl leading-tight md:text-5xl">
+        Five things you'll know. Not 73 recommendations.
+      </h2>
+      <ol class="mt-12 divide-y divide-rule border-y border-rule">
+        {DELIVERABLES.map((item, i) => (
+          <li class="grid gap-4 py-8 md:grid-cols-[4rem_1fr_1.4fr] md:gap-10">
+            <span class="font-mono text-sm text-accent">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="font-display text-2xl leading-snug">{item.title}</h3>
+            <p class="text-ink-soft leading-relaxed">{item.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 7. Sample teaser -->
+  <section class="bg-dark-2 text-on-dark py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5 grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+      <div>
+        <p class="eyebrow eyebrow-dark">See the work</p>
+        <h2 class="mt-4 font-display text-3xl leading-tight md:text-5xl">
+          A sample analysis, not a product tour.
+        </h2>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-on-dark-muted">
+          Walk through a labeled example for a tailgating query: who gets named, which sources carry the answer, and the few moves that would change it. Fictional company. Real method.
+        </p>
+        <a href="/sample" class="btn btn-primary mt-8" data-track="cta_sample_click" data-location="teaser">
+          See a sample analysis
+        </a>
+      </div>
+      <blockquote class="border border-white/10 p-6 md:p-8">
+        <p class="font-display text-2xl leading-snug">
+          “How do we stop tailgating at a data center?”
+        </p>
+        <p class="mt-5 text-sm text-on-dark-muted leading-relaxed">
+          Competitor A 4/5 · Competitor B 3/5 · Your company 1/5. The answer is built from an integrator roundup and a competitor's scenario guide — not from your capabilities page.
+        </p>
+        <p class="mt-4 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-accent">Demo data</p>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- 8. Who it's for -->
+  <section class="bg-paper py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="eyebrow">Fit</p>
+      <h2 class="mt-4 font-display text-3xl leading-tight md:text-5xl">Who this is for. And who it isn't.</h2>
+      <div class="mt-12 grid gap-10 md:grid-cols-2">
+        <div class="border border-rule bg-white p-6 md:p-8">
+          <h3 class="font-display text-2xl">A fit</h3>
+          <ul class="mt-6 space-y-4 text-ink-soft">
+            {FIT.yes.map((item) => (
+              <li class="border-t border-rule pt-4">{item}</li>
+            ))}
+          </ul>
+        </div>
+        <div class="border border-rule p-6 md:p-8">
+          <h3 class="font-display text-2xl">Not a fit</h3>
+          <ul class="mt-6 space-y-4 text-muted">
+            {FIT.no.map((item) => (
+              <li class="border-t border-rule pt-4">{item}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Pricing -->
+  <section id="pricing" class="bg-dark text-on-dark py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="eyebrow eyebrow-dark">Commercial terms</p>
+      <h2 class="mt-4 font-display text-3xl leading-tight md:text-5xl">
+        Start with the Sprint. Then decide.
+      </h2>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-on-dark-muted">
+        The Monitor exists for teams that already saw a gap worth watching. It is not the starting offer, and it does not require an annual contract.
+      </p>
+      <div class="mt-12 grid gap-px bg-white/10 md:grid-cols-2">
+        <article class="bg-dark p-8 md:p-10">
+          <p class="font-mono text-xs uppercase tracking-[0.16em] text-accent">Primary</p>
+          <h3 class="mt-4 font-display text-3xl">AI Visibility Sprint</h3>
+          <p class="mt-6 font-display text-5xl">{OFFER.sprintPriceLabel}</p>
+          <p class="mt-2 text-on-dark-muted">One-time · {OFFER.sprintDuration}</p>
+          <ul class="mt-8 space-y-3 text-sm leading-relaxed text-on-dark-muted">
+            <li>Buyer-question map for one category</li>
+            <li>Presence across Google and AI answers</li>
+            <li>Source diagnosis and first moves</li>
+            <li>A yes-or-no on whether to keep measuring</li>
+          </ul>
+          <a href="#missing" class="btn btn-primary mt-8" data-track="cta_see_where_click" data-location="pricing-sprint">
+            See where you're missing
+          </a>
+        </article>
+        <article class="bg-dark p-8 md:p-10">
+          <p class="font-mono text-xs uppercase tracking-[0.16em] text-on-dark-muted">After the Sprint</p>
+          <h3 class="mt-4 font-display text-3xl">Monitor</h3>
+          <p class="mt-6 font-display text-5xl">{OFFER.monitorPriceLabel}<span class="text-2xl text-on-dark-muted">{OFFER.monitorCadence}</span></p>
+          <p class="mt-2 text-on-dark-muted">{OFFER.monitorContract}</p>
+          <ul class="mt-8 space-y-3 text-sm leading-relaxed text-on-dark-muted">
+            <li>Same questions, re-run on a standing cadence</li>
+            <li>Drift when competitors publish or sources change</li>
+            <li>Cancel when the gap is closed or no longer worth watching</li>
+          </ul>
+          <a href="/platform" class="btn btn-ghost mt-8">
+            How monitoring works
+          </a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Risk reversal -->
+  <section class="bg-paper py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-5 text-center">
+      <p class="eyebrow justify-self-center">Risk</p>
+      <h2 class="mt-4 font-display text-3xl leading-tight md:text-5xl">
+        If there isn't a meaningful opportunity, we'll tell you.
+      </h2>
+      <p class="mt-6 text-lg leading-relaxed text-ink-soft">
+        Some companies already occupy the answers that matter. Some categories are not being researched this way. In those cases the honest finding is to stop, not to sell a monitor. We would rather send you away than retain a measurement you don't need.
+      </p>
+    </div>
+  </section>
+
+  <!-- 11. Founder -->
+  <section class="bg-dark text-on-dark py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5 grid gap-10 md:grid-cols-[0.7fr_1.3fr] md:items-start">
+      <p class="eyebrow eyebrow-dark">Founder</p>
+      <div>
+        <h2 class="font-display text-3xl leading-tight md:text-5xl">{SITE.founder}</h2>
+        <div class="mt-6 max-w-2xl space-y-4 text-lg leading-relaxed text-on-dark-muted">
+          <p>
+            Jeremy built Meridian to measure a gap most marketing stacks still skip: what buyers are told before they ever reach a vendor site.
+          </p>
+          <p>
+            The work is closer to measurement than to campaigning. Isolate the questions that can turn into revenue. Record who Google and AI systems name. Explain the sources. Report the miss in language a demand leader can use.
+          </p>
+          <p>
+            He runs client Sprints directly.
+          </p>
+        </div>
+        <a href="/about" class="btn btn-ghost mt-8">About the firm</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. Final CTA -->
+  <section id="missing" class="bg-paper py-20 md:py-28">
+    <div class="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-[1fr_0.9fr] lg:items-start">
+      <div>
+        <p class="eyebrow">Start</p>
+        <h2 class="mt-4 font-display text-3xl leading-tight md:text-5xl">
+          See where I'm missing.
+        </h2>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
+          Send the company website and a work email. We'll look at the buyer questions in your category and come back with what we find. If the gap isn't meaningful, that's the reply.
+        </p>
+      </div>
+      <div class="border border-rule bg-white p-6 md:p-8">
+        <LeadForm source="homepage-final" variant="light" id="final-lead" submitLabel="See where I'm missing" />
+      </div>
+    </div>
+  </section>
+</Layout>

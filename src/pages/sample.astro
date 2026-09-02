@@ -1,0 +1,165 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { graph, organizationSchema, serviceSchema } from '../lib/schema';
+
+export const prerender = true;
+
+const schema = graph([organizationSchema(), serviceSchema()]);
+---
+
+<Layout
+  title="Sample analysis — Meridian"
+  description="A labeled sample of a Meridian AI Visibility Sprint finding: a tailgating query, who occupies the answer, the sources behind it, and what to do."
+  structuredData={schema}
+>
+  <article>
+    <header class="bg-dark text-on-dark pt-28 pb-16 md:pt-36 md:pb-20">
+      <div class="mx-auto max-w-6xl px-5">
+        <p class="eyebrow eyebrow-dark">Sample analysis · labeled demo data</p>
+        <h1 class="mt-5 max-w-4xl font-display text-4xl leading-[1.05] md:text-6xl">
+          Your buyer asked how to stop tailgating. You were not in the answer.
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg leading-relaxed text-on-dark-muted">
+          Fictional company in enterprise physical security. Not a live client. The method is the method used in a Sprint: one revenue-bearing question, competitive presence, sources, and the next move.
+        </p>
+      </div>
+    </header>
+
+    <section class="bg-paper py-16 md:py-20">
+      <div class="mx-auto max-w-6xl px-5">
+        <dl class="grid gap-8 border-y border-rule py-8 md:grid-cols-3">
+          <div>
+            <dt class="eyebrow">Company</dt>
+            <dd class="mt-3 text-ink-soft leading-relaxed">Northline Systems — enterprise access control, video, and identity. Sells to corporate real estate and critical facilities.</dd>
+          </div>
+          <div>
+            <dt class="eyebrow">Question</dt>
+            <dd class="mt-3 text-ink-soft leading-relaxed">How do we stop tailgating at a data center?</dd>
+          </div>
+          <div>
+            <dt class="eyebrow">Finding</dt>
+            <dd class="mt-3 text-ink-soft leading-relaxed">Named in 1 of 5 answer surfaces. Two specialists occupy the shortlist. The buyer can complete research without visiting Northline.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="bg-white py-16 md:py-20">
+      <div class="mx-auto max-w-6xl px-5">
+        <p class="eyebrow">Presence</p>
+        <h2 class="mt-4 font-display text-3xl md:text-4xl">Who occupies this question</h2>
+        <div class="mt-8 overflow-x-auto">
+          <table class="w-full min-w-[640px] text-left text-sm">
+            <caption class="sr-only">Demo competitive presence for a tailgating query</caption>
+            <thead>
+              <tr class="border-b border-rule font-mono text-[0.68rem] uppercase tracking-[0.14em] text-muted">
+                <th class="py-3 pr-4 font-medium">Company</th>
+                <th class="py-3 pr-4 font-medium">Score</th>
+                <th class="py-3 pr-4 font-medium">Google</th>
+                <th class="py-3 pr-4 font-medium">ChatGPT</th>
+                <th class="py-3 pr-4 font-medium">Perplexity</th>
+                <th class="py-3 font-medium">Gemini</th>
+              </tr>
+            </thead>
+            <tbody class="text-ink-soft">
+              <tr class="border-b border-rule">
+                <td class="py-4 pr-4 text-ink font-medium">Competitor A — anti-tailgating specialist</td>
+                <td class="py-4 pr-4 font-mono">4/5</td>
+                <td class="py-4 pr-4">Scenario guide ranks</td>
+                <td class="py-4 pr-4">Named first</td>
+                <td class="py-4 pr-4">Cited with source</td>
+                <td class="py-4">Named</td>
+              </tr>
+              <tr class="border-b border-rule">
+                <td class="py-4 pr-4 text-ink font-medium">Competitor B — data-center integrator</td>
+                <td class="py-4 pr-4 font-mono">3/5</td>
+                <td class="py-4 pr-4">Roundup mention</td>
+                <td class="py-4 pr-4">Named</td>
+                <td class="py-4 pr-4">Cited</td>
+                <td class="py-4">Omitted</td>
+              </tr>
+              <tr>
+                <td class="py-4 pr-4 text-ink font-medium">Northline Systems (you)</td>
+                <td class="py-4 pr-4 font-mono">1/5</td>
+                <td class="py-4 pr-4">Capabilities page, page 2</td>
+                <td class="py-4 pr-4">Omitted</td>
+                <td class="py-4 pr-4">Omitted</td>
+                <td class="py-4">Omitted</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-4 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-accent">Demo data — not a live client</p>
+      </div>
+    </section>
+
+    <section class="bg-paper py-16 md:py-20">
+      <div class="mx-auto max-w-6xl px-5 grid gap-12 lg:grid-cols-2">
+        <div>
+          <p class="eyebrow">Why</p>
+          <h2 class="mt-4 font-display text-3xl">The sources that built the shortlist</h2>
+          <ol class="mt-8 space-y-6">
+            <li class="border-t border-rule pt-5">
+              <p class="font-medium">Competitor A's "data center access" guide</p>
+              <p class="mt-2 text-ink-soft leading-relaxed">Names the job (tailgating), the facility type, the failure mode, and a comparison against turnstiles and guards. AI systems can quote it. Google can rank it.</p>
+            </li>
+            <li class="border-t border-rule pt-5">
+              <p class="font-medium">An integrator roundup on controlled-facility entry</p>
+              <p class="mt-2 text-ink-soft leading-relaxed">Treats Competitor A and Competitor B as the default pair. Northline is absent. This page is cited in Perplexity with a link.</p>
+            </li>
+            <li class="border-t border-rule pt-5">
+              <p class="font-medium">Northline's platform capabilities page</p>
+              <p class="mt-2 text-ink-soft leading-relaxed">Describes modules: access, video, identity. It does not say "tailgating," "data center," or "piggybacking." There is nothing for an answer engine to lift when the buyer asks the job question.</p>
+            </li>
+          </ol>
+        </div>
+        <div>
+          <p class="eyebrow">What to do</p>
+          <h2 class="mt-4 font-display text-3xl">Three moves. Not a backlog.</h2>
+          <ol class="mt-8 space-y-6">
+            <li class="border-t border-rule pt-5">
+              <p class="font-mono text-xs uppercase tracking-widest text-accent">01</p>
+              <p class="mt-2 font-medium">Publish a scenario page that answers this question</p>
+              <p class="mt-2 text-ink-soft leading-relaxed">Title and opening sentence should be usable as an answer. Name the job, the facility, the failure mode, and how Northline differs from a specialist and an integrator.</p>
+            </li>
+            <li class="border-t border-rule pt-5">
+              <p class="font-mono text-xs uppercase tracking-widest text-accent">02</p>
+              <p class="mt-2 font-medium">Earn one independent mention</p>
+              <p class="mt-2 text-ink-soft leading-relaxed">A data-center operations or facilities source that already informs these answers. Your own site is necessary. It is rarely sufficient.</p>
+            </li>
+            <li class="border-t border-rule pt-5">
+              <p class="font-mono text-xs uppercase tracking-widest text-accent">03</p>
+              <p class="mt-2 font-medium">Re-measure the same question in 30 days</p>
+              <p class="mt-2 text-ink-soft leading-relaxed">If presence does not move, the next finding is about sources, not more pages. That is a Monitor decision — after the Sprint, not instead of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-dark text-on-dark py-16 md:py-20">
+      <div class="mx-auto max-w-6xl px-5">
+        <p class="eyebrow eyebrow-dark">What a Sprint adds beyond this page</p>
+        <h2 class="mt-4 max-w-3xl font-display text-3xl md:text-4xl">This is one question. A Sprint covers the path to revenue.</h2>
+        <p class="mt-6 max-w-2xl text-on-dark-muted leading-relaxed">
+          Discover, Evaluate, Compare, Validate, Buy — mapped for your category, scored against named competitors, with sources and a yes-or-no on whether the gap is large enough to keep measuring.
+        </p>
+        <a href="/how-it-works" class="btn btn-ghost mt-8">How the 30 days run</a>
+      </div>
+    </section>
+
+    <section id="missing" class="bg-paper py-16 md:py-24">
+      <div class="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-2">
+        <div>
+          <p class="eyebrow">Your category</p>
+          <h2 class="mt-4 font-display text-3xl md:text-4xl">See where you're missing.</h2>
+          <p class="mt-4 text-ink-soft leading-relaxed">Company website and work email. We'll look at the questions buyers ask — and tell you if there isn't a meaningful opportunity.</p>
+        </div>
+        <div class="border border-rule bg-white p-6 md:p-8">
+          <LeadForm source="sample" variant="light" id="sample-lead" />
+        </div>
+      </div>
+    </section>
+  </article>
+</Layout>

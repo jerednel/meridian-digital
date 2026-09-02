@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { DELIVERABLES, JOURNEY, SPRINT_WEEKS } from '../lib/site';
+import { graph, organizationSchema, serviceSchema } from '../lib/schema';
+
+export const prerender = true;
+
+const schema = graph([organizationSchema(), serviceSchema()]);
+---
+
+<Layout
+  title="How the Sprint works — Meridian"
+  description="A 30-day Meridian AI Visibility Sprint: map revenue-bearing buyer questions, measure who Google and AI name, diagnose sources, and decide whether to keep measuring."
+  structuredData={schema}
+>
+  <header class="bg-dark text-on-dark pt-28 pb-16 md:pt-36 md:pb-20">
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="eyebrow eyebrow-dark">Method</p>
+      <h1 class="mt-5 max-w-4xl font-display text-4xl leading-[1.05] md:text-6xl">
+        Thirty days. One category. Questions that can turn into revenue.
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-on-dark-muted">
+        We do not start with a crawl of your whole site, and we do not start with a dashboard. We start with the questions a buyer asks before they agree to a meeting.
+      </p>
+    </div>
+  </header>
+
+  <section class="bg-paper py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="eyebrow">The commercial path</p>
+      <h2 class="mt-4 font-display text-3xl md:text-5xl">Discover. Evaluate. Compare. Validate. Buy.</h2>
+      <ol class="mt-12 space-y-0">
+        {JOURNEY.map((step, i) => (
+          <li class="grid gap-4 border-t border-rule py-8 md:grid-cols-[8rem_1fr_1.3fr]">
+            <p class="font-mono text-xs uppercase tracking-[0.16em] text-accent">{String(i + 1).padStart(2, '0')} {step.stage}</p>
+            <h3 class="font-display text-2xl leading-snug">{step.question}</h3>
+            <p class="text-ink-soft leading-relaxed">{step.why}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="bg-dark text-on-dark py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="eyebrow eyebrow-dark">Cadence</p>
+      <h2 class="mt-4 font-display text-3xl md:text-5xl">Weeks 1–4</h2>
+      <ol class="mt-12 grid gap-8 md:grid-cols-2">
+        {SPRINT_WEEKS.map((week) => (
+          <li class="border border-white/10 p-6 md:p-8">
+            <p class="font-mono text-xs uppercase tracking-[0.16em] text-accent">{week.week}</p>
+            <h3 class="mt-3 font-display text-2xl">{week.title}</h3>
+            <p class="mt-3 text-on-dark-muted leading-relaxed">{week.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="bg-paper py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="eyebrow">Output</p>
+      <h2 class="mt-4 font-display text-3xl md:text-5xl">What you will know on day 30</h2>
+      <ol class="mt-12 divide-y divide-rule border-y border-rule">
+        {DELIVERABLES.map((item, i) => (
+          <li class="grid gap-4 py-8 md:grid-cols-[4rem_1fr_1.4fr]">
+            <span class="font-mono text-accent">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="font-display text-2xl">{item.title}</h3>
+            <p class="text-ink-soft leading-relaxed">{item.body}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="mt-10 max-w-2xl text-ink-soft leading-relaxed">
+        After that, some teams want the same questions watched month to month. That is <a href="/platform" class="underline underline-offset-4">Monitor</a> — $750/month, no annual contract. It is a decision you make with evidence, not the default checkout.
+      </p>
+    </div>
+  </section>
+
+  <section id="missing" class="bg-white py-20">
+    <div class="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-2">
+      <div>
+        <p class="eyebrow">Start</p>
+        <h2 class="mt-4 font-display text-3xl md:text-4xl">See where you're missing</h2>
+        <p class="mt-4 text-ink-soft leading-relaxed">Website and work email. We'll tell you whether a Sprint is warranted.</p>
+      </div>
+      <LeadForm source="how-it-works" variant="light" id="how-lead" />
+    </div>
+  </section>
+</Layout>
